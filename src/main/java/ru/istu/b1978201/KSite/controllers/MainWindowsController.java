@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //TODO rename
 @Controller
-public class MainController implements WebMvcConfigurer {
+public class MainWindowsController implements WebMvcConfigurer {
 
 
     @GetMapping("/")
