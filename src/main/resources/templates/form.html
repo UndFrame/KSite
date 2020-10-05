@@ -1,0 +1,99 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/header.css" type="text/css"/>
+    <link rel="stylesheet" href="css/form.css" type="text/css"/>
+    <title>UFSite</title>
+</head>
+<body>
+<!--  HEADER  -->
+
+<header class="header-box">
+    <div class="header-home-item">
+        <a title="home" href="/"><img src="images/home.png" alt="" class="home-img"></a>
+    </div>
+    <div class="login-item-box-left color-mouse">
+        <div class="item-site-name">
+            <a href="/">UndFrame Site</a>
+        </div>
+    </div>
+    <div th:if="!${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/login">Войти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/reg">Регистрация</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/logout">Выйти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/account" th:text="${user.username}">You`r name</a>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-offset-3 col-md-6">
+            <form th:action="@{/form}" method="post" class="form-horizontal">
+                <span class="heading">Админ панель</span>
+                <div class="form-group">
+                    <i class="fa fa-user"></i>
+                    <input type="text" class="form-control" name="username" id="inputUsername"
+                           placeholder="Имя пользователя">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Узнать информацию</button>
+                    <i class="fa fa-user"></i>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div th:if="${finduser}">
+    <div>
+        Имя
+        <p th:text="${username}"></p>
+    </div>
+
+    <div>
+        Роли:
+        <ul>
+            <th:block th:each="role : ${roles}" class="roles">
+                <div>
+                    <label th:utext="${role.getRole().getName()}"> </label>
+                    <input th:checked="${role.isCheck()}" type="checkbox"/>
+                </div>
+            </th:block>
+        </ul>
+    </div>
+</div>
+
+<div th:if="!${finduser}">
+    <h3>Пользователя не существует</h3>
+</div>
+
+</body>
+</html>
+
+

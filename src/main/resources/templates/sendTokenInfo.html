@@ -1,0 +1,68 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/header.css" type="text/css"/>
+    <link rel="stylesheet" href="css/main.css" type="text/css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>UFSite</title>
+</head>
+<body>
+<!--  HEADER  -->
+
+<header class="header-box">
+    <div class="header-home-item">
+        <a title="home" href="/"><img src="images/home.png" alt="" class="home-img"></a>
+    </div>
+
+</header>
+
+<div  class="alert alert-primary confirmation-info" role="alert">
+    <div th:if="${captchaError}" class="alert alert-primary" role="alert">
+        Подтвердите, что вы не бот
+    </div>
+    <div >
+    <div th:if="!${captchaError}" th:text="'На почту '+${email} +' было отправленно сообщение с подтверждением почты'">
+        Вы успешно подтвердили почту.
+    </div>
+        <form method="post" th:action="@{/tokenInfo}">
+            <p id="timer"></p>
+            <input type="hidden" name="recaptchaResponse" id="recaptchaResponse">
+            <input type="hidden" name="email" th:value="${email}">
+            <input type="hidden" value="Отправть снова" id="timerButton" class="btn btn-primary"/>
+        </form>
+    </div>
+</div>
+<script>
+    var timer;
+    var time = 3;
+    countdown();
+
+    function countdown() {
+        document.getElementById('timer').innerHTML = "Вы сможете отправить форму снова через: " + time + " сек.";
+        time--;
+        if (time < 0) {
+            document.getElementById('timer').innerHTML = "";
+            clearTimeout(timer); // таймер остановится на нуле
+            var elementById = document.getElementById('timerButton');
+            elementById.setAttribute("type", "submit")
+        } else {
+            timer = setTimeout(countdown, 1000);
+        }
+    }
+</script>
+<script th:src="'https://www.google.com/recaptcha/api.js?render='+${RECAPTCHA_SITE_KEY}"></script>
+<script>
+    grecaptcha.ready(function () {
+        var captchaServerKey = '6LcWHu4UAAAAADzaWj_brYJvrvSbLfy-NIkDPGKV';
+        grecaptcha.execute(captchaServerKey, {action: 'emailRequest'}).then(function (token) {
+            var recaptchaResponse = document.getElementById('recaptchaResponse');
+            recaptchaResponse.value = token;
+        });
+    });
+</script>
+</body>
+</html>

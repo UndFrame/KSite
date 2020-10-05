@@ -1,0 +1,46 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/header.css" type="text/css"/>
+    <link rel="stylesheet" href="css/form.css" type="text/css"/>
+    <title>UFSite</title>
+</head>
+<body>
+<header class="header-box">
+    <div class="header-home-item">
+        <a title="home" href="/"><img src="images/home.png" alt="" class="home-img"></a>
+    </div>
+    <div th:if="!${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/login">Войти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/reg">Регистрация</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/logout">Выйти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/account" th:text="${user.username}">You`r name</a>
+            </div>
+        </div>
+    </div>
+
+</header>
+<h1>Ошибка :(</h1>
+Страница не найдена
+</body>
+</html>

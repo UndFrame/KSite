@@ -1,0 +1,97 @@
+.card {
+    position: absolute;
+    margin: 50px;
+    align-content: center;
+    left: 40%;
+    width: auto;
+    height: auto;
+}
+
+.back-ground {
+    background-color: #eeeeee;
+}
+
+.card-title {
+    margin: 0 auto;
+    font-size: 80%;
+}
+
+.card-header {
+    background-color: #cccccc;
+    text-align: center;
+    font-weight: bold;
+    font-size: 150%;
+}
+
+.submit {
+    margin-top: 8%;
+}
+
+.result-error {
+    color: red;
+    max-width: 60%;
+    font-size: 80%;
+    position: absolute;
+    margin-top: 1%;
+    margin-left: 4%;
+}
+
+.error-info {
+    color: red;
+    font-size: 60%;
+    margin: 0 0 0 3px;
+}
+
+.successfully {
+
+}
+
+.area_error {
+    border: 1px solid #FF6955;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+}
+
+.area_info {
+    border: 1px solid #777777;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+}
+
+
+a#subCommand {
+    text-decoration: underline;
+    font-size: 70%;
+    color: #505050;
+}
+
+a#subCommand:link {
+    text-decoration: underline
+}
+
+a#subCommand:visited {
+    text-decoration: underline
+}
+
+a#subCommand:hover {
+    text-decoration: underline;
+}
+
+a#subCommand:active {
+    text-decoration: underline;
+}
+
+.register-info {
+    color: #FF6955;
+    font-size: 70%;
+}
+
+.confirmation-info {
+    position: absolute;
+    margin: 50px;
+    text-align: center;
+}

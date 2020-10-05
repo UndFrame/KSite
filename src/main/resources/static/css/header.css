@@ -1,0 +1,92 @@
+body{
+    margin: 0;
+
+}
+header {
+    height: 44px;
+    padding: 1px 1px;
+    background-color: #606060;
+}
+
+.header-home-item {
+    margin-top: 8px;
+    margin-left: 10px;
+}
+
+.home-img {
+    width: 28px;
+    height: 28px;
+    position: fixed;
+}
+
+.div-move {
+    margin: 0 auto;
+}
+
+.header-login {
+
+}
+
+.header-register {
+
+}
+
+.login-item-box {
+    margin-right: 5px;
+    float: right;
+}
+
+.login-item-box-left {
+    margin-left: 60px;
+    float: left;
+}
+
+
+.login-item-1 {
+    position: absolute;
+    color: #dddddd;
+    margin: 5px;
+}
+
+.login-item-login {
+    width: 60px;
+    height: 20px;
+    top: 10%;
+    text-align: center;
+    margin: 5px;
+}
+
+.item-site-name {
+    width: auto;
+    height: 20px;
+    top: 10%;
+    text-align: center;
+    margin: 5px;
+}
+
+.login-item-reg {
+    width: 90px;
+    height: 20px;
+    top: 10%;
+    text-align: center;
+    margin: 5px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-size: 80%;
+}
+
+A:visited {
+    color: white;
+}
+
+A:active {
+    color: white;
+}
+
+.color-mouse:hover {
+    background-color: #505050;
+    border-radius: 5px;
+}

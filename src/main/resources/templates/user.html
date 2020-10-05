@@ -1,0 +1,54 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="ru">
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/css/userstyle.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/header.css" type="text/css"/>
+    <title>UFSite</title>
+</head>
+<body>
+<!--  HEADER  -->
+
+<header class="header-box">
+    <div class="header-home-item">
+        <a title="home" href="/"><img src="images/home.png" alt="" class="home-img"></a>
+    </div>
+    <div th:if="!${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/login">Войти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/reg">Регистрация</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/logout">Выйти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <div th:text="${user.username}">You`r name</div>
+            </div>
+        </div>
+    </div>
+</header>
+<div>
+    Роли:
+    <ul>
+        <th:block th:each="role : ${roles}" class="roles">
+            <li th:utext="${role.getName()}">..</li>
+        </th:block>
+    </ul>
+</div>
+
+</body>
+</html>
