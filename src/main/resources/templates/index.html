@@ -4,13 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="css/header.css" type="text/css"/>
     <title>UFSite</title>
-</head>
-<!--  HEADER  -->
-<body>
 
-<div>YOU LIOX</div>
+    <style>
+        body {
+            background: url(images/bg.jpg);
+        }
+    </style>
+
+</head>
+<body>
+<!--  HEADER  -->
+
+<header class="header-box">
+    <div class="header-home-item">
+        <a title="home" href="/"><img src="images/home.png" alt="" class="home-img"></a>
+    </div>
+    <div class="login-item-box-left color-mouse">
+        <div class="item-site-name">
+            <a href="/">UndFrame Site</a>
+        </div>
+    </div>
+    <div th:if="!${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/login">Войти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/reg">Регистрация</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/logout">Выйти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/account" th:text="${user.username}">You`r name</a>
+            </div>
+        </div>
+    </div>
+
+</header>
+
 
 </body>
 </html>

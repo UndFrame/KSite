@@ -8,3 +8,4 @@ out
 .settings
 /build/
 /build/classes/java/main/
+/src/main/resources/secret.properties
