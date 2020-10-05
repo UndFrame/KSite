@@ -10,9 +10,6 @@ public class ArticleController {
 
     @GetMapping("article")
     public String getArticle(@ModelAttribute("id") String id, Model model) {
-
-        System.out.println(id);
-
         if(id.isEmpty()){
             return "articlelist";
         }

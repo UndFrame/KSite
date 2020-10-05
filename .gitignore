@@ -6,6 +6,5 @@ out
 .gradle
 .vscode
 .settings
-*.properties
 /build/
 /build/classes/java/main/
