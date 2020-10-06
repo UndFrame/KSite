@@ -16,7 +16,7 @@ public class Article {
     @Column(name = "description")
     private String description;
     @Column(name = "hash")
-    private String hashArticle;
+    private String hash;
 
 
     public Article() {
@@ -46,12 +46,12 @@ public class Article {
         this.description = description;
     }
 
-    public String getHashArticle() {
-        return hashArticle;
+    public String getHash() {
+        return hash;
     }
 
-    public void setHashArticle(String hashArticle) {
-        this.hashArticle = hashArticle;
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     @Override

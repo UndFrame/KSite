@@ -64,3 +64,8 @@ VALUES ('MODER');
 INSERT INTO ksite.roles(role)
 VALUES ('ADMIN');
 
+INSERT INTO ksite.articles(description, text, hash)
+VALUES ('article_1','sdsadasda','article1');
+INSERT INTO ksite.articles(description, text, hash)
+VALUES ('article_2','bbbnsdsnd','article2');
+

@@ -10,11 +10,12 @@
 <!--  HEADER  -->
 <body>
 
-<div>
 
+<h2>
+    <div th:text="${article.getDescription()}"></div>
+</h2>
+<div th:text="${article.getText()}"></div>
 
-
-</div>
 
 <div><a href="/article" id="subCommand">Статьи</a></div>
 
