@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import ru.istu.b1978201.KSite.dao.ArticleDao;
 import ru.istu.b1978201.KSite.dao.CommentDao;
 import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Comment;
+import ru.istu.b1978201.KSite.mode.User;
 
 import java.util.UUID;
 
@@ -27,6 +30,13 @@ public class ArticleController {
 
     @GetMapping("article")
     public String getArticle(@ModelAttribute("id") String id, Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
+        model.addAttribute("auth", user != null);
+        model.addAttribute("user", user);
+
         if(id.isEmpty()){
 
             Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
@@ -49,6 +59,13 @@ public class ArticleController {
 
     @PostMapping("article")
     public String addComment(@ModelAttribute("id") String id,@ModelAttribute("comment") String comment, Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
+        model.addAttribute("auth", user != null);
+        model.addAttribute("user", user);
+
         if(id.isEmpty()){
 
             Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
@@ -62,11 +79,11 @@ public class ArticleController {
         model.addAttribute("article",article);
 
 
-        if(article!=null){
+        if(article!=null && user!=null){
             Comment newComment = new Comment();
             newComment.setComment(comment);
             newComment.setArticle(article);
-
+            newComment.setUser(user);
             article.getComment().add(newComment);
             commentDao.save(newComment);
             model.addAttribute("comments",article.getComment());
@@ -78,6 +95,13 @@ public class ArticleController {
 
     @GetMapping("editor")
     public String getEditor(Model model){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
+        model.addAttribute("auth", user != null);
+        model.addAttribute("user", user);
+
         Page<Article> all = articleDao.findAll(PageRequest.of(0, 4, Sort.by(Sort.Order.desc("id"))));
         model.addAttribute("articles",all);
         return "editor";
@@ -87,23 +111,16 @@ public class ArticleController {
     @PostMapping("editor")
     public String getEditor(@ModelAttribute("description") String description, @ModelAttribute("text") String text, Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
+        model.addAttribute("auth", user != null);
+        model.addAttribute("user", user);
+
         Article article = new Article();
         article.setText(text);
         article.setDescription(description);
         article.setHash(UUID.randomUUID().toString());
-
-        Comment e = new Comment();
-        e.setComment("YOU LOX");
-        e.setArticle(article);
-        article.getComment().add(e);
-
-        Comment e1 = new Comment();
-        e1.setComment("YOU LOX2");
-        e1.setArticle(article);
-        article.getComment().add(e1);
-
-        commentDao.save(e);
-        commentDao.save(e1);
         articleDao.save(article);
 
 

@@ -4,49 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="css/header.css" type="text/css"/>
+    <link rel="stylesheet" href="css/main.css" type="text/css"/>
     <title>KSite</title>
+
 </head>
-<!--  HEADER  -->
 <body>
+<!--  HEADER  -->
 
-<div th:if="${findArticle}">
-
-<h2>
-    <div th:text="${article.getDescription()}"></div>
-</h2>
-<div th:utext="${article.getText()}"></div>
-
-    <div>
-        Коментарии:
+<header class="header-box">
+    <div class="header-home-item">
+        <a title="home" href="/"><img src="images/home.png" alt="" class="home-img"></a>
+    </div>
+    <div class="login-item-box-left color-mouse">
+        <div class="item-site-name">
+            <a href="/">Overcoming difficulties</a>
+        </div>
+    </div>
+    <div th:if="!${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/login">Войти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/reg">Регистрация</a>
+            </div>
+        </div>
     </div>
 
-    <ul>
-        <th:block th:each="comment : ${comments}" class="article">
-            <li th:utext="${comment.getComment()}"></li>
-        </th:block>
-    </ul>
+    <div th:if="${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/logout">Выйти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/account" th:text="${user.username}">You`r name</a>
+            </div>
+        </div>
+    </div>
 
-    <form th:action="@{/article}" method="post">
+</header>
 
-        <div>Комментарий</div>
-        <label>
-            <input type="text" name="comment"/>
-        </label>
+<div class="card">
+
+    <div class="card-body back-ground">
+
+        <div th:if="${findArticle}">
 
 
-        <input type="hidden" name="id" id="id" th:value="${article.getHash()}">
+            <div><a href="/article" id="subCommand">Статьи</a></div>
 
-        <input type="submit" value="Отправить" id="editor" class="btn btn-primary submit"/>
 
-    </form>
+            <h2>
+                <div th:text="${article.getDescription()}"></div>
+            </h2>
+            <div th:utext="${article.getText()}"></div>
 
-<div><a href="/article" >Статьи</a></div>
-</div>
+            <div>
+                Коментарии:
+            </div>
 
-<div th:if="!${findArticle}">
-    Статья не найдена
-    <div><a href="/article" >Статьи</a></div>
+            <ul>
+                <th:block th:each="comment : ${comments}" class="article">
+                    <li th:utext="${comment.getComment()} + ' ('+${comment.getUser().getUsername()}+')'"></li>
+                </th:block>
+            </ul>
+
+            <div th:if="${auth}">
+                <form th:action="@{/article}" method="post">
+
+                    <div>Новый комментарий</div>
+                    <label>
+                        <input type="text" name="comment"/>
+                    </label>
+
+
+                    <input type="hidden" name="id" id="id" th:value="${article.getHash()}">
+
+                    <input type="submit" value="Отправить" id="editor" class="btn btn-primary submit"/>
+
+                </form>
+            </div>
+        </div>
+
+        <div th:if="!${findArticle}">
+            Статья не найдена
+            <div><a href="/article">Статьи</a></div>
+        </div>
+
+
+    </div>
 </div>
 
 </body>

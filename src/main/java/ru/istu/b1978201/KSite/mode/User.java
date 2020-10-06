@@ -48,6 +48,9 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<Comment> comment;
+
     public Token getToken() {
         return token;
     }
@@ -106,6 +109,14 @@ public class User implements UserDetails {
 
     public void setBan(boolean ban) {
         this.ban = ban;
+    }
+
+    public Collection<Comment> getComment() {
+        return comment;
+    }
+
+    public void setComment(Collection<Comment> comment) {
+        this.comment = comment;
     }
 
     @Override

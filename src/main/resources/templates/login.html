@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="ru">
 <head>
@@ -8,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="css/header.css" type="text/css"/>
 </head>
-<body >
+<body>
 <header class="header-box" id="header">
     <div class="header-home-item">
         <a title="home" href="../"><img src="images/home.png" alt="" class="home-img"></a>
@@ -21,46 +24,45 @@
 </header>
 
 
-    <div class="card">
+<div class="card">
 
-        <div th:if="${activateToken}" class="alert alert-primary" role="alert">
-            Вы успешно подтвердили почту.
-        </div>
-        <div th:if="${captchaError}" class="alert alert-primary" role="alert">
-            Подтвердите, что вы не бот
-        </div>
-        <div th:if="${banError}" class="alert alert-primary" role="alert">
-            Ваш аккаунт в бане.
-        </div>
-        <div class="card-header">
-            Авторизация
-        </div>
-        <div class="card-body back-ground">
-            <form th:action="@{/login}" method="post">
-                <div class="card-title"> Логин или Email</div>
-                <div>
-                    <label><input type="text" name="userId" class="card-text"/></label>
-                </div>
-
-                <div class="card-title"> Пароль</div>
-                <div>
-                    <label><input type="password" name="password" class="card-text"/></label>
-                </div>
-
-                <div>
-                    <label><input type="submit" value="Войти" class="btn btn-primary submit"/></label> <label
-                        th:if="${param.error}" class="result-error">Неверный
-                    логин или пароль</label>
-                    <div><a href="/reg" id="subCommand">Регистрация</a></div>
-                </div>
-                <input type="hidden" name="recaptchaResponse" id="recaptchaResponse">
-            </form>
-        </div>
+    <div th:if="${activateToken}" class="alert alert-primary" role="alert">
+        Вы успешно подтвердили почту.
     </div>
+    <div th:if="${captchaError}" class="alert alert-primary" role="alert">
+        Подтвердите, что вы не бот
+    </div>
+    <div th:if="${banError}" class="alert alert-primary" role="alert">
+        Ваш аккаунт в бане.
+    </div>
+    <div class="card-header">
+        Авторизация
+    </div>
+    <div class="card-body back-ground">
+        <form th:action="@{/login}" method="post">
+            <div class="card-title"> Логин или Email</div>
+            <div>
+                <label><input type="text" name="userId" class="card-text"/></label>
+            </div>
 
-   <!-- <div th:if="${param.logout}">
-        You have been logged out.
-    </div> -->
+            <div class="card-title"> Пароль</div>
+            <div>
+                <label><input type="password" name="password" class="card-text"/></label>
+            </div>
+
+            <div>
+                <label><input type="submit" value="Войти" class="btn btn-primary submit"/></label>
+                <label th:if="${param.error}" class="result-error"> Неверный логин или пароль </label>
+                <div><a href="/reg" id="subCommand">Регистрация</a></div>
+            </div>
+            <input type="hidden" name="recaptchaResponse" id="recaptchaResponse">
+        </form>
+    </div>
+</div>
+
+<!-- <div th:if="${param.logout}">
+     You have been logged out.
+ </div> -->
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -74,9 +76,9 @@
 
 <script th:src="'https://www.google.com/recaptcha/api.js?render='+${RECAPTCHA_SITE_KEY}"></script>
 <script>
-    grecaptcha.ready(function() {
+    grecaptcha.ready(function () {
         var captchaServerKey = '6LcWHu4UAAAAADzaWj_brYJvrvSbLfy-NIkDPGKV';
-        grecaptcha.execute(captchaServerKey, {action: 'login'}).then(function(token) {
+        grecaptcha.execute(captchaServerKey, {action: 'login'}).then(function (token) {
             var recaptchaResponse = document.getElementById('recaptchaResponse');
             recaptchaResponse.value = token;
         });

@@ -1,9 +1,10 @@
 DROP TABLE ksite.user_role;
+DROP TABLE ksite.comments;
+DROP TABLE ksite.articles;
 DROP TABLE ksite.users;
 DROP TABLE ksite.tokens;
 DROP TABLE ksite.roles;
-DROP TABLE ksite.comments;
-DROP TABLE ksite.articles;
+
 
 
 CREATE TABLE ksite.tokens
@@ -58,9 +59,12 @@ CREATE TABLE ksite.comments
 (
     id         INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
     article_id INT  NOT NULL,
+    user_id    INT  NOT NULL,
     comment    TEXT NOT NULL
         COLLATE utf8mb4_unicode_ci,
-    FOREIGN KEY (article_id) REFERENCES ksite.articles (id)
+    FOREIGN KEY (article_id) REFERENCES ksite.articles (id),
+    FOREIGN KEY (user_id) REFERENCES ksite.users (id)
+
 
 );
 

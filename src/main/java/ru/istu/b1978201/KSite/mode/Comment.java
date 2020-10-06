@@ -19,6 +19,10 @@ public class Comment {
     @JoinColumn(name = "article_id")
     private Article article;
 
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Comment() {
     }
 
@@ -45,6 +49,14 @@ public class Comment {
 
     public void setArticle(Article article) {
         this.article = article;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
