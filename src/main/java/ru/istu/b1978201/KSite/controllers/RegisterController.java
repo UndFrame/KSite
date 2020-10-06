@@ -16,8 +16,6 @@ import ru.istu.b1978201.KSite.mode.User;
 
 import java.util.regex.Pattern;
 
-import static org.graalvm.compiler.options.OptionType.User;
-
 @Controller
 public class RegisterController {
 

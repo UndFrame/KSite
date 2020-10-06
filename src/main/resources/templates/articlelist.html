@@ -5,14 +5,19 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" type="text/css"/>
-    <title>UFSite</title>
+    <title>KFSite</title>
 </head>
 <!--  HEADER  -->
 <body>
 
-<div>mmm</div>
+<div>Статьи:</div>
 
-<div><a href="/article?id=dfdsf" id="subCommand">Статья о порно</a></div>
+<ul>
+    <th:block th:each="article : ${articles}" class="article">
+        <li><a th:utext="${article.getDescription()}" th:href="@{'/article?id=' + ${article.getHashArticle()}}"></a></li>
+
+    </th:block>
+</ul>
 
 </body>
 </html>
