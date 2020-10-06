@@ -1,7 +1,7 @@
 package ru.istu.b1978201.KSite.mode;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "articles")
@@ -18,6 +18,9 @@ public class Article {
     @Column(name = "hash")
     private String hash;
 
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
+    private Collection<Comment> comment;
 
     public Article() {
     }
@@ -52,6 +55,16 @@ public class Article {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public Collection<Comment> getComment() {
+        if(comment==null)
+            setComment(new ArrayList<>());
+        return comment;
+    }
+
+    public void setComment(Collection<Comment> comment) {
+        this.comment = comment;
     }
 
     @Override

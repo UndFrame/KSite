@@ -10,15 +10,44 @@
 <!--  HEADER  -->
 <body>
 
+<div th:if="${findArticle}">
 
 <h2>
     <div th:text="${article.getDescription()}"></div>
 </h2>
-<div th:text="${article.getText()}"></div>
+<div th:utext="${article.getText()}"></div>
+
+    <div>
+        Коментарии:
+    </div>
+
+    <ul>
+        <th:block th:each="comment : ${comments}" class="article">
+            <li th:utext="${comment.getComment()}"></li>
+        </th:block>
+    </ul>
+
+    <form th:action="@{/article}" method="post">
+
+        <div>Комментарий</div>
+        <label>
+            <input type="text" name="comment"/>
+        </label>
 
 
-<div><a href="/article" id="subCommand">Статьи</a></div>
+        <input type="hidden" name="id" id="id" th:value="${article.getHash()}">
 
+        <input type="submit" value="Отправить" id="editor" class="btn btn-primary submit"/>
+
+    </form>
+
+<div><a href="/article" >Статьи</a></div>
+</div>
+
+<div th:if="!${findArticle}">
+    Статья не найдена
+    <div><a href="/article" >Статьи</a></div>
+</div>
 
 </body>
 </html>
