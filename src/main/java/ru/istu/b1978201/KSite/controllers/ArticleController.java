@@ -40,7 +40,6 @@ public class ArticleController {
         if (id.isEmpty()) {
 
             Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
-
             model.addAttribute("articles", all);
 
             return "articlelist";

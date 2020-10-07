@@ -48,7 +48,17 @@
             <li th:utext="${role.getName()}">..</li>
         </th:block>
     </ul>
+
+    Статьи:
+    <ul>
+        <th:block th:each="article : ${articles}" class="roles">
+            <li><a th:utext="${article.getDescription()}" th:href="@{'/article?id=' + ${article.getHash()}}"></a></li>
+        </th:block>
+    </ul>
+
 </div>
+
+
 
 </body>
 </html>

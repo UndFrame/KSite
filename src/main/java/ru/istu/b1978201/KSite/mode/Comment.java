@@ -2,7 +2,6 @@ package ru.istu.b1978201.KSite.mode;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "comments")

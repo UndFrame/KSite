@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.istu.b1978201.KSite.dao.ArticleDao;
 import ru.istu.b1978201.KSite.dao.RoleDao;
+import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Role;
 import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.services.UserService;
@@ -38,6 +40,10 @@ public class WebController implements WebMvcConfigurer {
         return "redirect:/";
     }
 
+
+    @Autowired
+    private ArticleDao articleDao;
+
     @GetMapping("/")
     public String main(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,12 +51,14 @@ public class WebController implements WebMvcConfigurer {
         User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
         model.addAttribute("auth", user != null);
         model.addAttribute("user", user);
+
+
         return "index";
     }
 
     @GetMapping("/home")
     public String home(Model model) {
-       return main(model);
+        return main(model);
     }
 
 
@@ -75,30 +83,30 @@ public class WebController implements WebMvcConfigurer {
             Model model
     ) {
 
-        if(username!=null){
+        if (username != null) {
             User user = userService.findByUsername(username);
-            if(user!=null){
-                model.addAttribute("finduser",true);
-                model.addAttribute("username",user.getUsername());
+            if (user != null) {
+                model.addAttribute("finduser", true);
+                model.addAttribute("username", user.getUsername());
 
                 List<CheckedRole> checkedRoleList = new ArrayList<>();
 
                 roleDao.findAll().forEach(role -> {
-                    if(user.getRoles().contains(role)){
-                        checkedRoleList.add(new CheckedRole(role,true));
-                    }else {
-                        checkedRoleList.add(new CheckedRole(role,false));
+                    if (user.getRoles().contains(role)) {
+                        checkedRoleList.add(new CheckedRole(role, true));
+                    } else {
+                        checkedRoleList.add(new CheckedRole(role, false));
                     }
                 });
 
-                model.addAttribute("roles",checkedRoleList);
+                model.addAttribute("roles", checkedRoleList);
                 /*model.addAttribute("finduser",true);
                 model.addAttribute("finduser",true);
                 model.addAttribute("finduser",true);*/
 
             }
         }
-        System.out.println("un: "+username);
+        System.out.println("un: " + username);
 
         return "form";
     }
@@ -111,6 +119,14 @@ public class WebController implements WebMvcConfigurer {
         model.addAttribute("auth", user != null);
         model.addAttribute("user", user);
         model.addAttribute("roles", user != null ? user.getRoles().toArray(new Role[]{}) : Collections.emptyList());
+
+        List<Article> articles = new ArrayList<>();
+
+        if (user != null) {
+            articles = articleDao.findAllByUserId(user.getId());
+        }
+
+        model.addAttribute("articles", articles);
         return "user";
     }
 
