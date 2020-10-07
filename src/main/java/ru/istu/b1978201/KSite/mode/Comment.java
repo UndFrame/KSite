@@ -15,7 +15,7 @@ public class Comment {
     @Column(name = "comment")
     private String comment;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "article_id")
     private Article article;
 

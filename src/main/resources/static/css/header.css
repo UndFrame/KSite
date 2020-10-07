@@ -72,20 +72,6 @@ header {
     margin: 5px;
 }
 
-a {
-    text-decoration: none;
-    color: white;
-    font-size: 80%;
-}
-
-A:visited {
-    color: white;
-}
-
-A:active {
-    color: white;
-}
-
 .color-mouse:hover {
     background-color: #505050;
     border-radius: 5px;

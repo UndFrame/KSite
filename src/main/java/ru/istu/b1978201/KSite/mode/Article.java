@@ -19,8 +19,12 @@ public class Article {
     private String hash;
 
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     private Collection<Comment> comment;
+
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Article() {
     }
@@ -65,6 +69,14 @@ public class Article {
 
     public void setComment(Collection<Comment> comment) {
         this.comment = comment;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

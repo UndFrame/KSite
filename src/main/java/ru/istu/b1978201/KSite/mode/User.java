@@ -51,6 +51,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Comment> comment;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<Article> article;
+
+
     public Token getToken() {
         return token;
     }
@@ -112,12 +116,26 @@ public class User implements UserDetails {
     }
 
     public Collection<Comment> getComment() {
+        if(comment==null)
+            setComment(new ArrayList<>());
         return comment;
     }
 
     public void setComment(Collection<Comment> comment) {
         this.comment = comment;
     }
+
+    public Collection<Article> getArticle() {
+        if(article==null)
+            setArticle(new ArrayList<>());
+        return article;
+    }
+
+    public void setArticle(Collection<Article> article) {
+        this.article = article;
+    }
+
+
 
     @Override
     public String toString() {

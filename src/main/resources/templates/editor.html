@@ -1,18 +1,55 @@
-
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" type="text/css"/>
-    <title>KFSite</title>
+    <link rel="stylesheet" href="css/header.css" type="text/css"/>
+    <link rel="stylesheet" href="css/main.css" type="text/css"/>
+    <title>KSite</title>
+
 </head>
-<!--  HEADER  -->
 <body>
+<!--  HEADER  -->
 
+<header class="header-box">
+    <div class="header-home-item">
+        <a title="home" href="/"><img src="images/home.png" alt="" class="home-img"></a>
+    </div>
+    <div class="login-item-box-left color-mouse">
+        <div class="item-site-name">
+            <a href="/">Overcoming difficulties</a>
+        </div>
+    </div>
+    <div th:if="!${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/login">Войти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/reg">Регистрация</a>
+            </div>
+        </div>
+    </div>
 
+    <div th:if="${auth}">
+        <div class="login-item-box color-mouse">
+            <div class="login-item-login">
+                <a href="/logout">Выйти</a>
+            </div>
+        </div>
+        <div class="login-item-box color-mouse">
+            <div class="login-item-reg">
+                <a href="/account" th:text="${user.username}">You`r name</a>
+            </div>
+        </div>
+    </div>
 
+</header>
+
+<div th:if="${auth}">
 <form th:action="@{/editor}" method="post">
 
     <div>Описание</div>
@@ -35,6 +72,8 @@
         <li><a th:utext="${article.getDescription()}" th:href="@{'/article?id=' + ${article.getHash()}}"></a></li>
     </th:block>
 </ul>
+
+</div>
 
 <div><a href="/article" >Статьи</a></div>
 

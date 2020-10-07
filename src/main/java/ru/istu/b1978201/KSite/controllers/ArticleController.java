@@ -37,28 +37,28 @@ public class ArticleController {
         model.addAttribute("auth", user != null);
         model.addAttribute("user", user);
 
-        if(id.isEmpty()){
+        if (id.isEmpty()) {
 
             Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
 
-            model.addAttribute("articles",all);
+            model.addAttribute("articles", all);
 
             return "articlelist";
         }
 
         Article article = articleDao.findByHash(id);
 
-        model.addAttribute("findArticle",article!=null);
-        model.addAttribute("article",article);
-        if(article!=null){
-            model.addAttribute("comments",article.getComment());
+        model.addAttribute("findArticle", article != null);
+        model.addAttribute("article", article);
+        if (article != null) {
+            model.addAttribute("comments", article.getComment());
         }
 
         return "article";
     }
 
     @PostMapping("article")
-    public String addComment(@ModelAttribute("id") String id,@ModelAttribute("comment") String comment, Model model) {
+    public String addComment(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -66,27 +66,26 @@ public class ArticleController {
         model.addAttribute("auth", user != null);
         model.addAttribute("user", user);
 
-        if(id.isEmpty()){
+        if (id.isEmpty()) {
 
             Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
-            model.addAttribute("articles",all);
+            model.addAttribute("articles", all);
 
             return "articlelist";
         }
 
         Article article = articleDao.findByHash(id);
-        model.addAttribute("findArticle",article!=null);
-        model.addAttribute("article",article);
+        model.addAttribute("findArticle", article != null);
+        model.addAttribute("article", article);
 
 
-        if(article!=null && user!=null){
+        if (article != null && user != null) {
             Comment newComment = new Comment();
             newComment.setComment(comment);
             newComment.setArticle(article);
             newComment.setUser(user);
-            article.getComment().add(newComment);
             commentDao.save(newComment);
-            model.addAttribute("comments",article.getComment());
+            model.addAttribute("comments", article.getComment());
 
         }
 
@@ -94,7 +93,7 @@ public class ArticleController {
     }
 
     @GetMapping("editor")
-    public String getEditor(Model model){
+    public String getEditor(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -103,7 +102,7 @@ public class ArticleController {
         model.addAttribute("user", user);
 
         Page<Article> all = articleDao.findAll(PageRequest.of(0, 4, Sort.by(Sort.Order.desc("id"))));
-        model.addAttribute("articles",all);
+        model.addAttribute("articles", all);
         return "editor";
     }
 
@@ -117,15 +116,17 @@ public class ArticleController {
         model.addAttribute("auth", user != null);
         model.addAttribute("user", user);
 
-        Article article = new Article();
-        article.setText(text);
-        article.setDescription(description);
-        article.setHash(UUID.randomUUID().toString());
-        articleDao.save(article);
-
+        if (user != null) {
+            Article article = new Article();
+            article.setText(text);
+            article.setDescription(description);
+            article.setHash(UUID.randomUUID().toString());
+            article.setUser(user);
+            articleDao.save(article);
+        }
 
         Page<Article> all = articleDao.findAll(PageRequest.of(0, 4, Sort.by(Sort.Order.desc("id"))));
-        model.addAttribute("articles",all);
+        model.addAttribute("articles", all);
 
         return "editor";
     }

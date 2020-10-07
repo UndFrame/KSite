@@ -50,9 +50,11 @@ CREATE TABLE ksite.articles
 
     id          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     description TEXT         NOT NULL,
+    user_id     INT          NOT NULL,
     text        TEXT         NOT NULL,
     hash        VARCHAR(255) NOT NULL UNIQUE
-        COLLATE utf8mb4_unicode_ci
+        COLLATE utf8mb4_unicode_ci,
+    FOREIGN KEY (user_id) REFERENCES ksite.users (id)
 );
 
 CREATE TABLE ksite.comments
@@ -78,12 +80,4 @@ INSERT INTO ksite.roles(role)
 VALUES ('MODER');
 INSERT INTO ksite.roles(role)
 VALUES ('ADMIN');
-
-INSERT INTO ksite.articles(description, text, hash)
-VALUES ('article_1', 'sdsadasda', 'article1');
-INSERT INTO ksite.articles(description, text, hash)
-VALUES ('article_2', 'bbbnsdsnd', 'article2');
-
-INSERT INTO ksite.articles(description, text, hash)
-VALUES ('article_3', '<h1>Тест о лохах</h1>', 'article3');
 
