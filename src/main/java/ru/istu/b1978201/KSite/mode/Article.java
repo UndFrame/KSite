@@ -17,6 +17,10 @@ public class Article {
     private String description;
     @Column(name = "hash")
     private String hash;
+    @Column(name = "likes")
+    private int likes;
+    @Column(name = "dislikes")
+    private int dislikes;
 
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
@@ -85,6 +89,22 @@ public class Article {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 '}';
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
     }
 
     @Override

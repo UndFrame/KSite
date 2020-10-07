@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login", "/reg", "/activate", "/tokenInfo", "/activate").anonymous()
-                .antMatchers("/account").authenticated()
+                .antMatchers("/account","/editor").authenticated()
                 .antMatchers("/form").hasAnyRole("ADMIN")
                 .and()
                 .httpBasic(httpSecurityHttpBasicConfigurer -> {
@@ -58,12 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll()
-                .and()
-                .sessionManagement()
-                .invalidSessionUrl("/home")
-                .maximumSessions(1)
-                .maxSessionsPreventsLogin(true)
-                .sessionRegistry(sessionRegistry());
+                .and();
     }
 
     @Override

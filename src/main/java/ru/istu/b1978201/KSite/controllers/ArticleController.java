@@ -56,7 +56,7 @@ public class ArticleController {
         return "article";
     }
 
-    @PostMapping("article")
+    @PostMapping(value = "article",params = "editor")
     public String addComment(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +85,66 @@ public class ArticleController {
             newComment.setUser(user);
             commentDao.save(newComment);
             model.addAttribute("comments", article.getComment());
+        }
 
+        return "article";
+    }
+
+    @PostMapping(value = "article",params = "dislike")
+    public String dislike(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
+        model.addAttribute("auth", user != null);
+        model.addAttribute("user", user);
+
+        if (id.isEmpty()) {
+
+            Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
+            model.addAttribute("articles", all);
+
+            return "articlelist";
+        }
+
+        Article article = articleDao.findByHash(id);
+        model.addAttribute("findArticle", article != null);
+        model.addAttribute("article", article);
+
+
+        if (article != null && user != null) {
+            article.setDislikes(article.getDislikes()+1);
+            articleDao.save(article);
+        }
+
+        return "article";
+    }
+
+    @PostMapping(value = "article",params = "like")
+    public String like(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
+        model.addAttribute("auth", user != null);
+        model.addAttribute("user", user);
+
+        if (id.isEmpty()) {
+
+            Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
+            model.addAttribute("articles", all);
+
+            return "articlelist";
+        }
+
+        Article article = articleDao.findByHash(id);
+        model.addAttribute("findArticle", article != null);
+        model.addAttribute("article", article);
+
+
+        if (article != null && user != null) {
+           article.setLikes(article.getLikes()+1);
+            articleDao.save(article);
         }
 
         return "article";

@@ -14,6 +14,9 @@ CREATE TABLE ksite.tokens
     date  TIMESTAMP
         COLLATE utf8mb4_unicode_ci
 );
+
+
+
 CREATE TABLE ksite.users
 (
     id       INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -45,6 +48,18 @@ CREATE TABLE ksite.user_role
     UNIQUE (user_id, role_id)
 );
 
+CREATE TABLE ksite.like_dislike
+(
+    id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id    INT NOT NULL,
+    article_id INT NOT NULL,
+    like       BIT DEFAULT (0),
+    dislike    BIT DEFAULT (1)
+        COLLATE utf8mb4_unicode_ci,
+    FOREIGN KEY (user_id) REFERENCES ksite.users (id),
+    FOREIGN KEY (article_id) REFERENCES ksite.articles (id)
+);
+
 CREATE TABLE ksite.articles
 (
 
@@ -52,7 +67,9 @@ CREATE TABLE ksite.articles
     description TEXT         NOT NULL,
     user_id     INT          NOT NULL,
     text        TEXT         NOT NULL,
-    hash        VARCHAR(255) NOT NULL UNIQUE
+    hash        VARCHAR(255) NOT NULL UNIQUE,
+    likes       INT DEFAULT (0),
+    dislikes    INT DEFAULT (0)
         COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (user_id) REFERENCES ksite.users (id)
 );
@@ -80,4 +97,10 @@ INSERT INTO ksite.roles(role)
 VALUES ('MODER');
 INSERT INTO ksite.roles(role)
 VALUES ('ADMIN');
+
+
+INSERT INTO ksite.users(token, username, email, password, enabled, ban)
+VALUES (null, 'undframe', 'undframe@gmail.com',
+        '$e0801$rvu1Hsc5uqZbI4hjZfdyx9mKsYDJ7ygUMhikK2SBVN5nx8ktPlYFuweN8xU6c9ev4y+BBRS2WA6rzMbz67pKGw==$pydVEqyfu3t8IMf6UGlkf64NVgT/5Y4zuONvSFYuMXc=',
+        1, 0);
 

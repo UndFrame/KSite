@@ -65,6 +65,11 @@
             <div th:utext="${article.getText()}"></div>
 
             <div>
+                <div th:utext="'Лайки ' + ${article.getLikes()}"></div>
+                <div th:utext="'Дизлайки ' + ${article.getDislikes()}"></div>
+            </div>
+
+            <div>
                 Коментарии:
             </div>
 
@@ -85,7 +90,9 @@
 
                     <input type="hidden" name="id" id="id" th:value="${article.getHash()}">
 
-                    <input type="submit" value="Отправить" id="editor" class="btn btn-primary submit"/>
+                    <input type="submit" value="Отправить" id="editor" name="editor" class="btn btn-primary submit"/>
+                    <input type="submit" value="Лайк" id="like" name="like" class="btn btn-primary submit"/>
+                    <input type="submit" value="Дизлайк" id="dislike" name="dislike" class="btn btn-primary submit"/>
 
                 </form>
             </div>
