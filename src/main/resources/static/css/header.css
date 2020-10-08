@@ -9,14 +9,14 @@ header {
 }
 
 .header-home-item {
-    margin-top: 8px;
-    margin-left: 10px;
+	margin-left: 16px;
 }
 
 .home-img {
-    width: 28px;
-    height: 28px;
-    position: fixed;
+	width: 28px;
+	height: 28px;
+	position: fixed;
+	padding-top: 10px;
 }
 
 .div-move {
@@ -32,8 +32,11 @@ header {
 }
 
 .login-item-box {
-    margin-right: 5px;
-    float: right;
+	margin-right: 2px;
+	float: right;
+	margin-left: 2px;
+	margin-top: 2px;
+	margin-bottom: 2px;
 }
 
 .login-item-box-left {
@@ -49,30 +52,56 @@ header {
 }
 
 .login-item-login {
-    width: 60px;
-    height: 20px;
-    top: 10%;
-    text-align: center;
-    margin: 5px;
+	width: 55px;
+	text-align: center;
+	margin-top: 5px;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	height: 30px;
 }
 
 .item-site-name {
-    width: auto;
-    height: 20px;
-    top: 10%;
-    text-align: center;
-    margin: 5px;
+	width: auto;
+	text-align: center;
+	margin-top: 5px;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	font-family: sans-serif;
+	color: #FFFFFF;
+	font-size: large;
+	font-weight: bolder;
+	font-variant: small-caps;
+	padding-top: 8px;
+	height: 25px;
+	top: 7px;
 }
 
 .login-item-reg {
-    width: 90px;
-    height: 20px;
-    top: 10%;
-    text-align: center;
-    margin: 5px;
+	width: 55px;
+	height: 30px;
+	text-align: center;
+	margin: 5px;
+	padding-left: 4px;
+	padding-right: 4px;
 }
 
 .color-mouse:hover {
-    background-color: #505050;
-    border-radius: 5px;
+	background-color: #505050;
+	border-radius: 4px;
+}
+
+.Picsize {
+	width: 45px;
+	height: 30px;
+	top: 0px;
+	text-decoration: none;
+}
+
+.login-item-reg-plus {
+	width: 99px;
+	height: 30px;
+	text-align: center;
+	margin-top: 10px;
 }

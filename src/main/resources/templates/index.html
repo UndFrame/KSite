@@ -18,22 +18,20 @@
 
 <header class="header-box">
     <div class="header-home-item">
-        <a title="home" href="/"><img src="../static/images/home.png" alt="" class="home-img"></a>
+        <a title="home" href="/src/main/resources/templates/index.html"><img src="../static/images/home.png" alt="" class="home-img"></a>
     </div>
     <div class="login-item-box-left color-mouse">
-        <div class="item-site-name">
-            <a href="/">Overcoming difficultiess</a>
-        </div>
+        <div class="item-site-name"> Overcoming difficulties</div>
     </div>
     <div th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/login">Войти</a>
+                <a href="/login"><img class="Picsize" src="../static/images/user-check.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
             <div class="login-item-reg">
-                <a href="/reg">Регистрация</a>
+                <a href="/reg"><img class="Picsize" src="../static/images/user-plus.svg" alt=""/></a>
             </div>
         </div>
     </div>
@@ -41,11 +39,11 @@
     <div th:if="${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/logout">Выйти</a>
+                <a href="/logout"><img class="Picsize" src="../static/images/user-times.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
-            <div class="login-item-reg">
+            <div class="login-item-reg-plus">
                 <a href="/account" th:text="${user.username}">You`r name</a>
             </div>
         </div>
