@@ -16,7 +16,7 @@ header {
 	width: 28px;
 	height: 28px;
 	position: fixed;
-	padding-top: 10px;
+	padding-top: 8px;
 }
 
 .div-move {
@@ -59,6 +59,11 @@ header {
 	margin-left: 5px;
 	margin-bottom: 5px;
 	height: 30px;
+	border-right: thin solid rgba(166,166,166,1.00);
+	border-left: thin solid rgba(166,166,166,1.00);
+	padding-right: 0px;
+	color: rgba(255,255,255,1.00);
+	font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
 }
 
 .item-site-name {
@@ -83,8 +88,7 @@ header {
 	height: 30px;
 	text-align: center;
 	margin: 5px;
-	padding-left: 4px;
-	padding-right: 4px;
+	padding-left: 0px;
 }
 
 .color-mouse:hover {
@@ -100,8 +104,13 @@ header {
 }
 
 .login-item-reg-plus {
-	width: 99px;
-	height: 30px;
+	width: 10em;
+	height: 32px;
 	text-align: center;
-	margin-top: 10px;
+	margin-top: 7px;
+	color: rgba(255,255,255,1.00);
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", Verdana, sans-serif;
+	font-variant: small-caps;
+	font-weight: normal;
+	font-size: 17px;
 }
