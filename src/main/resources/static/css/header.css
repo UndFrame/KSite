@@ -17,6 +17,9 @@ header {
 	height: 28px;
 	position: fixed;
 	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-right: 7px;
+	padding-left: 7px;
 }
 
 .div-move {
@@ -114,3 +117,4 @@ header {
 	font-weight: normal;
 	font-size: 17px;
 }
+
