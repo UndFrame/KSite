@@ -83,7 +83,7 @@ public class ArticleController {
         model.addAttribute("article", article);
 
 
-        if (article != null && user != null) {
+        if (article != null && user != null && !comment.isEmpty()) {
             Comment newComment = new Comment();
             newComment.setComment(comment);
             newComment.setArticle(article);
