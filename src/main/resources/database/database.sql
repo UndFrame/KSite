@@ -1,4 +1,5 @@
 DROP TABLE ksite.user_role;
+DROP TABLE ksite.like_dislike;
 DROP TABLE ksite.comments;
 DROP TABLE ksite.articles;
 DROP TABLE ksite.users;
@@ -53,11 +54,10 @@ CREATE TABLE ksite.like_dislike
     id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id    INT NOT NULL,
     article_id INT NOT NULL,
-    like       BIT DEFAULT (0),
-    dislike    BIT DEFAULT (1)
+    likes       BIT,
+    dislike    BIT
         COLLATE utf8mb4_unicode_ci,
-    FOREIGN KEY (user_id) REFERENCES ksite.users (id),
-    FOREIGN KEY (article_id) REFERENCES ksite.articles (id)
+    FOREIGN KEY (user_id) REFERENCES ksite.users (id)
 );
 
 CREATE TABLE ksite.articles
@@ -101,6 +101,11 @@ VALUES ('ADMIN');
 
 INSERT INTO ksite.users(token, username, email, password, enabled, ban)
 VALUES (null, 'undframe', 'undframe@gmail.com',
+        '$e0801$rvu1Hsc5uqZbI4hjZfdyx9mKsYDJ7ygUMhikK2SBVN5nx8ktPlYFuweN8xU6c9ev4y+BBRS2WA6rzMbz67pKGw==$pydVEqyfu3t8IMf6UGlkf64NVgT/5Y4zuONvSFYuMXc=',
+        1, 0);
+
+INSERT INTO ksite.users(token, username, email, password, enabled, ban)
+VALUES (null, 'undframe2', 'undframe2@gmail.com',
         '$e0801$rvu1Hsc5uqZbI4hjZfdyx9mKsYDJ7ygUMhikK2SBVN5nx8ktPlYFuweN8xU6c9ev4y+BBRS2WA6rzMbz67pKGw==$pydVEqyfu3t8IMf6UGlkf64NVgT/5Y4zuONvSFYuMXc=',
         1, 0);
 

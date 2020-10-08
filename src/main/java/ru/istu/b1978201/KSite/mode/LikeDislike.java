@@ -10,15 +10,15 @@ public class LikeDislike {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(name = "role")
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "article_id")
     private Article article;
 
-
-    @Column(name = "role")
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "like")
+    @Column(name = "likes")
     private boolean like;
 
     @Column(name = "dislike")
@@ -57,6 +57,7 @@ public class LikeDislike {
 
     public void setLike(boolean like) {
         this.like = like;
+        this.dislike = !like;
     }
 
     public boolean isDislike() {
@@ -65,7 +66,10 @@ public class LikeDislike {
 
     public void setDislike(boolean dislike) {
         this.dislike = dislike;
+        this.like= !dislike;
     }
+
+
 
     @Override
     public String toString() {

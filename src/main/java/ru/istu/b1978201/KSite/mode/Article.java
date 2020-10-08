@@ -30,6 +30,10 @@ public class Article {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    private Collection<LikeDislike> likeDislikes;
+
+
     public Article() {
     }
 
@@ -69,6 +73,16 @@ public class Article {
         if(comment==null)
             setComment(new ArrayList<>());
         return comment;
+    }
+
+    public Collection<LikeDislike> getLikeDislikes() {
+        if(likeDislikes==null)
+            setLikeDislikes(new ArrayList<>());
+        return likeDislikes;
+    }
+
+    public void setLikeDislikes(Collection<LikeDislike> likeDislikes) {
+        this.likeDislikes = likeDislikes;
     }
 
     public void setComment(Collection<Comment> comment) {

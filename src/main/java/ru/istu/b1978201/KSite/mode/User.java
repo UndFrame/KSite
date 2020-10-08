@@ -54,6 +54,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Article> article;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Collection<LikeDislike> likeDislikes;
+
 
     public Token getToken() {
         return token;
@@ -113,6 +116,16 @@ public class User implements UserDetails {
 
     public void setBan(boolean ban) {
         this.ban = ban;
+    }
+
+    public Collection<LikeDislike> getLikeDislikes() {
+        if(likeDislikes==null)
+            setLikeDislikes(new ArrayList<>());
+        return likeDislikes;
+    }
+
+    public void setLikeDislikes(Collection<LikeDislike> likeDislikes) {
+        this.likeDislikes = likeDislikes;
     }
 
     public Collection<Comment> getComment() {

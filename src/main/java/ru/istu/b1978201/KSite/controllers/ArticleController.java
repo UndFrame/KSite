@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.istu.b1978201.KSite.dao.ArticleDao;
 import ru.istu.b1978201.KSite.dao.CommentDao;
+import ru.istu.b1978201.KSite.dao.LikeDislikeDao;
 import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Comment;
+import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
 
 import java.util.UUID;
@@ -27,6 +29,9 @@ public class ArticleController {
 
     @Autowired
     private CommentDao commentDao;
+
+    @Autowired
+    private LikeDislikeDao likeDislikeDao;
 
     @GetMapping("article")
     public String getArticle(@ModelAttribute("id") String id, Model model) {
@@ -56,7 +61,7 @@ public class ArticleController {
         return "article";
     }
 
-    @PostMapping(value = "article",params = "editor")
+    @PostMapping(value = "article", params = "editor")
     public String addComment(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -83,6 +88,7 @@ public class ArticleController {
             newComment.setComment(comment);
             newComment.setArticle(article);
             newComment.setUser(user);
+            article.getComment().add(newComment);
             commentDao.save(newComment);
             model.addAttribute("comments", article.getComment());
         }
@@ -90,7 +96,7 @@ public class ArticleController {
         return "article";
     }
 
-    @PostMapping(value = "article",params = "dislike")
+    @PostMapping(value = "article", params = "dislike")
     public String dislike(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -113,14 +119,41 @@ public class ArticleController {
 
 
         if (article != null && user != null) {
-            article.setDislikes(article.getDislikes()+1);
-            articleDao.save(article);
+            LikeDislike likeDislike = null;
+
+            for (LikeDislike dislike : user.getLikeDislikes()) {
+                if (dislike.getArticle().equals(article)) {
+                    likeDislike = dislike;
+                }
+            }
+            boolean newLike = false;
+
+            if (likeDislike == null) {
+                likeDislike = new LikeDislike();
+                newLike = true;
+            }
+            if (!likeDislike.isDislike()) {
+                likeDislike.setArticle(article);
+                likeDislike.setUser(user);
+                likeDislike.setDislike(true);
+
+
+                article.setDislikes(article.getDislikes() + 1);
+                if(!newLike)
+                    article.setLikes(article.getLikes() - 1);
+
+                article.getLikeDislikes().add(likeDislike);
+                user.getLikeDislikes().add(likeDislike);
+                likeDislikeDao.save(likeDislike);
+                articleDao.save(article);
+            }
+            model.addAttribute("comments", article.getComment());
         }
 
         return "article";
     }
 
-    @PostMapping(value = "article",params = "like")
+    @PostMapping(value = "article", params = "like")
     public String like(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -143,8 +176,35 @@ public class ArticleController {
 
 
         if (article != null && user != null) {
-           article.setLikes(article.getLikes()+1);
-            articleDao.save(article);
+            LikeDislike likeDislike = null;
+
+            for (LikeDislike dislike : user.getLikeDislikes()) {
+                if (dislike.getArticle().equals(article)) {
+                    likeDislike = dislike;
+                }
+            }
+
+            boolean newLike = false;
+
+            if (likeDislike == null) {
+                likeDislike = new LikeDislike();
+                newLike = true;
+            }
+            if (!likeDislike.isLike()) {
+                likeDislike.setArticle(article);
+                likeDislike.setUser(user);
+                likeDislike.setLike(true);
+
+
+                article.setLikes(article.getLikes() + 1);
+                if(!newLike)
+                    article.setDislikes(article.getDislikes() - 1);
+                article.getLikeDislikes().add(likeDislike);
+                user.getLikeDislikes().add(likeDislike);
+                likeDislikeDao.save(likeDislike);
+                articleDao.save(article);
+            }
+            model.addAttribute("comments", article.getComment());
         }
 
         return "article";
