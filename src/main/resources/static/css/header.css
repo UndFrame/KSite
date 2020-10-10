@@ -115,13 +115,13 @@ header {
 }
 
 
-
-.pozitiv {
-	text-decoration: line-through;
-}
-
 .header-box {
 	position: fixed;
 	width: 100%;
 	top: 0px;
+}
+
+.main-corrector {
+	
+	margin-top: 50px;
 }
