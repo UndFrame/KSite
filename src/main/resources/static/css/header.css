@@ -125,3 +125,10 @@ header {
 	
 	margin-top: 50px;
 }
+
+#id-name {
+	text-decoration: none;
+	color: rgba(255,255,255,1.00);
+	font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
+	text-align: center;
+}
