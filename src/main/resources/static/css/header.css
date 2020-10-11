@@ -39,8 +39,9 @@ header {
 }
 
 .login-item-box-left {
-    margin-left: 60px;
-    float: left;
+	margin-left: 60px;
+	float: left;
+	clear: left;
 }
 
 
@@ -188,13 +189,15 @@ iframe {
 .hiper-links {
 	text-decoration: none;
 	color: rgba(255,255,255,1.00);
+	
 }
 
 .article-box {
 	width: 364px;
 	float: left;
 	margin-right: 35px;
-	margin-bottom: 20px;
+	margin-bottom: 35px;
+	clear: right;
 }
 
 .pic-article {
