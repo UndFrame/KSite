@@ -123,6 +123,8 @@ header {
 
 .main-corrector {
 	margin-top: 50px;
+	margin-bottom: 50px;
+	display: block;
 }
 
 #id-name {
@@ -192,17 +194,18 @@ iframe {
 	width: 364px;
 	float: left;
 	margin-right: 35px;
+	margin-bottom: 20px;
 }
 
 .pic-article {
 	width: 360px;
 	height: 240px;
+	border-radius: 2px;
 }
 
 footer {
-	position: static;
+	background-color: #606060;
 	clear: both;
-
-
-	
+	margin-top: 38%;
+	height: 90px;
 }
