@@ -69,7 +69,14 @@ public class LikeDislike {
         this.like= !dislike;
     }
 
+    public void clear(){
+        this.like = false;
+        this.dislike = false;
+    }
 
+    public boolean isClear(){
+        return !this.like && !this.dislike;
+    }
 
     @Override
     public String toString() {

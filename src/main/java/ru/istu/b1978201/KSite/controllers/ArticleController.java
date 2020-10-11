@@ -132,21 +132,33 @@ public class ArticleController {
                 likeDislike = new LikeDislike();
                 newLike = true;
             }
-            if (!likeDislike.isDislike()) {
-                likeDislike.setArticle(article);
-                likeDislike.setUser(user);
-                likeDislike.setDislike(true);
 
+            newLike |= likeDislike.isClear();
 
+            likeDislike.setArticle(article);
+            likeDislike.setUser(user);
+
+            System.out.println(likeDislike.isDislike());
+
+            if (likeDislike.isLike()) {
                 article.setDislikes(article.getDislikes() + 1);
-                if(!newLike)
+                likeDislike.setDislike(true);
+                if (!newLike)
                     article.setLikes(article.getLikes() - 1);
-
-                article.getLikeDislikes().add(likeDislike);
-                user.getLikeDislikes().add(likeDislike);
-                likeDislikeDao.save(likeDislike);
-                articleDao.save(article);
+            }else if(!newLike){
+                article.setDislikes(article.getDislikes() - 1);
+                likeDislike.clear();
+            }else{
+                article.setDislikes(article.getDislikes() + 1);
+                likeDislike.setDislike(true);
             }
+
+
+
+            article.getLikeDislikes().add(likeDislike);
+            user.getLikeDislikes().add(likeDislike);
+            likeDislikeDao.save(likeDislike);
+            articleDao.save(article);
             model.addAttribute("comments", article.getComment());
         }
 
@@ -183,27 +195,35 @@ public class ArticleController {
                     likeDislike = dislike;
                 }
             }
-
             boolean newLike = false;
 
             if (likeDislike == null) {
                 likeDislike = new LikeDislike();
                 newLike = true;
             }
-            if (!likeDislike.isLike()) {
-                likeDislike.setArticle(article);
-                likeDislike.setUser(user);
-                likeDislike.setLike(true);
 
+            newLike |= likeDislike.isClear();
 
+            likeDislike.setArticle(article);
+            likeDislike.setUser(user);
+
+            if (likeDislike.isLike()) {
                 article.setLikes(article.getLikes() + 1);
-                if(!newLike)
+                likeDislike.setDislike(true);
+                if (!newLike)
                     article.setDislikes(article.getDislikes() - 1);
-                article.getLikeDislikes().add(likeDislike);
-                user.getLikeDislikes().add(likeDislike);
-                likeDislikeDao.save(likeDislike);
-                articleDao.save(article);
+            }else if(!newLike){
+                article.setLikes(article.getLikes() - 1);
+                likeDislike.clear();
+            }else{
+                article.setLikes(article.getLikes() + 1);
+                likeDislike.setDislike(true);
             }
+
+            article.getLikeDislikes().add(likeDislike);
+            user.getLikeDislikes().add(likeDislike);
+            likeDislikeDao.save(likeDislike);
+            articleDao.save(article);
             model.addAttribute("comments", article.getComment());
         }
 
