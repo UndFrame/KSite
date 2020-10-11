@@ -1,6 +1,5 @@
 body{
-    margin: 0;
-
+	
 }
 header {
     height: 44px;
@@ -119,10 +118,10 @@ header {
 	position: fixed;
 	width: 100%;
 	top: 0px;
+	left: 0px;
 }
 
 .main-corrector {
-	
 	margin-top: 50px;
 }
 
@@ -131,4 +130,79 @@ header {
 	color: rgba(255,255,255,1.00);
 	font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
 	text-align: center;
+}
+
+#new-blog {
+	margin-top: 126px;
+}
+
+#back {
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-image: -webkit-linear-gradient(270deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
+	background-image: -moz-linear-gradient(270deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
+	background-image: -o-linear-gradient(270deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
+	background-image: linear-gradient(180deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
+	border-top-right-radius: 0px;
+}
+
+#News-new {
+	margin-top: 126px;
+	margin-left: 10%;
+}
+
+.title-name {
+	color: rgba(255,255,255,1.00);
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+	font-variant: normal;
+	font-size: x-large;
+	font-weight: bold;
+	margin-bottom: 38px;
+}
+
+iframe {
+	width: 500px;
+	height: 600px;
+}
+
+.aricle {
+	background-color: rgba(255,255,255,1.00);
+	background-repeat: no-repeat;
+	background-size: 27px 36px;
+	background-clip: content-box;
+}
+
+.article-name {
+	color: rgba(255,255,255,1.00);
+	font-weight: 300;
+	font-size: large;
+	font-family: arial;
+	font-variant: small-caps;
+	text-decoration: none;
+	text-align: center;
+	margin-top: 4px;
+}
+
+.hiper-links {
+	text-decoration: none;
+	color: rgba(255,255,255,1.00);
+}
+
+.article-box {
+	width: 364px;
+	float: left;
+	margin-right: 35px;
+}
+
+.pic-article {
+	width: 360px;
+	height: 240px;
+}
+
+footer {
+	position: static;
+	clear: both;
+
+
+	
 }
