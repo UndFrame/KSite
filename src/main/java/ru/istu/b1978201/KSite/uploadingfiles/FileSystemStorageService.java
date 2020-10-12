@@ -1,5 +1,13 @@
 package ru.istu.b1978201.KSite.uploadingfiles;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -9,21 +17,15 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 @Service
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
+    private StorageProperties storageProperties;
 
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
+        this.storageProperties = properties;
         this.rootLocation = Paths.get(properties.getLocation());
 
     }
@@ -91,6 +93,11 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    }
+
+    @Override
+    public StorageProperties getProperties() {
+        return storageProperties;
     }
 
     @Override

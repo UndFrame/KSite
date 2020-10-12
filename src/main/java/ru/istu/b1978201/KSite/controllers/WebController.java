@@ -2,6 +2,7 @@ package ru.istu.b1978201.KSite.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.istu.b1978201.KSite.dao.ArticleDao;
@@ -17,6 +19,7 @@ import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Role;
 import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.services.UserService;
+import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 import ru.istu.b1978201.KSite.utils.CheckedRole;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Controller
+@Configuration
 public class WebController implements WebMvcConfigurer {
 
     @Autowired
@@ -128,6 +132,14 @@ public class WebController implements WebMvcConfigurer {
 
         model.addAttribute("articles", articles);
         return "user";
+    }
+
+    @Autowired
+    private StorageService storageService;
+
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/images/**").addResourceLocations(storageService.getProperties().getLocation());
     }
 
 

@@ -9,9 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.istu.b1978201.KSite.dao.ArticleDao;
 import ru.istu.b1978201.KSite.dao.CommentDao;
 import ru.istu.b1978201.KSite.dao.LikeDislikeDao;
@@ -20,7 +20,6 @@ import ru.istu.b1978201.KSite.mode.Comment;
 import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
-import sun.security.util.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,6 +60,9 @@ public class ArticleController {
 
         Article article = articleDao.findByHash(id);
 
+        //
+        if(article!=null)
+        model.addAttribute("url", "http://localhost:8080/files/"+article.getIcon());
         model.addAttribute("findArticle", article != null);
         model.addAttribute("article", article);
         if (article != null) {
@@ -267,10 +269,10 @@ public class ArticleController {
             value = "/get-file",
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    public @ResponseBody byte[] getFile() throws IOException {
+    public @ResponseBody    byte[] getFile() throws IOException {
         InputStream in = getClass()
-                .getResourceAsStream("/com/baeldung/produceimage/data.txt");
-        return IOUtils.toByteArray(in);
+                .getResourceAsStream(storageService.getProperties().getLocation()+"dfs.jpg");
+        return StreamUtils.copyToByteArray(in);
     }
 
 }

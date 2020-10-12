@@ -62,6 +62,10 @@
             <h2>
                 <div th:text="${article.getDescription()}"></div>
             </h2>
+
+            <Img th:src="${url}" Width="200" Height="150">
+
+
             <div th:utext="${article.getText()}"></div>
 
             <div>
