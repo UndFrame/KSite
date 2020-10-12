@@ -50,32 +50,39 @@
 </header>
 
 <div th:if="${auth}">
-<form th:action="@{/editor}" method="post">
+    <form th:action="@{/editor}" enctype="multipart/form-data" method="post">
 
-    <div>Описание</div>
-    <label>
-        <input type="text" name="description"/>
-    </label>
-    <div>Статья</div>
-    <label>
-        <textarea name="text"></textarea>
-    </label>
+        <div>Описание</div>
+        <label>
+            <input type="text" name="description"/>
+        </label>
+        <div>Статья</div>
+        <label>
+            <textarea name="text"></textarea>
+        </label>
+        <div>
+            Иконка
+            <div>
+                <input type="file" name="file"/>
+            </div>
+        </div>
 
-    <input type="submit" value="Отправить" id="editor" class="btn btn-primary submit"/>
 
-</form>
+        <input type="submit" value="Отправить" id="editor"/>
 
-<div>Статьи:</div>
+    </form>
 
-<ul>
-    <th:block th:each="article : ${articles}" class="article">
-        <li><a th:utext="${article.getDescription()}" th:href="@{'/article?id=' + ${article.getHash()}}"></a></li>
-    </th:block>
-</ul>
+    <div>Статьи:</div>
+
+    <ul>
+        <th:block th:each="article : ${articles}" class="article">
+            <li><a th:utext="${article.getDescription()}" th:href="@{'/article?id=' + ${article.getHash()}}"></a></li>
+        </th:block>
+    </ul>
 
 </div>
 
-<div><a href="/article" >Статьи</a></div>
+<div><a href="/article">Статьи</a></div>
 
 </body>
 </html>

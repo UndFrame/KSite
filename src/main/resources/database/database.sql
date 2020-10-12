@@ -62,16 +62,18 @@ CREATE TABLE ksite.like_dislike
 CREATE TABLE ksite.articles
 (
 
-  id          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  description TEXT         NOT NULL,
-  user_id     INT          NOT NULL,
-  text        TEXT         NOT NULL,
-  hash        VARCHAR(255) NOT NULL UNIQUE,
-  likes       INT,
-  dislikes    INT
-    COLLATE utf8mb4_unicode_ci,
-  FOREIGN KEY (user_id) REFERENCES ksite.users (id)
+    id          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    description TEXT         NOT NULL,
+    icon TEXT         NOT NULL,
+    user_id     INT          NOT NULL,
+    text        TEXT         NOT NULL,
+    hash        VARCHAR(255) NOT NULL UNIQUE,
+    likes       INT,
+    dislikes    INT
+        COLLATE utf8mb4_unicode_ci,
+    FOREIGN KEY (user_id) REFERENCES ksite.users (id)
 );
+
 
 CREATE TABLE ksite.comments
 (

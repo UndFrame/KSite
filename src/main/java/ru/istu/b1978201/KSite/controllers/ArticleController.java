@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.istu.b1978201.KSite.dao.ArticleDao;
 import ru.istu.b1978201.KSite.dao.CommentDao;
 import ru.istu.b1978201.KSite.dao.LikeDislikeDao;
@@ -18,7 +19,11 @@ import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Comment;
 import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
+import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
+import sun.security.util.IOUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 @Controller
@@ -32,6 +37,10 @@ public class ArticleController {
 
     @Autowired
     private LikeDislikeDao likeDislikeDao;
+
+    @Autowired
+    private StorageService storageService;
+
 
     @GetMapping("article")
     public String getArticle(@ModelAttribute("id") String id, Model model) {
@@ -139,7 +148,7 @@ public class ArticleController {
 
 
                 article.setDislikes(article.getDislikes() + 1);
-                if(!newLike)
+                if (!newLike)
                     article.setLikes(article.getLikes() - 1);
 
                 article.getLikeDislikes().add(likeDislike);
@@ -197,7 +206,7 @@ public class ArticleController {
 
 
                 article.setLikes(article.getLikes() + 1);
-                if(!newLike)
+                if (!newLike)
                     article.setDislikes(article.getDislikes() - 1);
                 article.getLikeDislikes().add(likeDislike);
                 user.getLikeDislikes().add(likeDislike);
@@ -225,14 +234,16 @@ public class ArticleController {
     }
 
 
-    @PostMapping("editor")
-    public String getEditor(@ModelAttribute("description") String description, @ModelAttribute("text") String text, Model model) {
-
+    @PostMapping("/editor")
+    public String handleFileUpload(@ModelAttribute("description") String description,
+                                   @ModelAttribute("text") String text,
+                                   @RequestParam("file") MultipartFile file,
+                                   Model redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
-        model.addAttribute("auth", user != null);
-        model.addAttribute("user", user);
+        redirectAttributes.addAttribute("auth", user != null);
+        redirectAttributes.addAttribute("user", user);
 
         if (user != null) {
             Article article = new Article();
@@ -240,13 +251,26 @@ public class ArticleController {
             article.setDescription(description);
             article.setHash(UUID.randomUUID().toString());
             article.setUser(user);
+            article.setIcon(file.getOriginalFilename());
             articleDao.save(article);
+            storageService.store(file);
+
         }
 
         Page<Article> all = articleDao.findAll(PageRequest.of(0, 4, Sort.by(Sort.Order.desc("id"))));
-        model.addAttribute("articles", all);
+        redirectAttributes.addAttribute("articles", all);
 
         return "editor";
+    }
+
+    @GetMapping(
+            value = "/get-file",
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public @ResponseBody byte[] getFile() throws IOException {
+        InputStream in = getClass()
+                .getResourceAsStream("/com/baeldung/produceimage/data.txt");
+        return IOUtils.toByteArray(in);
     }
 
 }

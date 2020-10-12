@@ -21,6 +21,8 @@ public class Article {
     private int likes;
     @Column(name = "dislikes")
     private int dislikes;
+    @Column(name = "icon")
+    private String icon;
 
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
@@ -97,13 +99,7 @@ public class Article {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                '}';
-    }
+
 
     public int getLikes() {
         return likes;
@@ -119,6 +115,27 @@ public class Article {
 
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", description='" + description + '\'' +
+                ", hash='" + hash + '\'' +
+                ", likes=" + likes +
+                ", dislikes=" + dislikes +
+                ", icon='" + icon + '\'' +
+                '}';
     }
 
     @Override
