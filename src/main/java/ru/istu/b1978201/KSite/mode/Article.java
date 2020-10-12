@@ -24,6 +24,9 @@ public class Article {
     @Column(name = "icon")
     private String icon;
 
+    @Column(name = "data_create")
+    private Date dateCreate;
+
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     private Collection<Comment> comment;
@@ -99,8 +102,6 @@ public class Article {
         this.user = user;
     }
 
-
-
     public int getLikes() {
         return likes;
     }
@@ -123,6 +124,14 @@ public class Article {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
     }
 
     @Override

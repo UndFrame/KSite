@@ -11,5 +11,6 @@ public interface ArticleDao extends JpaRepository<Article, Long> {
 
     Article findByHash(String hash);
     List<Article> findAllByUserId(long id);
+    void deleteById(long ld);
 
 }

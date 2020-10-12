@@ -8,4 +8,7 @@ import ru.istu.b1978201.KSite.mode.User;
 
 @Component
 public interface LikeDislikeDao extends JpaRepository<LikeDislike, Long> {
+
+    void deleteByArticleId(long id);
+
 }

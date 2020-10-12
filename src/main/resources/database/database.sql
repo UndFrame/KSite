@@ -6,8 +6,6 @@ DROP TABLE ksite.users;
 DROP TABLE ksite.tokens;
 DROP TABLE ksite.roles;
 
-
-
 CREATE TABLE ksite.tokens
 (
   id    INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -15,8 +13,6 @@ CREATE TABLE ksite.tokens
   date  TIMESTAMP
     COLLATE utf8mb4_unicode_ci
 );
-
-
 
 CREATE TABLE ksite.users
 (
@@ -69,11 +65,11 @@ CREATE TABLE ksite.articles
     text        TEXT         NOT NULL,
     hash        VARCHAR(255) NOT NULL UNIQUE,
     likes       INT,
-    dislikes    INT
+    dislikes    INT,
+    data_create  TIMESTAMP
         COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (user_id) REFERENCES ksite.users (id)
 );
-
 
 CREATE TABLE ksite.comments
 (
@@ -84,13 +80,9 @@ CREATE TABLE ksite.comments
     COLLATE utf8mb4_unicode_ci,
   FOREIGN KEY (article_id) REFERENCES ksite.articles (id),
   FOREIGN KEY (user_id) REFERENCES ksite.users (id)
-
-
 );
 
 CREATE UNIQUE INDEX article_index ON ksite.articles (hash);
-
-
 
 INSERT INTO ksite.roles(role)
 VALUES ('USER');

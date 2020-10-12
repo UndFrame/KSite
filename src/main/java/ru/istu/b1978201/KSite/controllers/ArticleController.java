@@ -23,6 +23,7 @@ import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.UUID;
 
 @Controller
@@ -59,10 +60,10 @@ public class ArticleController {
         }
 
         Article article = articleDao.findByHash(id);
-
-        //
-        if(article!=null)
-        model.addAttribute("url", "http://localhost:8080/files/"+article.getIcon());
+        if (article != null) {
+            model.addAttribute("url", "http://localhost:8080/files/" + article.getIcon());
+            model.addAttribute("timeCreate", article.getDateCreate().toString());
+        }
         model.addAttribute("findArticle", article != null);
         model.addAttribute("article", article);
         if (article != null) {
@@ -70,6 +71,21 @@ public class ArticleController {
         }
 
         return "article";
+    }
+
+    @PostMapping(value = "article", params = "delete")
+    public String deleteArticle(@ModelAttribute("id") String id, Model model) {
+        Article article = articleDao.findByHash(id);
+
+        if (article != null) {
+            commentDao.deleteAll(article.getComment());
+          //  likeDislikeDao.deleteByArticleId(article.getId());
+            article.getComment().clear();
+
+            articleDao.delete(article);
+        }
+
+        return "redirect:/article";
     }
 
     @PostMapping(value = "article", params = "editor")
@@ -254,9 +270,10 @@ public class ArticleController {
             article.setHash(UUID.randomUUID().toString());
             article.setUser(user);
             article.setIcon(file.getOriginalFilename());
+            article.setDateCreate(new Date());
+
             articleDao.save(article);
             storageService.store(file);
-
         }
 
         Page<Article> all = articleDao.findAll(PageRequest.of(0, 4, Sort.by(Sort.Order.desc("id"))));
@@ -269,9 +286,10 @@ public class ArticleController {
             value = "/get-file",
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    public @ResponseBody    byte[] getFile() throws IOException {
+    public @ResponseBody
+    byte[] getFile() throws IOException {
         InputStream in = getClass()
-                .getResourceAsStream(storageService.getProperties().getLocation()+"dfs.jpg");
+                .getResourceAsStream(storageService.getProperties().getLocation() + "dfs.jpg");
         return StreamUtils.copyToByteArray(in);
     }
 
