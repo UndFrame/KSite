@@ -1,6 +1,5 @@
 body{
-    margin: 0;
-
+	
 }
 header {
     height: 44px;
@@ -9,14 +8,18 @@ header {
 }
 
 .header-home-item {
-    margin-top: 8px;
-    margin-left: 10px;
+	margin-left: 13px;
+	height: 0px;
+	width: 0px;
 }
 
 .home-img {
-    width: 28px;
-    height: 28px;
-    position: fixed;
+	width: 28px;
+	height: 28px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-right: 7px;
+	padding-left: 7px;
 }
 
 .div-move {
@@ -32,13 +35,13 @@ header {
 }
 
 .login-item-box {
-    margin-right: 5px;
-    float: right;
+	float: right;
 }
 
 .login-item-box-left {
-    margin-left: 60px;
-    float: left;
+	margin-left: 60px;
+	float: left;
+	clear: left;
 }
 
 
@@ -49,30 +52,164 @@ header {
 }
 
 .login-item-login {
-    width: 60px;
-    height: 20px;
-    top: 10%;
-    text-align: center;
-    margin: 5px;
+	width: 55px;
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	height: 30px;
+	border-right: thin solid rgba(166,166,166,1.00);
+	border-left: thin solid rgba(166,166,166,1.00);
+	padding-right: 0px;
+	color: rgba(255,255,255,1.00);
+	font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
 }
 
 .item-site-name {
-    width: auto;
-    height: 20px;
-    top: 10%;
-    text-align: center;
-    margin: 5px;
+	width: auto;
+	text-align: center;
+	margin-top: 5px;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	font-family: sans-serif;
+	color: #FFFFFF;
+	font-size: large;
+	font-weight: bolder;
+	font-variant: small-caps;
+	padding-top: 8px;
+	height: 25px;
+	top: 7px;
 }
 
 .login-item-reg {
-    width: 90px;
-    height: 20px;
-    top: 10%;
-    text-align: center;
-    margin: 5px;
+	width: 55px;
+	height: 30px;
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-left: 0px;
 }
 
 .color-mouse:hover {
-    background-color: #505050;
-    border-radius: 5px;
+	background-color: #505050;
+	border-radius: 4px;
+}
+
+.Picsize {
+	width: 45px;
+	height: 30px;
+	top: 0px;
+	text-decoration: none;
+}
+
+.login-item-reg-plus {
+	width: 10em;
+	height: 32px;
+	text-align: center;
+	margin-top: 7px;
+	color: rgba(255,255,255,1.00);
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", Verdana, sans-serif;
+	font-variant: small-caps;
+	font-weight: normal;
+	font-size: 17px;
+}
+
+
+.header-box {
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+}
+
+.main-corrector {
+	margin-top: 40px;
+}
+
+#id-name {
+	text-decoration: none;
+	color: rgba(255,255,255,1.00);
+	font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
+	text-align: center;
+}
+
+#new-blog {
+	margin-top: 126px;
+}
+
+#back {
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-image: -webkit-linear-gradient(270deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
+	background-image: -moz-linear-gradient(270deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
+	background-image: -o-linear-gradient(270deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
+	background-image: linear-gradient(180deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
+	border-top-right-radius: 0px;
+}
+
+#News-new {
+	margin-top: 70px;
+	float: left;
+	padding-left: 10%;
+}
+
+.title-name {
+	color: rgba(255,255,255,1.00);
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+	font-variant: normal;
+	font-size: x-large;
+	font-weight: bold;
+	margin-bottom: 38px;
+}
+
+iframe {
+	width: 500px;
+	height: 600px;
+}
+
+.aricle {
+	background-color: rgba(255,255,255,1.00);
+	background-repeat: no-repeat;
+	background-size: 27px 36px;
+	background-clip: content-box;
+}
+
+.article-name {
+	color: rgba(255,255,255,1.00);
+	font-weight: 300;
+	font-size: large;
+	font-family: arial;
+	font-variant: small-caps;
+	text-decoration: none;
+	text-align: center;
+	margin-top: 4px;
+}
+
+.hiper-links {
+	text-decoration: none;
+	color: rgba(255,255,255,1.00);
+	
+}
+
+.article-box {
+	width: 364px;
+	margin-right: 35px;
+	margin-bottom: 35px;
+	height: 320px;
+	float: left;
+	clear: none;
+}
+
+.pic-article {
+	width: 360px;
+	height: 240px;
+	border-radius: 2px;
+}
+
+footer {
+	background-color: #606060;
+	height: 81px;
+	width: 100%;
+	clear: both;
+	background-size: 100% 100%;
 }
