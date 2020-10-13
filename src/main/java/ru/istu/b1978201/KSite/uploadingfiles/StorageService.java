@@ -20,6 +20,5 @@ public interface StorageService {
 
     void deleteAll();
 
-    StorageProperties getProperties();
 
 }
