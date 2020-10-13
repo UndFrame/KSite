@@ -52,10 +52,8 @@ public class ArticleController {
         model.addAttribute("user", user);
 
         if (id.isEmpty()) {
-
             Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
             model.addAttribute("articles", all);
-
             return "articlelist";
         }
 
@@ -79,9 +77,7 @@ public class ArticleController {
 
         if (article != null) {
             commentDao.deleteAll(article.getComment());
-          //  likeDislikeDao.deleteByArticleId(article.getId());
-            article.getComment().clear();
-
+            likeDislikeDao.deleteAll(article.getLikeDislikes());
             articleDao.delete(article);
         }
 

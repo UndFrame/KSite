@@ -8,7 +8,7 @@ public class StorageProperties {
     /**
      * Folder location for storing files
      */
-    private String location = "C:/Users/undfr/UndFrame/1/filed";
+    private String location = "/home/undframe/icons";
 
     public String getLocation() {
         return location;

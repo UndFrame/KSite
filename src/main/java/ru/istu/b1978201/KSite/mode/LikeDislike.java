@@ -10,8 +10,8 @@ public class LikeDislike {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "article_id")
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "article")
     private Article article;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
