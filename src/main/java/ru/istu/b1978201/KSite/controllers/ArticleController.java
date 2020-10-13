@@ -43,7 +43,7 @@ public class ArticleController {
 
 
     @GetMapping("article")
-    public String getArticle(Model model) {
+    public String getArticle(@ModelAttribute("id") String id, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -51,20 +51,11 @@ public class ArticleController {
         model.addAttribute("auth", user != null);
         model.addAttribute("user", user);
 
-        Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
-        model.addAttribute("articles", all);
-        return "articlelist";
-
-    }
-
-    @GetMapping("/article/{id:.+}")
-    public String serveFile(@PathVariable String id, Model model) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
-        model.addAttribute("auth", user != null);
-        model.addAttribute("user", user);
+        if (id.isEmpty()) {
+            Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
+            model.addAttribute("articles", all);
+            return "articlelist";
+        }
 
         Article article = articleDao.findByHash(id);
         if (article != null) {
@@ -79,7 +70,6 @@ public class ArticleController {
 
         return "article";
     }
-
 
     @PostMapping(value = "article", params = "delete")
     public String deleteArticle(@ModelAttribute("id") String id, Model model) {
