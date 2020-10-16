@@ -7,13 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.istu.b1978201.KSite.dao.ArticleDao;
@@ -25,8 +23,6 @@ import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
@@ -72,7 +68,7 @@ public class ArticleController {
 
         Article article = articleDao.findByHash(id);
         if (article != null) {
-            model.addAttribute("url", "http://localhost:8080/files/" + article.getIcon());
+            model.addAttribute("url", article.getIconUrl());
             model.addAttribute("timeCreate", article.getDateCreate().toString());
         }
         model.addAttribute("findArticle", article != null);

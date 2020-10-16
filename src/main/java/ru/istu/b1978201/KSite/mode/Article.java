@@ -75,13 +75,13 @@ public class Article {
     }
 
     public Collection<Comment> getComment() {
-        if(comment==null)
+        if (comment == null)
             setComment(new ArrayList<>());
         return comment;
     }
 
     public Collection<LikeDislike> getLikeDislikes() {
-        if(likeDislikes==null)
+        if (likeDislikes == null)
             setLikeDislikes(new ArrayList<>());
         return likeDislikes;
     }
@@ -132,6 +132,10 @@ public class Article {
 
     public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
+    }
+
+    public String getIconUrl() {
+        return "http://localhost:8080/files/" + this.getIcon();
     }
 
     @Override

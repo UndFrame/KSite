@@ -4,6 +4,9 @@ package ru.istu.b1978201.KSite.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -56,6 +59,10 @@ public class WebController implements WebMvcConfigurer {
         User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
         model.addAttribute("auth", user != null);
         model.addAttribute("user", user);
+
+        Page<Article> all = articleDao.findAll(PageRequest.of(0, 8, Sort.by(Sort.Order.desc("id"))));
+        model.addAttribute("articles", all);
+
 
 
         return "index";
