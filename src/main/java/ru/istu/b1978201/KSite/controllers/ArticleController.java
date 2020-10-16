@@ -1,10 +1,14 @@
 package ru.istu.b1978201.KSite.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -287,15 +291,18 @@ public class ArticleController {
         return "editor";
     }
 
-    @GetMapping(
-            value = "/get-file",
-            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
-    )
-    public @ResponseBody
-    byte[] getFile() throws IOException {
-        InputStream in = getClass()
-                .getResourceAsStream(storageService.getProperties().getLocation() + "dfs.jpg");
-        return StreamUtils.copyToByteArray(in);
+
+    @Value("${FILE_SOURCE}")
+    private String location;
+
+
+    @GetMapping("/files/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+
+        Resource file = storageService.loadAsResource(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
 }

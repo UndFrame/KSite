@@ -1,6 +1,7 @@
 package ru.istu.b1978201.KSite.uploadingfiles;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,14 @@ import java.util.stream.Stream;
 @Service
 public class FileSystemStorageService implements StorageService {
 
+    @Value("${FILE_SOURCE}")
+    private String location = "";
+
     private final Path rootLocation;
-    private StorageProperties storageProperties;
 
     @Autowired
-    public FileSystemStorageService(StorageProperties properties) {
-        this.storageProperties = properties;
-        this.rootLocation = Paths.get(properties.getLocation());
+    public FileSystemStorageService() {
+        this.rootLocation = Paths.get(location);
 
     }
 
@@ -93,11 +95,6 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
-    }
-
-    @Override
-    public StorageProperties getProperties() {
-        return storageProperties;
     }
 
     @Override

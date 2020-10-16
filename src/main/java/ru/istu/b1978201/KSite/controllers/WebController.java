@@ -2,6 +2,7 @@ package ru.istu.b1978201.KSite.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -137,9 +138,12 @@ public class WebController implements WebMvcConfigurer {
     @Autowired
     private StorageService storageService;
 
+    @Value("${FILE_SOURCE}")
+    private String location;
+
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**").addResourceLocations(storageService.getProperties().getLocation());
+        registry.addResourceHandler("/images/**").addResourceLocations(location);
     }
 
 

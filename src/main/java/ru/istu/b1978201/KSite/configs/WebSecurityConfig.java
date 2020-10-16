@@ -1,6 +1,7 @@
 package ru.istu.b1978201.KSite.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -18,7 +19,6 @@ import ru.istu.b1978201.KSite.authentication.CustomWebAuthenticationDetailsSourc
 import ru.istu.b1978201.KSite.exceptions.CaptchaError;
 import ru.istu.b1978201.KSite.exceptions.UserIsBanned;
 import ru.istu.b1978201.KSite.uploadingfiles.FileSystemStorageService;
-import ru.istu.b1978201.KSite.uploadingfiles.StorageProperties;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
 @Configuration
@@ -76,10 +76,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomWebAuthenticationDetailsSource();
     }
 
-
     @Bean
     public StorageService storageService() {
-        return new FileSystemStorageService(new StorageProperties());
+        return new FileSystemStorageService();
     }
 
     @Bean(name = "sessionRegistry")
