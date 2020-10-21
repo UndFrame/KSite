@@ -17,8 +17,7 @@
 
 <header class="header-box">
     <div class="header-home-item">
-
-        <a title="home" href="index.html"><img  src="images/home.png" alt="" class="home-img"></a>
+        <a title="home" href="../"><img src="img/home.png" alt="" class="home-img"></a>
     </div>
     <div class="login-item-box-left ">
         <div class="item-site-name"> Overcoming difficulties</div>
@@ -26,12 +25,12 @@
     <div th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/login"><img class="Picsize" src="images/user-check.svg" alt=""/></a>
+                <a href="/login"><img class="Picsize" src="img/user-check.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
             <div class="login-item-reg">
-                <a href="/reg"><img class="Picsize" src="images/user-plus.svg" alt=""/></a>
+                <a href="/reg"><img class="Picsize" src="img/user-plus.svg" alt=""/></a>
             </div>
         </div>
     </div>
@@ -39,7 +38,7 @@
     <div th:if="${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/logout"><img class="Picsize" src="images/user-times.svg" alt=""/></a>
+                <a href="/logout"><img class="Picsize" src="img/user-times.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
@@ -50,7 +49,7 @@
     </div>
 
 </header>
-	
+
 <main class="main-corrector">
 	<!--Сами новые блоки со статьями-->
     <section id="News-new">
