@@ -21,6 +21,7 @@ import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Comment;
 import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
+import ru.istu.b1978201.KSite.services.UserServiceImpl;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
 import java.util.Date;
@@ -40,6 +41,9 @@ public class ArticleController {
 
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private UserServiceImpl userService;
 
 
     @GetMapping("article")
@@ -153,6 +157,8 @@ public class ArticleController {
         if (article != null && user != null) {
             LikeDislike likeDislike = null;
 
+            userService.refreshUserLikeDislike(user);
+
             for (LikeDislike dislike : user.getLikeDislikes()) {
                 if (dislike.getArticle().equals(article)) {
                     likeDislike = dislike;
@@ -209,6 +215,8 @@ public class ArticleController {
 
         if (article != null && user != null) {
             LikeDislike likeDislike = null;
+
+            userService.refreshUserLikeDislike(user);
 
             for (LikeDislike dislike : user.getLikeDislikes()) {
                 if (dislike.getArticle().equals(article)) {
