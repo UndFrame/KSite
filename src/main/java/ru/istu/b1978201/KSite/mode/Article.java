@@ -1,5 +1,8 @@
 package ru.istu.b1978201.KSite.mode;
 
+import org.springframework.beans.factory.annotation.Value;
+import ru.istu.b1978201.KSite.configs.ApplicationProperties;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -37,7 +40,6 @@ public class Article {
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     private Collection<LikeDislike> likeDislikes;
-
 
     public Article() {
     }
@@ -135,7 +137,7 @@ public class Article {
     }
 
     public String getIconUrl() {
-        return "http://localhost:8081/files/" + this.getIcon();
+        return ApplicationProperties.IMAGE_IP +"/files/" + this.getIcon();
     }
 
     @Override
