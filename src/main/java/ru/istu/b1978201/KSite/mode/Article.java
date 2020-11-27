@@ -40,7 +40,7 @@ public class Article {
 
 
     public Article() {
-    }
+    }  
 
     public Long getId() {
         return id;
