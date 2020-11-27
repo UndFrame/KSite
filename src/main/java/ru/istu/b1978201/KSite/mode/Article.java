@@ -135,7 +135,7 @@ public class Article {
     }
 
     public String getIconUrl() {
-        return "http://localhost:8081/files/" + this.getIcon();
+        return "http://87.250.0.132:8081/files/" + this.getIcon();
     }
 
     @Override
