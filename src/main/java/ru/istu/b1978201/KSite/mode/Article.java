@@ -40,7 +40,7 @@ public class Article {
 
 
     public Article() {
-    }  
+    }
 
     public Long getId() {
         return id;
@@ -135,7 +135,7 @@ public class Article {
     }
 
     public String getIconUrl() {
-        return "http://87.250.0.132:8081/files/" + this.getIcon();
+        return ApplicationProperties.IMAGE_IP +"/files/" + this.getIcon();
     }
 
     @Override

@@ -5,7 +5,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <title>KSite</title>
 
-
     <link href="css/header.css" rel="stylesheet" type="text/css">
 <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
 <script>var __adobewebfontsappname__="dreamweaver"</script>
@@ -17,8 +16,7 @@
 
 <header class="header-box">
     <div class="header-home-item">
-
-        <a title="home" href="index.html"><img  src="images/home.png" alt="" class="home-img"></a>
+        <a title="home" href="/index.html"><img  src="img/home.png" alt="" class="home-img"></a>
     </div>
     <div class="login-item-box-left ">
         <div class="item-site-name"> Overcoming difficulties</div>
@@ -26,12 +24,12 @@
     <div th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/login"><img class="Picsize" src="images/user-check.svg" alt=""/></a>
+                <a href="/login"><img class="Picsize" src="img/user-check.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
             <div class="login-item-reg">
-                <a href="/reg"><img class="Picsize" src="images/user-plus.svg" alt=""/></a>
+                <a href="/reg"><img class="Picsize" src="img/user-plus.svg" alt=""/></a>
             </div>
         </div>
     </div>
@@ -39,7 +37,7 @@
     <div th:if="${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/logout"><img class="Picsize" src="images/user-times.svg" alt=""/></a>
+                <a href="/logout"><img class="Picsize" src="img/user-times.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
@@ -52,7 +50,6 @@
 </header>
 	
 <main class="main-corrector">
-	<!--Сами новые блоки со статьями-->
     <section id="News-new">
         <div class="title-name">Новые статьи</div>
 
@@ -76,7 +73,6 @@
 
     </section>
 </main>
-	<!--	Нижняя шапка-->
 
 </body>
 </html>

@@ -12,4 +12,5 @@ public interface UserService {
     boolean createUser(User user);
 
     boolean activateUser(String token);
+    void refreshUserLikeDislike(User user);
 }

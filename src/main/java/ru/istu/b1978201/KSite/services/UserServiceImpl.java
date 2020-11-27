@@ -91,4 +91,10 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
+    public void refreshUserLikeDislike(User user) {
+         userDao.findById(user.getId()).ifPresent(newUser -> user.setLikeDislikes(newUser.getLikeDislikes()));
+
+    }
+
 }

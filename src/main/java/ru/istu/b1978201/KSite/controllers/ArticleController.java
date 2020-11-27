@@ -21,6 +21,7 @@ import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Comment;
 import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
+import ru.istu.b1978201.KSite.services.UserServiceImpl;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
 import java.util.Date;
@@ -40,6 +41,9 @@ public class ArticleController {
 
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private UserServiceImpl userService;
 
 
     @GetMapping("article")
@@ -153,6 +157,8 @@ public class ArticleController {
         if (article != null && user != null) {
             LikeDislike likeDislike = null;
 
+            userService.refreshUserLikeDislike(user);
+
             for (LikeDislike dislike : user.getLikeDislikes()) {
                 if (dislike.getArticle().equals(article)) {
                     likeDislike = dislike;
@@ -164,21 +170,29 @@ public class ArticleController {
                 likeDislike = new LikeDislike();
                 newLike = true;
             }
-            if (!likeDislike.isDislike()) {
-                likeDislike.setArticle(article);
-                likeDislike.setUser(user);
-                likeDislike.setDislike(true);
 
+            newLike |= likeDislike.isClear();
 
+            likeDislike.setArticle(article);
+            likeDislike.setUser(user);
+            if (likeDislike.isLike()) {
                 article.setDislikes(article.getDislikes() + 1);
                 if (!newLike)
                     article.setLikes(article.getLikes() - 1);
-
-                article.getLikeDislikes().add(likeDislike);
-                user.getLikeDislikes().add(likeDislike);
-                likeDislikeDao.save(likeDislike);
-                articleDao.save(article);
+            }else if(!newLike){
+                article.setDislikes(article.getDislikes() - 1);
+                likeDislike.clear();
+            }else{
+                article.setDislikes(article.getDislikes() + 1);
+                likeDislike.setDislike(true);
             }
+
+
+
+            article.getLikeDislikes().add(likeDislike);
+            user.getLikeDislikes().add(likeDislike);
+            likeDislikeDao.save(likeDislike);
+            articleDao.save(article);
             model.addAttribute("comments", article.getComment());
         }
 
@@ -210,32 +224,41 @@ public class ArticleController {
         if (article != null && user != null) {
             LikeDislike likeDislike = null;
 
+            userService.refreshUserLikeDislike(user);
+
             for (LikeDislike dislike : user.getLikeDislikes()) {
                 if (dislike.getArticle().equals(article)) {
                     likeDislike = dislike;
                 }
             }
-
             boolean newLike = false;
 
             if (likeDislike == null) {
                 likeDislike = new LikeDislike();
                 newLike = true;
             }
-            if (!likeDislike.isLike()) {
-                likeDislike.setArticle(article);
-                likeDislike.setUser(user);
-                likeDislike.setLike(true);
 
+            newLike |= likeDislike.isClear();
 
+            likeDislike.setArticle(article);
+            likeDislike.setUser(user);
+
+            if (likeDislike.isLike()) {
                 article.setLikes(article.getLikes() + 1);
                 if (!newLike)
                     article.setDislikes(article.getDislikes() - 1);
-                article.getLikeDislikes().add(likeDislike);
-                user.getLikeDislikes().add(likeDislike);
-                likeDislikeDao.save(likeDislike);
-                articleDao.save(article);
+            }else if(!newLike){
+                article.setLikes(article.getLikes() - 1);
+                likeDislike.clear();
+            }else{
+                article.setLikes(article.getLikes() + 1);
+                likeDislike.setDislike(true);
             }
+
+            article.getLikeDislikes().add(likeDislike);
+            user.getLikeDislikes().add(likeDislike);
+            likeDislikeDao.save(likeDislike);
+            articleDao.save(article);
             model.addAttribute("comments", article.getComment());
         }
 
