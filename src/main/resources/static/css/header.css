@@ -39,8 +39,9 @@ header {
 }
 
 .login-item-box-left {
-    margin-left: 60px;
-    float: left;
+	margin-left: 60px;
+	float: left;
+	clear: left;
 }
 
 
@@ -122,9 +123,7 @@ header {
 }
 
 .main-corrector {
-	margin-top: 50px;
-	margin-bottom: 50px;
-	display: block;
+	margin-top: 40px;
 }
 
 #id-name {
@@ -149,8 +148,9 @@ header {
 }
 
 #News-new {
-	margin-top: 126px;
-	margin-left: 10%;
+	margin-top: 70px;
+	float: left;
+	padding-left: 10%;
 }
 
 .title-name {
@@ -188,13 +188,16 @@ iframe {
 .hiper-links {
 	text-decoration: none;
 	color: rgba(255,255,255,1.00);
+	
 }
 
 .article-box {
 	width: 364px;
-	float: left;
 	margin-right: 35px;
-	margin-bottom: 20px;
+	margin-bottom: 35px;
+	height: 320px;
+	float: left;
+	clear: none;
 }
 
 .pic-article {
@@ -205,7 +208,8 @@ iframe {
 
 footer {
 	background-color: #606060;
+	height: 81px;
+	width: 100%;
 	clear: both;
-	margin-top: 38%;
-	height: 90px;
+	background-size: 100% 100%;
 }

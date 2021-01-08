@@ -8,4 +8,7 @@ import ru.istu.b1978201.KSite.mode.User;
 
 @Component
 public interface CommentDao extends JpaRepository<Comment, Long> {
+
+    void deleteByArticleId(long id);
+
 }

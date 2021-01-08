@@ -1,6 +1,7 @@
 package ru.istu.b1978201.KSite.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -17,6 +18,8 @@ import ru.istu.b1978201.KSite.authentication.CustomAuthenticationFailureHandler;
 import ru.istu.b1978201.KSite.authentication.CustomWebAuthenticationDetailsSource;
 import ru.istu.b1978201.KSite.exceptions.CaptchaError;
 import ru.istu.b1978201.KSite.exceptions.UserIsBanned;
+import ru.istu.b1978201.KSite.uploadingfiles.FileSystemStorageService;
+import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
 @Configuration
 @EnableWebSecurity
@@ -30,10 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/","/fload").permitAll()
                 .antMatchers("/login", "/reg", "/activate", "/tokenInfo", "/activate").anonymous()
                 .antMatchers("/account","/editor").authenticated()
                 .antMatchers("/form").hasAnyRole("ADMIN")
+                .antMatchers("/*").permitAll()
                 .and()
                 .httpBasic(httpSecurityHttpBasicConfigurer -> {
 
@@ -71,6 +75,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CustomWebAuthenticationDetailsSource customAuthenticationFailureHandler() {
         return new CustomWebAuthenticationDetailsSource();
     }
+
+    @Bean
+    public StorageService storageService() {
+        return new FileSystemStorageService();
+    }
+
     @Bean(name = "sessionRegistry")
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();

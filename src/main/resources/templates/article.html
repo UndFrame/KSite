@@ -62,7 +62,16 @@
             <h2>
                 <div th:text="${article.getDescription()}"></div>
             </h2>
+
+            <Img th:src="${url}" Width="200" Height="150">
+
+
             <div th:utext="${article.getText()}"></div>
+
+            <div>
+                Время создания
+                <div th:text="${timeCreate}"></div>
+            </div>
 
             <div>
                 <div th:utext="'Лайки ' + ${article.getLikes()}"></div>
@@ -93,6 +102,7 @@
                     <input type="submit" value="Отправить" id="editor" name="editor" class="btn btn-primary submit"/>
                     <input type="submit" value="Лайк" id="like" name="like" class="btn btn-primary submit"/>
                     <input type="submit" value="Дизлайк" id="dislike" name="dislike" class="btn btn-primary submit"/>
+                    <input type="submit" value="Удалить" id="delete" name="delete" class="btn btn-primary submit"/>
 
                 </form>
             </div>

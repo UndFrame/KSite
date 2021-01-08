@@ -21,6 +21,11 @@ public class Article {
     private int likes;
     @Column(name = "dislikes")
     private int dislikes;
+    @Column(name = "icon")
+    private String icon;
+
+    @Column(name = "data_create")
+    private Date dateCreate;
 
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
@@ -70,13 +75,13 @@ public class Article {
     }
 
     public Collection<Comment> getComment() {
-        if(comment==null)
+        if (comment == null)
             setComment(new ArrayList<>());
         return comment;
     }
 
     public Collection<LikeDislike> getLikeDislikes() {
-        if(likeDislikes==null)
+        if (likeDislikes == null)
             setLikeDislikes(new ArrayList<>());
         return likeDislikes;
     }
@@ -97,14 +102,6 @@ public class Article {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                '}';
-    }
-
     public int getLikes() {
         return likes;
     }
@@ -119,6 +116,39 @@ public class Article {
 
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public String getIconUrl() {
+        return "http://localhost:8080/files/" + this.getIcon();
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", description='" + description + '\'' +
+                ", hash='" + hash + '\'' +
+                ", likes=" + likes +
+                ", dislikes=" + dislikes +
+                ", icon='" + icon + '\'' +
+                '}';
     }
 
     @Override
