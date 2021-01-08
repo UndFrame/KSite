@@ -34,6 +34,31 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MailService mailService;
 
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setTokenDao(TokenDao tokenDao) {
+        this.tokenDao = tokenDao;
+    }
+
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
+
+    public void setRoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
+
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
+
     @Override
     public void save(User user) {
         userDao.save(user);
@@ -58,7 +83,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
-        roles.add(roleDao.getOne(1L));
+        roleDao.findById(1L).ifPresent(roles::add);
         user.setRoles(roles);
         Token token = new Token();
         user.setToken(token);

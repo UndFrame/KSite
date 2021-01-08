@@ -12,4 +12,6 @@ public interface UserDao extends JpaRepository<User, Long> {
     User findByToken(Token token);
 
     void removeById(long ld);
+
+    void removeByUsername(String name);
 }
