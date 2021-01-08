@@ -81,6 +81,7 @@ CREATE TABLE ksite.comments
     COLLATE utf8mb4_unicode_ci,
   FOREIGN KEY (article) REFERENCES ksite.articles (id),
   FOREIGN KEY (user_id) REFERENCES ksite.users (id)
+
 );
 
 CREATE UNIQUE INDEX article_index ON ksite.articles (hash);

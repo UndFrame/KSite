@@ -47,7 +47,7 @@ public class ArticleController {
 
 
     @GetMapping("article")
-    public String getArticle(Model model) {
+    public String getArticle(@RequestParam(value = "id",defaultValue = "") String id,Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -55,34 +55,27 @@ public class ArticleController {
         model.addAttribute("auth", user != null);
         model.addAttribute("user", user);
 
-        Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
-        model.addAttribute("articles", all);
-        return "articlelist";
 
+        if(id.isEmpty()) {
+            Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
+            model.addAttribute("articles", all);
+            return "articlelist";
+        }else{
+            Article article = articleDao.findByHash(id);
+            if (article != null) {
+                model.addAttribute("url", article.getIconUrl());
+                model.addAttribute("timeCreate", article.getDateCreate().toString());
+            }
+            model.addAttribute("findArticle", article != null);
+            model.addAttribute("article", article);
+            if (article != null) {
+                model.addAttribute("comments", article.getComment());
+            }
+
+            return "article";
+        }
     }
 
-    @GetMapping("/article/{id:.+}")
-    public String serveFile(@PathVariable String id, Model model) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
-        model.addAttribute("auth", user != null);
-        model.addAttribute("user", user);
-
-        Article article = articleDao.findByHash(id);
-        if (article != null) {
-            model.addAttribute("url", article.getIconUrl());
-            model.addAttribute("timeCreate", article.getDateCreate().toString());
-        }
-        model.addAttribute("findArticle", article != null);
-        model.addAttribute("article", article);
-        if (article != null) {
-            model.addAttribute("comments", article.getComment());
-        }
-
-        return "article";
-    }
 
     @PostMapping(value = "article", params = "delete")
     public String deleteArticle(@ModelAttribute("id") String id, Model model) {
@@ -115,6 +108,10 @@ public class ArticleController {
         }
 
         Article article = articleDao.findByHash(id);
+        if (article != null) {
+            model.addAttribute("url", article.getIconUrl());
+            model.addAttribute("timeCreate", article.getDateCreate().toString());
+        }
         model.addAttribute("findArticle", article != null);
         model.addAttribute("article", article);
 
@@ -150,6 +147,10 @@ public class ArticleController {
         }
 
         Article article = articleDao.findByHash(id);
+        if (article != null) {
+            model.addAttribute("url", article.getIconUrl());
+            model.addAttribute("timeCreate", article.getDateCreate().toString());
+        }
         model.addAttribute("findArticle", article != null);
         model.addAttribute("article", article);
 
@@ -162,6 +163,7 @@ public class ArticleController {
             for (LikeDislike dislike : user.getLikeDislikes()) {
                 if (dislike.getArticle().equals(article)) {
                     likeDislike = dislike;
+                    System.out.println("C: "+likeDislike.toString());
                 }
             }
             boolean newLike = false;
@@ -175,18 +177,19 @@ public class ArticleController {
 
             likeDislike.setArticle(article);
             likeDislike.setUser(user);
-            if (likeDislike.isLike()) {
-                article.setDislikes(article.getDislikes() + 1);
-                if (!newLike)
-                    article.setLikes(article.getLikes() - 1);
-            }else if(!newLike){
-                article.setDislikes(article.getDislikes() - 1);
-                likeDislike.clear();
-            }else{
+
+
+            if(newLike ){
                 article.setDislikes(article.getDislikes() + 1);
                 likeDislike.setDislike(true);
+            }else if(likeDislike.isDislike()){
+                article.setDislikes(article.getDislikes() - 1);
+                likeDislike.clear();
+            }else if(likeDislike.isLike()){
+                article.setDislikes(article.getDislikes() + 1);
+                article.setLikes(article.getLikes() - 1);
+                likeDislike.setLike(false);
             }
-
 
 
             article.getLikeDislikes().add(likeDislike);
@@ -217,6 +220,10 @@ public class ArticleController {
         }
 
         Article article = articleDao.findByHash(id);
+        if (article != null) {
+            model.addAttribute("url", article.getIconUrl());
+            model.addAttribute("timeCreate", article.getDateCreate().toString());
+        }
         model.addAttribute("findArticle", article != null);
         model.addAttribute("article", article);
 
@@ -242,17 +249,16 @@ public class ArticleController {
 
             likeDislike.setArticle(article);
             likeDislike.setUser(user);
-
-            if (likeDislike.isLike()) {
+            if(newLike ){
                 article.setLikes(article.getLikes() + 1);
-                if (!newLike)
-                    article.setDislikes(article.getDislikes() - 1);
-            }else if(!newLike){
+                likeDislike.setLike(true);
+            }else if(likeDislike.isLike()){
                 article.setLikes(article.getLikes() - 1);
                 likeDislike.clear();
-            }else{
+            }else if(likeDislike.isDislike()){
                 article.setLikes(article.getLikes() + 1);
-                likeDislike.setDislike(true);
+                article.setDislikes(article.getDislikes() - 1);
+                likeDislike.setLike(true);
             }
 
             article.getLikeDislikes().add(likeDislike);
