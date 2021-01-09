@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="css/header.css" type="text/css"/>
+  <link rel="stylesheet" href="css/header.css" type="text/css"/>
+    <link rel="stylesheet" href="css/main.css" type="text/css"/>
+    <link href="css/header.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/header.css" rel="stylesheet" type="text/css">
     <title>KSite</title>
 </head>
 <body>
@@ -13,52 +16,62 @@
 
 <header class="header-box">
     <div class="header-home-item">
-        <a title="home" href="/"><img src="img/home.png" alt="" class="home-img"></a>
+        <a title="home" href="/index"><img  src="../static/img/home.png" alt="" class="home-img"></a>
     </div>
-    <div th:if="!${auth}">
+    <div class="login-item-box-left ">
+        <div class="item-site-name"> Overcoming difficulties</div>
+    </div>
+	
+  <div class="button"  th:if="${auth}" >
+        <div class=><a href="/editor" id="subCommand"><img src="../static/img/icons8-редактировать.svg" alt="" class="Picsize"/></a></div>
+  </div>
+	
+  <div  th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/login">Войти</a>
+                <a href="/login"><img class="Picsize" src="../static/img/user-check.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
             <div class="login-item-reg">
-                <a href="/reg">Регистрация</a>
+                <a href="/reg"><img class="Picsize" src="../static/img/user-plus.svg" alt=""/></a>
             </div>
         </div>
-    </div>
+  </div>
 
     <div th:if="${auth}">
-        <div class="login-item-box color-mouse">
+      <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/logout">Выйти</a>
+                <a href="/logout"><img class="Picsize" src="../static/img/user-times.svg" alt=""/></a>
             </div>
+      </div>
+        
+      <div class="login-item-box color-mouse">
+            <div class="login-item-reg-plus">
+              <a id = "id-name" href="/account" th:text="${user.username}">You`r name</a>
+              
         </div>
-        <div class="login-item-box color-mouse">
-            <div class="login-item-reg">
-                <div th:text="${user.username}">You`r name</div>
-            </div>
         </div>
     </div>
+
 </header>
-<div>
+<main id="rule_inspect">
+  <div>
     Роли:
     <ul>
-        <th:block th:each="role : ${roles}" class="roles">
-            <li th:utext="${role.getName()}">..</li>
+      <th:block th:each="role : ${roles}" class="roles">
+        <li th:utext="${role.getName()}">..</li>
         </th:block>
-    </ul>
-
+      </ul>
+    
     Статьи:
     <ul>
-        <th:block th:each="article : ${articles}" class="roles">
-            <li><a th:utext="${article.getDescription()}" th:href="@{'/article?id=' + ${article.getHash()}}"></a></li>
+      <th:block th:each="article : ${articles}" class="roles">
+        <li><a th:utext="${article.getDescription()}" th:href="@{'/article?id=' + ${article.getHash()}}"></a></li>
         </th:block>
-    </ul>
-
-</div>
-
-
-
+      </ul>
+    
+  </div>
+</main>
 </body>
 </html>
