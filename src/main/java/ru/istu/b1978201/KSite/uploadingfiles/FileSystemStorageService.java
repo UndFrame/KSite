@@ -103,9 +103,6 @@ public class FileSystemStorageService implements StorageService {
     @PostConstruct
     public void init() {
         try {
-
-
-            System.out.println("XY");
             this.rootLocation = Paths.get(location);
             Files.createDirectories(rootLocation);
         }
