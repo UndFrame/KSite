@@ -3,6 +3,10 @@ package ru.istu.b1978201.KSite.mode;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * Объект - data(хранилище данных), который хранит в себе информацию о токене юзера, который нужен для подтвержения почты пользователя
+ * В классе описана структуры таблицы хранящейся в базе данных
+ */
 @Entity
 @Table(name = "tokens")
 public class Token {

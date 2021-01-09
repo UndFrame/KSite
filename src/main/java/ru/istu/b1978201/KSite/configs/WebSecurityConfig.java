@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.istu.b1978201.KSite.authentication.AuthProviderImpl;
@@ -21,6 +22,10 @@ import ru.istu.b1978201.KSite.exceptions.UserIsBanned;
 import ru.istu.b1978201.KSite.uploadingfiles.FileSystemStorageService;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
+/**
+ * Класс - конфиг, в котором определяющтся основные свойста работы приложения,описываются бины для загрузки с файлами.
+ * Описывается доступ к тем или иным рессурсам
+ */
 @Configuration
 @EnableWebSecurity
 @PropertySource("classpath:secret.properties")
@@ -44,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .formLogin()
                 .authenticationDetailsSource(customAuthenticationFailureHandler())
-                .failureHandler(new CustomAuthenticationFailureHandler((request, response, authException) -> {
+                .failureHandler(new AuthenticationEntryPointFailureHandler((request, response, authException) -> {
                     String redirect = "/login?error";
                     if (authException instanceof CaptchaError) {
                         redirect = "/login?captcha";

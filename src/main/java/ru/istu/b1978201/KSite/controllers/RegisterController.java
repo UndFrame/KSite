@@ -16,6 +16,9 @@ import ru.istu.b1978201.KSite.mode.User;
 
 import java.util.regex.Pattern;
 
+/**
+ * Класс -контроллер предназвачен для обработки запросоа регистрации
+ */
 @Controller
 public class RegisterController {
 

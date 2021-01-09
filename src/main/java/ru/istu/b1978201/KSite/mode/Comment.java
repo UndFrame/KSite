@@ -2,7 +2,10 @@ package ru.istu.b1978201.KSite.mode;
 
 import javax.persistence.*;
 import java.util.Objects;
-
+/**
+ * Объект - data(хранилище данных), который хранит в себе информацию о комментариях к статье
+ * В классе описана структуры таблицы хранящейся в базе данных
+ */
 @Entity
 @Table(name = "comments")
 public class Comment {

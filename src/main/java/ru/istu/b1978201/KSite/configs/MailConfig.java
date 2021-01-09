@@ -8,6 +8,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+/**
+ * Класс конфиг, который описывает бин JavaMailSender.
+ * JavaMailSender - класс который имеет функционал для отправки сообщения на почту
+ */
 @Configuration
 public class MailConfig {
 

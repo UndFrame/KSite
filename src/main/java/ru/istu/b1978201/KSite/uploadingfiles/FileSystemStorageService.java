@@ -18,6 +18,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
+/**
+ * Сервис для загрузки файлов, в часности иконки для статей
+ */
 @Service
 public class FileSystemStorageService implements StorageService {
 
@@ -29,7 +32,6 @@ public class FileSystemStorageService implements StorageService {
     @Autowired
     public FileSystemStorageService() {
         this.rootLocation = Paths.get(location);
-
     }
 
     @Override

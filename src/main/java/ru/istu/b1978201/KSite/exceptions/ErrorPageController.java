@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Класс - настройка(для фреймворка spring), описывающий куда перенапрвлять пользователя когда произошла ошибка
+ */
 @Controller
 public class ErrorPageController implements ErrorController {
-
-
 
     @Override
     public String getErrorPath() {

@@ -30,6 +30,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Класс - контроллер орабатывающий get/post запросы для получения основных данных по рессурсу, такие как главная страница, страница пользователя,
+ */
 @Controller
 @Configuration
 public class WebController implements WebMvcConfigurer {

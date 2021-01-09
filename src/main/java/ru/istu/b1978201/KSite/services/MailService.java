@@ -10,6 +10,9 @@ import ru.istu.b1978201.KSite.mode.User;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Сервеис для работы с почтой(отправление сообщения на почту)
+ */
 @Service
 public class MailService {
 

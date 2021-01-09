@@ -16,6 +16,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Сервия для работы с данными пользоватея
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
