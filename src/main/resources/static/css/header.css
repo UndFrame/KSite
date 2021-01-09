@@ -15,10 +15,10 @@ header {
 }
 
 .home-img {
-
-	width: 40px;
-	height: 40px;
-	position: absolute;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    padding-top: 6px;
 
 }
 
@@ -35,7 +35,7 @@ header {
 }
 
 .login-item-box {
-	float: right;
+    float: right;
 }
 
 .login-item-box-left {
@@ -53,29 +53,30 @@ header {
 }
 
 .login-item-login {
-	width: 55px;
-	text-align: center;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	height: 30px;
-	border-right: thin solid rgba(166,166,166,1.00);
-	border-left: thin solid rgba(166,166,166,1.00);
-	padding-right: 0px;
-	color: rgba(255,255,255,1.00);
-	font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
+    width: 55px;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 30px;
+    border-right: thin solid rgba(166,166,166,1.00);
+    border-left: thin solid rgba(166,166,166,1.00);
+    color: rgba(255,255,255,1.00);
+    font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
 }
 
 .item-site-name {
-	width: auto;
-	text-align: center;
-	font-family: sans-serif;
-	color: #FFFFFF;
-	font-size: large;
-	font-weight: bolder;
-	font-variant: small-caps;
-	height: 25px;
-	top: 7px;
-	position: absolute;
+    width: auto;
+    text-align: center;
+    font-family: sans-serif;
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: bolder;
+    font-variant: small-caps;
+    height: 25px;
+    top: 7px;
+    position: absolute;
+    padding-top: 12px;
+    font-style: normal;
 }
 
 .login-item-reg {
@@ -88,9 +89,12 @@ header {
 }
 
 .color-mouse:hover {
-	background-color: #505050;
-	border-radius: 4px;
+    background-color: #505050;
+    border-radius: 4px;
 }
+.header-box div .login-item-box.color-mouse {
+}
+
 
 .Picsize {
 	width: 45px;
@@ -113,12 +117,14 @@ header {
 
 
 .header-box {
-	position: relative;
-	width: 100%;
-	top: 0px;
-	left: 0px;
-	height: 50px;
-	margin: 0;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    height: 50px;
+    margin: 0;
+    right: 0px;
+    bottom: 0px;
 }
 
 body{
@@ -126,7 +132,7 @@ body{
 }
 
 .main-corrector {
-	margin-top: 40px;
+    margin-top: 40px;
 }
 
 #id-name {
@@ -149,6 +155,12 @@ body{
 	background-image: linear-gradient(180deg,rgba(71,70,70,1.00) 0%,rgba(45,45,45,1.00) 100%);
 	border-top-right-radius: 0px;
 }
+#back {
+}
+#back {
+}
+
+
 
 #News-new {
 	margin-top: 70px;
@@ -215,4 +227,11 @@ footer {
 	width: 100%;
 	clear: both;
 	background-size: 100% 100%;
+}
+
+.footer {
+    margin-top: 220px;
+    margin-bottom: 323px;
+    width: 112px;
+    height: 22px;
 }
