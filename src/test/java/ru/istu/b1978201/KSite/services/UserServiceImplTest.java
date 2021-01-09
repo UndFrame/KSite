@@ -1,7 +1,6 @@
 package ru.istu.b1978201.KSite.services;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -42,27 +41,23 @@ class UserServiceImplTest {
     private static final String name2 = "UserNameForTest2";
     private static final String email2 = "email@email.com2";
 
-    @Before
-    public void setup(){
-
-        Optional.ofNullable(userDao.findByUsername(name1)).map(User::getToken)
-                .ifPresent(token ->tokenDao.delete(tokenDao.findByToken(token.getToken())));
-
-        Optional.ofNullable(userDao.findByUsername(name2)).map(User::getToken)
-                .ifPresent(token ->tokenDao.delete(tokenDao.findByToken(token.getToken())));
+    public void removeUser(String name) {
 
 
-        userDao.removeByUsername(name1);
-        userDao.removeByUsername(name2);
+        Optional.ofNullable(userDao.findByUsername(name)).map(User::getToken)
+                .ifPresent(token -> tokenDao.delete(tokenDao.findByToken(token.getToken())));
 
-
-        System.out.println(tokenDao==null);
-
+        Optional.ofNullable(userDao.findByUsername(name)).ifPresent(user -> {
+            userDao.delete(user);
+        });
     }
 
-    @Test
 
+
+    @Test
     void save() {
+
+        removeUser(name1);
 
         UserServiceImpl userService = new UserServiceImpl();
         userService.setUserDao(userDao);
@@ -126,12 +121,12 @@ class UserServiceImplTest {
 
         userService.createUser(user);
         Assert.assertNotNull(userDao.findByUsername(name2));
-        System.out.println("1");
-
     }
 
     @Test
     void activateUser() {
+
+        removeUser(name2);
 
         createUser();
 
@@ -140,8 +135,6 @@ class UserServiceImplTest {
         userService.setTokenDao(tokenDao);
 
         User byUsername = userDao.findByUsername(name2);
-
-        System.out.println("||| " + byUsername);
 
         String token = byUsername.getToken().getToken();
         Assert.assertNotNull(tokenDao.findByToken(token));

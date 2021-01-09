@@ -163,7 +163,6 @@ public class ArticleController {
             for (LikeDislike dislike : user.getLikeDislikes()) {
                 if (dislike.getArticle().equals(article)) {
                     likeDislike = dislike;
-                    System.out.println("C: "+likeDislike.toString());
                 }
             }
             boolean newLike = false;

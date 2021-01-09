@@ -112,13 +112,8 @@ public class WebController implements WebMvcConfigurer {
                 });
 
                 model.addAttribute("roles", checkedRoleList);
-                /*model.addAttribute("finduser",true);
-                model.addAttribute("finduser",true);
-                model.addAttribute("finduser",true);*/
-
             }
         }
-        System.out.println("un: " + username);
 
         return "form";
     }
