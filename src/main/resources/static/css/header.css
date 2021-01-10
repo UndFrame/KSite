@@ -387,3 +387,10 @@ footer {
     color: #FFFFFF;
     font-size: large;
 }
+
+.hehh {
+	width: 90px;
+    border-width: thin;
+    border-style: solid;
+    border-radius: 3px;
+}
