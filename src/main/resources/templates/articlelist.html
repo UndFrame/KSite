@@ -12,7 +12,7 @@
     <title>KSite</title>
 
 </head>
-<body>
+<body id="back">
 <header class="header-box">
     <div class="header-home-item">
         <a title="home" href="/index"><img  src="img/home.png" alt="" class="home-img"></a>
@@ -53,8 +53,10 @@
 
 </header>
 
-
-<div>Статьи:</div>
+<div class="button color_back"  th:if="${auth}" >
+        <div ><a href="/editor" id="subCommand">Создать статью<img src="../static/img/icons8-редактировать.svg" alt="" class="Picsize"/></a></div>
+    </div>
+<div class="dfdf">Все статьи:</div>
 
 <ul>
     <th:block th:each="article : ${articles}" class="article">
@@ -62,7 +64,7 @@
     </th:block>
 </ul>
 
-<a href="/editor">Создать статью</a>
+
 
 </body>
 </html>

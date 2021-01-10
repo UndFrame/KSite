@@ -242,6 +242,7 @@ footer {
 
 .article_create {
     margin-top: 50px;
+    background-color: #FFFFFF;
 }
 
 
@@ -305,4 +306,8 @@ footer {
     margin-right: 4px;
     padding-left: 4px;
 
+}
+
+#st {
+    color: #E00E12;
 }
