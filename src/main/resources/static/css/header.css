@@ -39,10 +39,10 @@ header {
 }
 
 .login-item-box-left {
-	margin-left: 60px;
-	float: left;
-	clear: left;
-	margin-bottom: 10px;
+    margin-left: 60px;
+    float: left;
+    clear: left;
+    margin-bottom: 10px;
 }
 
 
@@ -93,6 +93,8 @@ header {
     border-radius: 4px;
 }
 .header-box div .login-item-box.color-mouse {
+
+
 }
 
 
@@ -117,7 +119,7 @@ header {
 
 
 .header-box {
-    position: fixed;
+    position: relative;
     width: 100%;
     top: 0px;
     left: 0px;
@@ -271,3 +273,21 @@ footer {
 
 
 }
+
+#subCommand {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: large;
+  
+}
+
+.link {
+}
+
+.color_back:hover{
+	background-color: #505050;
+}
+
+
+
+

@@ -22,11 +22,7 @@
         <a title="home" href="/index"><img  src="../static/img/home.png" alt="" class="home-img"></a>
     </div>
     <div class="login-item-box-left ">
-        <div class="item-site-name"> Overcoming difficulties</div>
-    </div>
-	
-  <div class="button"  th:if="${auth}" >
-        <div class=><a href="/editor" id="subCommand"><img src="../static/img/icons8-редактировать.svg" alt="" class="Picsize"/></a></div>
+        <div class="item-site-name">Overcoming difficulties</div>
     </div>
 	
   <div  th:if="!${auth}">
@@ -60,6 +56,11 @@
 </header>
 	
 <main class="main-corrector">
+	
+  <div class="button color_back"  th:if="${auth}" >
+        <div ><a href="/editor" id="subCommand">Создать статью<img src="../static/img/icons8-редактировать.svg" alt="" class="Picsize"/></a></div>
+    </div>
+	
     <section id="News-new">
         <div class="title-name">Новые статьи</div>
 
@@ -84,8 +85,6 @@
     </section>
     
 </main>
-<footer class="footer">
-	
-</footer>
+
 </body>
 </html>

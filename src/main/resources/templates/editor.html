@@ -15,25 +15,25 @@
 <!--  HEADER  -->
 <header class="header-box">
     <div class="header-home-item">
-        <a title="home" href="/index"><img  src="../static/img/home.png" alt="" class="home-img"></a>
+        <a title="home" href="/index"><img  src="/img/home.png" alt="../static/img/home.png" class="home-img"></a>
     </div>
     <div class="login-item-box-left ">
         <div class="item-site-name"> Overcoming difficulties</div>
     </div>
 	
   <div class="button"  th:if="${auth}" >
-        <div class=><a href="/editor" id="subCommand"><img src="../static/img/icons8-редактировать.svg" alt="" class="Picsize"/></a></div>
+        <div class=><a href="/editor" id="subCommand"><img src="../static/img/icons8-редактировать.svg" alt="img/icons8-редактировать.svg" class="Picsize"/></a></div>
   </div>
 	
   <div  th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/login"><img class="Picsize" src="../static/img/user-check.svg" alt=""/></a>
+                <a href="/login"><img class="Picsize" src="../static/img/user-check.svg" alt="img/user-check.svg"/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
             <div class="login-item-reg">
-                <a href="/reg"><img class="Picsize" src="../static/img/user-plus.svg" alt=""/></a>
+                <a href="/reg"><img class="Picsize" src="../static/img/user-plus.svg" alt="img/user-plus.svg"/></a>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
     <div th:if="${auth}">
       <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/logout"><img class="Picsize" src="../static/img/user-times.svg" alt=""/></a>
+                <a href="/logout"><img class="Picsize" src="../static/img/user-times.svg" alt="img/user-times.svg"/></a>
             </div>
       </div>
         

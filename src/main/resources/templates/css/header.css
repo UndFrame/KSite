@@ -1,7 +1,13 @@
 @charset "utf-8";
 .button {
-    padding-top: 4px;
-    margin-left: 341px;
-    margin-right: 72%;
-    margin-bottom: -48px;
+    color: #FFFFFF;
+    float: right;
+    margin-top: 10px;
+    border-radius: 4px;
+    border-width: thin;
+    border-style: solid;
+    font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
+    font-variant: small-caps;
+    margin-right: 4px;
+    padding-left: 4px;
 }
