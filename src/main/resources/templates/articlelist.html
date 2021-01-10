@@ -60,7 +60,7 @@
 
 <ul>
     <th:block th:each="article : ${articles}" class="article">
-        <li><a th:utext="${article.getDescription()}" th:href="@{'/article?id=' + ${article.getHash()}}"></a></li>
+        <li><a th:utext="${article.getDescription()}" class="article" th:href="@{'/article?id=' + ${article.getHash()}}"></a></li>
     </th:block>
 </ul>
 

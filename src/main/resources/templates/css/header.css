@@ -22,3 +22,9 @@
 .eee {
     margin-bottom: 23px;
 }
+#subCommand {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: large;
+
+}
