@@ -63,34 +63,34 @@
 		  
         
         
-        <h2>
+      <h2>
           <div th:text="${article.getDescription()}"></div>
           </h2>
         
         <img th:src="${url}" Width="200" Height="150" alt=>
-        
-        
-        <div th:utext="${article.getText()}"></div>
-        
         <div>
-          Время создания:
+          <p>
+            <textarea name="textarea" cols="50" rows="15" readonly="readonly" class="text-output"><div th:utext="${article.getText()}"></div>
+            </textarea>
+          </p>
+          <p>Время создания: </p>
           <div th:text="${timeCreate}"></div>
-          </div>
+      </div>
         
         <div>
           <div th:utext="'Лайки ' + ${article.getLikes()}"></div>
           <div th:utext="'Дизлайки ' + ${article.getDislikes()}"></div>
-          </div>
+      </div>
         
         <div>
           Коментарии:
-          </div>
+      </div>
         
         <ul>
           <th:block th:each="comment : ${comments}" class="article">
             <li th:utext="${comment.getComment()} + ' ('+${comment.getUser().getUsername()}+')'"></li>
-            </th:block>
-          </ul>
+          </th:block>
+      </ul>
         
         <div th:if="${auth}">
           <form th:action="@{/article}" method="post">
@@ -98,7 +98,7 @@
             <div>Новый комментарий</div>
             <label>
               <input name="comment" type="text" placeholder="Ваше мнение"/>
-              </label>
+            </label>
             
             
             <input type="hidden" name="id" id="id" th:value="${article.getHash()}">
@@ -108,9 +108,9 @@
             <input type="submit" value="Дизлайк" id="dislike" name="dislike" class="btn btn-primary submit"/>
             <input type="submit" value="Удалить" id="delete" name="delete" class="btn btn-primary submit"/>
             
-            </form>
-          </div>
-        </div>
+          </form>
+      </div>
+    </div>
       
       <div th:if="!${findArticle}">
         Статья не найдена
