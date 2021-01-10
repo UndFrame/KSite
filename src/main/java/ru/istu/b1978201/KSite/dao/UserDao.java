@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import ru.istu.b1978201.KSite.mode.Token;
 import ru.istu.b1978201.KSite.mode.User;
 
+/**
+ * Интерфейс обеспечивает основные операции по поиску, сохранения, удалению данных из таблицы users.
+ */
 @Component
 public interface UserDao extends JpaRepository<User, Long> {
     User findByUsername(String username);
@@ -12,4 +15,6 @@ public interface UserDao extends JpaRepository<User, Long> {
     User findByToken(Token token);
 
     void removeById(long ld);
+
+    void removeByUsername(String name);
 }

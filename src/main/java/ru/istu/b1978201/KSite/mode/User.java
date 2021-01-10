@@ -1,10 +1,8 @@
 package ru.istu.b1978201.KSite.mode;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.istu.b1978201.KSite.dao.UserDao;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +10,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Объект - data(хранилище данных), который хранит в себе информацию о пользователе
+ * В классе описана структуры таблицы хранящейся в базе данных
+ */
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {

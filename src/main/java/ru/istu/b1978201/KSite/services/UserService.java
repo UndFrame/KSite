@@ -3,6 +3,9 @@ package ru.istu.b1978201.KSite.services;
 
 import ru.istu.b1978201.KSite.mode.User;
 
+/**
+ * Интерфейс сервиса помогающий облегчить работу с пользователем
+ */
 public interface UserService {
 
     void save(User user);

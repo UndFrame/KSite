@@ -81,6 +81,7 @@ CREATE TABLE ksite.comments
     COLLATE utf8mb4_unicode_ci,
   FOREIGN KEY (article) REFERENCES ksite.articles (id),
   FOREIGN KEY (user_id) REFERENCES ksite.users (id)
+
 );
 
 CREATE UNIQUE INDEX article_index ON ksite.articles (hash);
@@ -91,6 +92,8 @@ INSERT INTO ksite.roles(role)
 VALUES ('MODER');
 INSERT INTO ksite.roles(role)
 VALUES ('ADMIN');
+INSERT INTO ksite.roles(role)
+VALUES ('EDITOR');
 
 
 INSERT INTO ksite.users(token, username, email, password, enabled, ban)
@@ -98,8 +101,14 @@ VALUES (null, 'undframe', 'undframe@gmail.com',
         '$e0801$rvu1Hsc5uqZbI4hjZfdyx9mKsYDJ7ygUMhikK2SBVN5nx8ktPlYFuweN8xU6c9ev4y+BBRS2WA6rzMbz67pKGw==$pydVEqyfu3t8IMf6UGlkf64NVgT/5Y4zuONvSFYuMXc=',
         1, 0);
 
+
+
+
 INSERT INTO ksite.users(token, username, email, password, enabled, ban)
 VALUES (null, 'undframe2', 'undframe2@gmail.com',
         '$e0801$rvu1Hsc5uqZbI4hjZfdyx9mKsYDJ7ygUMhikK2SBVN5nx8ktPlYFuweN8xU6c9ev4y+BBRS2WA6rzMbz67pKGw==$pydVEqyfu3t8IMf6UGlkf64NVgT/5Y4zuONvSFYuMXc=',
         1, 0);
+
+INSERT INTO ksite.user_role(user_id, role_id)
+VALUES (2, 3);
 

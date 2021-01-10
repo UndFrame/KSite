@@ -2,7 +2,10 @@ package ru.istu.b1978201.KSite.mode;
 
 import javax.persistence.*;
 import java.util.Objects;
-
+/**
+ * Объект - data(хранилище данных), который хранит в себе информацию о роли
+ * В классе описана структуры таблицы хранящейся в базе данных
+ */
 @Entity
 @Table(name = "roles")
 public class Role {

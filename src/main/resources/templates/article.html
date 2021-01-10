@@ -6,30 +6,31 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="css/header.css" type="text/css"/>
     <link rel="stylesheet" href="css/main.css" type="text/css"/>
+<link href="css/header.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/header.css" rel="stylesheet" type="text/css">
     <title>KSite</title>
 
 </head>
 <body>
-<!--  HEADER  -->
-
 <header class="header-box">
     <div class="header-home-item">
-        <a title="home" href="/"><img src="img/home.png" alt="" class="home-img"></a>
+        <a title="home" href="/index"><img  src="img/home.png" alt="" class="home-img"></a>
     </div>
-    <div class="login-item-box-left color-mouse">
-        <div class="item-site-name">
-            <a href="/">Overcoming difficulties</a>
-        </div>
+    <div class="login-item-box-left ">
+        <div class="item-site-name"> Overcoming difficulties</div>
     </div>
-    <div th:if="!${auth}">
+
+
+
+    <div  th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/login">Войти</a>
+                <a href="/login"><img class="Picsize" src="img/user-check.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
             <div class="login-item-reg">
-                <a href="/reg">Регистрация</a>
+                <a href="/reg"><img class="Picsize" src="img/user-plus.svg" alt=""/></a>
             </div>
         </div>
     </div>
@@ -37,85 +38,86 @@
     <div th:if="${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/logout">Выйти</a>
+                <a href="/logout"><img class="Picsize" src="img/user-times.svg" alt=""/></a>
             </div>
         </div>
+
         <div class="login-item-box color-mouse">
-            <div class="login-item-reg">
-                <a href="/account" th:text="${user.username}">You`r name</a>
+            <div class="login-item-reg-plus">
+                <a id = "id-name" href="/account" th:text="${user.username}">You`r name</a>
+
             </div>
         </div>
     </div>
 
 </header>
-
-<div class="card">
-
+<main class="article_create">
+  <div class="card box-size">
+    
     <div class="card-body back-ground">
-
-        <div th:if="${findArticle}">
-
-
-            <div><a href="/article" id="subCommand">Статьи</a></div>
-
-
-            <h2>
-                <div th:text="${article.getDescription()}"></div>
-            </h2>
-
-            <Img th:src="${url}" Width="200" Height="150">
-
-
-            <div th:utext="${article.getText()}"></div>
-
-            <div>
-                Время создания
-                <div th:text="${timeCreate}"></div>
-            </div>
-
-            <div>
-                <div th:utext="'Лайки ' + ${article.getLikes()}"></div>
-                <div th:utext="'Дизлайки ' + ${article.getDislikes()}"></div>
-            </div>
-
-            <div>
-                Коментарии:
-            </div>
-
-            <ul>
-                <th:block th:each="comment : ${comments}" class="article">
-                    <li th:utext="${comment.getComment()} + ' ('+${comment.getUser().getUsername()}+')'"></li>
-                </th:block>
-            </ul>
-
-            <div th:if="${auth}">
-                <form th:action="@{/article}" method="post">
-
-                    <div>Новый комментарий</div>
-                    <label>
-                        <input type="text" name="comment"/>
-                    </label>
-
-
-                    <input type="hidden" name="id" id="id" th:value="${article.getHash()}">
-
-                    <input type="submit" value="Отправить" id="editor" name="editor" class="btn btn-primary submit"/>
-                    <input type="submit" value="Лайк" id="like" name="like" class="btn btn-primary submit"/>
-                    <input type="submit" value="Дизлайк" id="dislike" name="dislike" class="btn btn-primary submit"/>
-                    <input type="submit" value="Удалить" id="delete" name="delete" class="btn btn-primary submit"/>
-
-                </form>
-            </div>
-        </div>
-
-        <div th:if="!${findArticle}">
-            Статья не найдена
-            <div><a href="/article">Статьи</a></div>
-        </div>
-
-
+      
+      <div th:if="${findArticle}">
+        
+        
+        <div class="hehh" ><a href="/article" class="hm">Все статьи</a></div>
+		  
+        
+        
+      <h2>
+          <div th:text="${article.getDescription()}"></div>
+          </h2>
+      <img th:src="${url}" width="200" height="150" alt=>
+      <div>
+        <p>
+            <textarea name="textarea" cols="50" rows="15" readonly="readonly" class="text-output"><div th:utext="${article.getText()}"></div></textarea>
+          </p>
+          <p>Время создания: </p>
+          <div th:text="${timeCreate}"></div>
+      </div>
+        
+        <div>
+          <div th:utext="'Лайки ' + ${article.getLikes()}"></div>
+          <div th:utext="'Дизлайки ' + ${article.getDislikes()}"></div>
+      </div>
+        
+        <div>
+          Коментарии:
+      </div>
+        
+        <ul>
+          <th:block th:each="comment : ${comments}" class="article">
+            <li th:utext="${comment.getComment()} + ' ('+${comment.getUser().getUsername()}+')'"></li>
+          </th:block>
+      </ul>
+        
+        <div th:if="${auth}">
+          <form th:action="@{/article}" method="post">
+            
+            <div>Новый комментарий</div>
+            <label>
+              <input name="comment" type="text" placeholder="Ваше мнение"/>
+            </label>
+            
+            
+            <input type="hidden" name="id" id="id" th:value="${article.getHash()}">
+            
+            <input type="submit" value="Отправить" id="editor" name="editor" class="btn btn-primary submit"/>
+            <input type="submit" value="Лайк" id="like" name="like" class="btn btn-primary submit"/>
+            <input type="submit" value="Дизлайк" id="dislike" name="dislike" class="btn btn-primary submit"/>
+            <input type="submit" value="Удалить" id="delete" name="delete" class="btn btn-primary submit"/>
+            
+          </form>
+      </div>
     </div>
-</div>
-
+      
+      <div th:if="!${findArticle}">
+        Статья не найдена
+        <div><a href="/article">Статьи</a></div>
+        </div>
+      
+      
+      </div>
+  </div>
+</main>
 </body>
 </html>

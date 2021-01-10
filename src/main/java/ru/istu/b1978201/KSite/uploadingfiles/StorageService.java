@@ -6,6 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
+/**
+ * Интерфейс сервиса для загрузки файлов в часности иконки статей
+ */
 public interface StorageService {
 
     void init();

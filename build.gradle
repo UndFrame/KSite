@@ -8,9 +8,16 @@ plugins {
 group = 'ru.istu.b1978201'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
 }
 
 dependencies {
@@ -30,11 +37,23 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
+    testCompile group: 'junit', name: 'junit', version: '4.13.1'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
     compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.2.6.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile "org.springframework.boot:spring-boot-configuration-processor"
 
+}
+
+test {
+    useJUnitPlatform()
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+    options.encoding = 'UTF-8'
+    options.addStringOption("charset", "UTF-8")
 }
 

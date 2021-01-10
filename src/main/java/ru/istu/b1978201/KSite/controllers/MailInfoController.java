@@ -15,6 +15,9 @@ import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.services.MailService;
 import ru.istu.b1978201.KSite.services.UserService;
 
+/**
+ * Класс -контроллер предназвачен для обработки запроса повторого отправления токена на почту
+ */
 @Controller
 public class MailInfoController {
 
