@@ -30,12 +30,12 @@ public class FileSystemStorageService implements StorageService {
 
     private Path rootLocation;
 
-
+    /**
+     * Загрузка файла
+     * @param file
+     */
     @Override
     public void store(MultipartFile file) {
-
-        System.out.println("||| " + rootLocation.toString()+" ||| "+location);
-
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (file.isEmpty()) {
