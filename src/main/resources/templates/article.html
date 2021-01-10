@@ -59,7 +59,8 @@
       <div th:if="${findArticle}">
         
         
-        <div><a href="/article" id="subCommand">Статьи</a></div>
+        <div class="heh" ><a href="/article" class="hm">Все статьи</a></div>
+		  
         
         
         <h2>
@@ -72,7 +73,7 @@
         <div th:utext="${article.getText()}"></div>
         
         <div>
-          Время создания
+          Время создания:
           <div th:text="${timeCreate}"></div>
           </div>
         
