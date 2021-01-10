@@ -6,6 +6,7 @@ out
 .gradle
 .vscode
 .settings
+*.png
 /build/
 /build/classes/java/main/
 /src/main/resources/secret.properties

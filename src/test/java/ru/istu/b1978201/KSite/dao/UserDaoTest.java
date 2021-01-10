@@ -17,8 +17,6 @@ public class UserDaoTest {
 
     @Test
     void findByUsername() {
-
         Assert.assertNotNull(userDao.findByUsername("undframe"));
-
     }
 }

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Класс -контроллер предназначен для перенаправлений, когда происходит ошибка во время эксплуатации приложения
+ */
 @Controller
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 

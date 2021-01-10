@@ -27,6 +27,9 @@ import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Класс -контроллер предназначен для обработки запросов связанных со статьями(создание,просмотр, дать оценку)
+ */
 @Controller
 public class ArticleController {
 

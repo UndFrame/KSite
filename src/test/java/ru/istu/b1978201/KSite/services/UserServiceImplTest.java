@@ -78,7 +78,7 @@ class UserServiceImplTest {
         token.setDate(new Date());
         user.setBan(false);
         user.setEnabled(false);
-        userDao.save(user);
+        userService.save(user);
         Assert.assertNotNull(userDao.findByUsername(name1));
     }
 
@@ -139,7 +139,7 @@ class UserServiceImplTest {
         String token = byUsername.getToken().getToken();
         Assert.assertNotNull(tokenDao.findByToken(token));
         userService.activateUser(token);
-        Assert.assertNull(tokenDao.findByToken(token));
+        Assert.assertTrue(userDao.findByUsername(name2).isEnabled());
     }
 
 }

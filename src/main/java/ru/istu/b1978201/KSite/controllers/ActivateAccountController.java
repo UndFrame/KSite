@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.istu.b1978201.KSite.services.UserService;
 
+/**
+ * Класс -контроллер предназначен для обработки запросоа связанного с активацией пользователя
+ */
 @Controller
 public class ActivateAccountController {
 

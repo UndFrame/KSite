@@ -8,9 +8,16 @@ plugins {
 group = 'ru.istu.b1978201'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
 }
 
 dependencies {
@@ -41,5 +48,12 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+    options.encoding = 'UTF-8'
+    options.addStringOption("charset", "UTF-8")
 }
 

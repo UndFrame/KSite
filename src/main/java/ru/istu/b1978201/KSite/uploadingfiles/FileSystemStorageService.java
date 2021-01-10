@@ -9,6 +9,7 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -18,22 +19,23 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
+/**
+ * Сервис для загрузки файлов, в часности иконки для статей
+ */
 @Service
 public class FileSystemStorageService implements StorageService {
 
     @Value("${FILE_SOURCE}")
-    private String location = "";
+    private String location;
 
-    private final Path rootLocation;
+    private Path rootLocation;
 
-    @Autowired
-    public FileSystemStorageService() {
-        this.rootLocation = Paths.get(location);
-
-    }
 
     @Override
     public void store(MultipartFile file) {
+
+        System.out.println("||| " + rootLocation.toString()+" ||| "+location);
+
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (file.isEmpty()) {
@@ -98,8 +100,10 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
+    @PostConstruct
     public void init() {
         try {
+            this.rootLocation = Paths.get(location);
             Files.createDirectories(rootLocation);
         }
         catch (IOException e) {

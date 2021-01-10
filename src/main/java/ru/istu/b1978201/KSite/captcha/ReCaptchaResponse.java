@@ -1,5 +1,8 @@
 package ru.istu.b1978201.KSite.captcha;
 
+/**
+ * Класс - data, который хранит внутри себя результат проверки капчи
+ */
 public class ReCaptchaResponse {
 
     private boolean success;
