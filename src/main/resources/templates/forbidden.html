@@ -4,37 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="css/header.css" type="text/css"/>
-    <link rel="stylesheet" href="css/form.css" type="text/css"/>
+  <link href="css/header.css" rel="stylesheet" type="text/css">
+<link href="../static/css/header.css" rel="stylesheet" type="text/css">
     <title>KSite</title>
 </head>
 <body>
 <header class="header-box">
     <div class="header-home-item">
-        <a title="home" href="/"><img src="img/home.png" alt="" class="home-img"></a>
+        <a title="home" href="/index"><img  src="img/home.png" alt="" class="home-img"></a>
     </div>
-    <div th:if="!${auth}">
+    <div class="login-item-box-left ">
+        <div class="item-site-name"> Overcoming difficulties</div>
+    </div>
+	
+
+	
+  <div  th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/login">Войти</a>
+                <a href="/login"><img class="Picsize" src="img/user-check.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
             <div class="login-item-reg">
-                <a href="/reg">Регистрация</a>
+                <a href="/reg"><img class="Picsize" src="img/user-plus.svg" alt=""/></a>
             </div>
         </div>
     </div>
 
     <div th:if="${auth}">
-        <div class="login-item-box color-mouse">
+      <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/logout">Выйти</a>
+                <a href="/logout"><img class="Picsize" src="img/user-times.svg" alt=""/></a>
             </div>
         </div>
-        <div class="login-item-box color-mouse">
-            <div class="login-item-reg">
-                <a href="/account" th:text="${user.username}">You`r name</a>
+        
+          <div class="login-item-box color-mouse">
+            <div class="login-item-reg-plus">
+              <a id = "id-name" href="/account" th:text="${user.username}">You`r name</a>
+              
             </div>
         </div>
     </div>

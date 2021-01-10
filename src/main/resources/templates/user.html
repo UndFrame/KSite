@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/header.css" type="text/css"/>
     <link rel="stylesheet" href="css/main.css" type="text/css"/>
     <link href="css/header.css" rel="stylesheet" type="text/css">
-    <link href="css/header.css" rel="stylesheet" type="text/css">
+<link href="../static/css/header.css" rel="stylesheet" type="text/css">
     <title>KSite</title>
 </head>
 <body>
@@ -22,9 +22,7 @@
         <div class="item-site-name"> Overcoming difficulties</div>
     </div>
 	
-  <div class="button"  th:if="${auth}" >
-        <div class=><a href="/editor" id="subCommand"><img src="img/icons8-редактировать.svg" alt="" class="Picsize"/></a></div>
-  </div>
+
 	
   <div  th:if="!${auth}">
         <div class="login-item-box color-mouse">
@@ -37,20 +35,20 @@
                 <a href="/reg"><img class="Picsize" src="img/user-plus.svg" alt=""/></a>
             </div>
         </div>
-  </div>
+    </div>
 
     <div th:if="${auth}">
       <div class="login-item-box color-mouse">
             <div class="login-item-login">
                 <a href="/logout"><img class="Picsize" src="img/user-times.svg" alt=""/></a>
             </div>
-      </div>
+        </div>
         
-      <div class="login-item-box color-mouse">
+          <div class="login-item-box color-mouse">
             <div class="login-item-reg-plus">
               <a id = "id-name" href="/account" th:text="${user.username}">You`r name</a>
               
-        </div>
+            </div>
         </div>
     </div>
 
