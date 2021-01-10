@@ -6,8 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="css/header.css" type="text/css"/>
     <link rel="stylesheet" href="css/main.css" type="text/css"/>
- <link href="css/header.css" rel="stylesheet" type="text/css">
-<link href="../static/css/header.css" rel="stylesheet" type="text/css">
+<link href="css/header.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/header.css" rel="stylesheet" type="text/css">
     <title>KSite</title>
 
 </head>
@@ -19,10 +19,10 @@
     <div class="login-item-box-left ">
         <div class="item-site-name"> Overcoming difficulties</div>
     </div>
-	
 
-	
-  <div  th:if="!${auth}">
+
+
+    <div  th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
                 <a href="/login"><img class="Picsize" src="img/user-check.svg" alt=""/></a>
@@ -36,16 +36,16 @@
     </div>
 
     <div th:if="${auth}">
-      <div class="login-item-box color-mouse">
+        <div class="login-item-box color-mouse">
             <div class="login-item-login">
                 <a href="/logout"><img class="Picsize" src="img/user-times.svg" alt=""/></a>
             </div>
         </div>
-        
-          <div class="login-item-box color-mouse">
+
+        <div class="login-item-box color-mouse">
             <div class="login-item-reg-plus">
-              <a id = "id-name" href="/account" th:text="${user.username}">You`r name</a>
-              
+                <a id = "id-name" href="/account" th:text="${user.username}">You`r name</a>
+
             </div>
         </div>
     </div>
@@ -120,8 +120,5 @@
       </div>
   </div>
 </main>
-<footer class="footer-article">
-	
-</footer>
 </body>
 </html>

@@ -8,18 +8,22 @@
     <link rel="stylesheet" href="css/header.css" type="text/css"/>
     <link rel="stylesheet" href="css/main.css" type="text/css"/>
     <link href="css/header.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/header.css" rel="stylesheet" type="text/css">
     <title>KSite</title>
 
 </head>
 <body>
-<!--  HEADER  --><header class="header-box">
+<header class="header-box">
     <div class="header-home-item">
         <a title="home" href="/index"><img  src="img/home.png" alt="" class="home-img"></a>
     </div>
     <div class="login-item-box-left ">
         <div class="item-site-name"> Overcoming difficulties</div>
     </div>
-    <div th:if="!${auth}">
+
+
+
+    <div  th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
                 <a href="/login"><img class="Picsize" src="img/user-check.svg" alt=""/></a>
@@ -38,9 +42,11 @@
                 <a href="/logout"><img class="Picsize" src="img/user-times.svg" alt=""/></a>
             </div>
         </div>
+
         <div class="login-item-box color-mouse">
             <div class="login-item-reg-plus">
                 <a id = "id-name" href="/account" th:text="${user.username}">You`r name</a>
+
             </div>
         </div>
     </div>
