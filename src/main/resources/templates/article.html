@@ -52,7 +52,7 @@
 
 </header>
 <main class="article_create">
-  <div class="card">
+  <div class="card box-size">
     
     <div class="card-body back-ground">
       
@@ -69,8 +69,7 @@
       <img th:src="${url}" width="200" height="150" alt=>
       <div>
         <p>
-            <textarea name="textarea" cols="50" rows="15" readonly="readonly" class="text-output"><div th:utext="${article.getText()}"></div>
-            </textarea>
+            <textarea name="textarea" cols="50" rows="15" readonly="readonly" class="text-output"><div th:utext="${article.getText()}"></div></textarea>
           </p>
           <p>Время создания: </p>
           <div th:text="${timeCreate}"></div>
