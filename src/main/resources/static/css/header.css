@@ -179,6 +179,7 @@ body{
     font-size: x-large;
     font-weight: bold;
     margin-bottom: 38px;
+    text-decoration: none;
 }
 
 iframe {
@@ -259,7 +260,12 @@ footer {
 }
 
 #article {
-    margin-top: 70px;
+    border-width: thin;
+    border-style: solid;
+    width: 400px;
+    margin-top: 27px;
+    margin-left: 16px;
+    padding-left: 27px;
 }
 
 
@@ -310,4 +316,20 @@ footer {
 
 #st {
     color: #E00E12;
+}
+
+.hm {
+    color: #000000;
+    text-decoration: none;
+    font-family: Constantia, "Lucida Bright", "DejaVu Serif", Georgia, serif;
+    font-size: large;
+    
+	
+}
+
+#sds {
+    margin-top: 11px;	
+}
+
+#dsd {
 }

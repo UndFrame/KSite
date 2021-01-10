@@ -11,7 +11,7 @@
     <title>KSite</title>
 
 </head>
-<body>
+<body >
 <!--  HEADER  -->
 <header class="header-box">
     <div class="header-home-item">
@@ -52,29 +52,32 @@
     </div>
 
 </header>
+	
+	<div class="heh" ><a href="/article" class="hm">Все статьи</a></div>
+	
 <article id="article">
   <div th:if="${auth}">
-    <form th:action="@{/editor}" enctype="multipart/form-data" method="post">
+    <form method="post" enctype="multipart/form-data" class="eee" th:action="@{/editor}">
       
-      <div>Описание</div>
+      <div>Описание:</div>
       <label>
-        <input type="text" name="description"/>
+        <input name="description" type="text" autofocus="autofocus" required="required" placeholder="Введите название статьи..." size="20"/>
         </label>
-      <div>Статья</div>
+      <div>Статья:</div>
       <label>
-        <textarea name="text"></textarea>
-        </label>
+        <textarea name="text" cols="50" rows="15" required="required" placeholder="Введите описание статьи..."></textarea>
+      </label>
       <div>
-        Иконка
+        Прикрепить изображение:
         <div>
           <input type="file" name="file"/>
-          </div>
         </div>
+      </div>
       
       
       <input type="submit" value="Отправить" id="editor"/>
       
-      </form>
+    </form>
     
     <div>Статьи:</div>
     
@@ -86,7 +89,7 @@
     
   </div>
 </article>
-<div><a href="/article">Статьи</a></div>
+
 
 </body>
 </html>
