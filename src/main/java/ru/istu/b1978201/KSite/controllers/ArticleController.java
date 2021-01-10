@@ -21,6 +21,7 @@ import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Comment;
 import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
+import ru.istu.b1978201.KSite.services.ArticleService;
 import ru.istu.b1978201.KSite.services.UserServiceImpl;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
@@ -46,7 +47,9 @@ public class ArticleController {
     private StorageService storageService;
 
     @Autowired
-    private UserServiceImpl userService;
+    private ArticleService articleService;
+
+
 
 
     @GetMapping("article")
@@ -159,50 +162,14 @@ public class ArticleController {
 
 
         if (article != null && user != null) {
-            LikeDislike likeDislike = null;
-
-            userService.refreshUserLikeDislike(user);
-
-            for (LikeDislike dislike : user.getLikeDislikes()) {
-                if (dislike.getArticle().equals(article)) {
-                    likeDislike = dislike;
-                }
-            }
-            boolean newLike = false;
-
-            if (likeDislike == null) {
-                likeDislike = new LikeDislike();
-                newLike = true;
-            }
-
-            newLike |= likeDislike.isClear();
-
-            likeDislike.setArticle(article);
-            likeDislike.setUser(user);
-
-
-            if(newLike ){
-                article.setDislikes(article.getDislikes() + 1);
-                likeDislike.setDislike(true);
-            }else if(likeDislike.isDislike()){
-                article.setDislikes(article.getDislikes() - 1);
-                likeDislike.clear();
-            }else if(likeDislike.isLike()){
-                article.setDislikes(article.getDislikes() + 1);
-                article.setLikes(article.getLikes() - 1);
-                likeDislike.setLike(false);
-            }
-
-
-            article.getLikeDislikes().add(likeDislike);
-            user.getLikeDislikes().add(likeDislike);
-            likeDislikeDao.save(likeDislike);
-            articleDao.save(article);
+            articleService.dislikeArticle(user, article);
             model.addAttribute("comments", article.getComment());
         }
 
         return "article";
     }
+
+
 
     @PostMapping(value = "article", params = "like")
     public String like(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
@@ -231,47 +198,14 @@ public class ArticleController {
 
 
         if (article != null && user != null) {
-            LikeDislike likeDislike = null;
-
-            userService.refreshUserLikeDislike(user);
-
-            for (LikeDislike dislike : user.getLikeDislikes()) {
-                if (dislike.getArticle().equals(article)) {
-                    likeDislike = dislike;
-                }
-            }
-            boolean newLike = false;
-
-            if (likeDislike == null) {
-                likeDislike = new LikeDislike();
-                newLike = true;
-            }
-
-            newLike |= likeDislike.isClear();
-
-            likeDislike.setArticle(article);
-            likeDislike.setUser(user);
-            if(newLike ){
-                article.setLikes(article.getLikes() + 1);
-                likeDislike.setLike(true);
-            }else if(likeDislike.isLike()){
-                article.setLikes(article.getLikes() - 1);
-                likeDislike.clear();
-            }else if(likeDislike.isDislike()){
-                article.setLikes(article.getLikes() + 1);
-                article.setDislikes(article.getDislikes() - 1);
-                likeDislike.setLike(true);
-            }
-
-            article.getLikeDislikes().add(likeDislike);
-            user.getLikeDislikes().add(likeDislike);
-            likeDislikeDao.save(likeDislike);
-            articleDao.save(article);
+            articleService.likeArticle(user, article);
             model.addAttribute("comments", article.getComment());
         }
 
         return "article";
     }
+
+
 
     @GetMapping("editor")
     public String getEditor(Model model) {

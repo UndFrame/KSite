@@ -38,6 +38,9 @@ class ArticleDaoTest {
         Assert.assertNotNull(articleDao.save(article));
     }
 
+    /**
+     * Проверка корректной работы методов findByHash(String hash) и save() jpa-интерфейса ArticleDao
+     */
     @Test
     void findByHashAndSave() {
         save();
@@ -45,12 +48,17 @@ class ArticleDaoTest {
     }
 
 
-
+    /**
+     * Проверка корректной работы метода findAllByUserId(Long id) jpa-интерфейса ArticleDao
+     */
     @Test
     void findAllByUserId() {
         Assert.assertNotNull(articleDao.findAllByUserId(2));
     }
 
+    /**
+     * Проверка корректной работы метода deleteById(Long id) jpa-интерфейса ArticleDao
+     */
     @Test
     void deleteById() {
 
