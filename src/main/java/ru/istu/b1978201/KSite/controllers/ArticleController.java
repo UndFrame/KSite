@@ -323,6 +323,11 @@ public class ArticleController {
     private String location;
 
 
+    /**
+     *
+     * @param filename
+     * @return
+     */
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
