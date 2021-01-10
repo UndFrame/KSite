@@ -5,35 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<link rel="stylesheet" href="css/header.css" type="text/css"/>
-    <link rel="stylesheet" href="css/main.css" type="text/css"/>
-    <link href="css/header.css" rel="stylesheet" type="text/css">
-    <link href="../static/css/header.css" rel="stylesheet" type="text/css">
+
+    
 <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
 <script>var __adobewebfontsappname__="dreamweaver"</script>
 <script src="http://use.edgefonts.net/ubuntu:n3,i3,n4:default;acme:n4:default.js" type="text/javascript"></script>
 
+
+<link href="css/header.css" rel="stylesheet" type="text/css">
+<link href="../static/css/header.css" rel="stylesheet" type="text/css">
 </head>
 <body id="back">
 <!--  HEADER  -->
 
 <header class="header-box">
     <div class="header-home-item">
-        <a title="home" href="/index"><img  src="../static/img/home.png" alt="" class="home-img"></a>
+        <a title="home" href="/index"><img  src="img/home.png" alt="" class="home-img"></a>
     </div>
     <div class="login-item-box-left ">
-        <div class="item-site-name">Overcoming difficulties</div>
+        <div class="item-site-name"> Overcoming difficulties</div>
     </div>
+	
+
 	
   <div  th:if="!${auth}">
         <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/login"><img class="Picsize" src="../static/img/user-check.svg" alt=""/></a>
+                <a href="/login"><img class="Picsize" src="img/user-check.svg" alt=""/></a>
             </div>
         </div>
         <div class="login-item-box color-mouse">
             <div class="login-item-reg">
-                <a href="/reg"><img class="Picsize" src="../static/img/user-plus.svg" alt=""/></a>
+                <a href="/reg"><img class="Picsize" src="img/user-plus.svg" alt=""/></a>
             </div>
         </div>
     </div>
@@ -41,7 +44,7 @@
     <div th:if="${auth}">
       <div class="login-item-box color-mouse">
             <div class="login-item-login">
-                <a href="/logout"><img class="Picsize" src="../static/img/user-times.svg" alt=""/></a>
+                <a href="/logout"><img class="Picsize" src="img/user-times.svg" alt=""/></a>
             </div>
         </div>
         
