@@ -282,9 +282,7 @@ footer {
 }
 
 #subCommand {
-    text-decoration: none;
-    color: #FFFFFF;
-    font-size: large;
+    
 
 }
 
@@ -359,4 +357,10 @@ footer {
     font-size: x-large;
     font-weight: bold;
     text-decoration: none;
+}
+
+#text {
+	text-decoration: none;
+    color: #FFFFFF;
+    font-size: large;
 }
