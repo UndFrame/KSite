@@ -47,12 +47,12 @@ public class AuthProviderImpl implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        CustomWebAuthenticationDetails webAuthenticationDetails = (CustomWebAuthenticationDetails)authentication.getDetails();
-        String captchaParam = "?secret="+captchaServerKey+"&response="+ webAuthenticationDetails.getCaptchaToken();
-        ReCaptchaResponse captchaResponse = restTemplate.exchange(captchaURL + captchaParam, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
-        if(captchaResponse==null || !captchaResponse.isSuccess()){
-            throw new CaptchaError("captcha error");
-        }
+//        CustomWebAuthenticationDetails webAuthenticationDetails = (CustomWebAuthenticationDetails)authentication.getDetails();
+//        String captchaParam = "?secret="+captchaServerKey+"&response="+ webAuthenticationDetails.getCaptchaToken();
+//        ReCaptchaResponse captchaResponse = restTemplate.exchange(captchaURL + captchaParam, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
+//        if(captchaResponse==null || !captchaResponse.isSuccess()){
+//            throw new CaptchaError("captcha error");
+//        }
         User user = userService.findByUsername(authentication.getName());
         if(user == null){
             user = userService.findByEmail(authentication.getName());
