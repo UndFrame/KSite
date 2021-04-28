@@ -8,14 +8,14 @@ DROP TABLE ksite.roles;
 
 CREATE TABLE ksite.tokens
 (
-    id    SERIAL UNIQUE CONSTRAINT PK_1  PRIMARY KEY ,
+    id    SERIAL UNIQUE NOT NULL  PRIMARY KEY ,
     token VARCHAR(255),
     date  TIMESTAMP
 );
 
 CREATE TABLE ksite.users
 (
-    id       SERIAL UNIQUE CONSTRAINT PK_2  PRIMARY KEY,
+    id       SERIAL UNIQUE NOT NULL  PRIMARY KEY,
     token    INT,
     username VARCHAR(255) NOT NULL UNIQUE,
     email    VARCHAR(255) NOT NULL UNIQUE,
@@ -29,7 +29,7 @@ CREATE UNIQUE INDEX username_index ON ksite.users (username, email);
 
 CREATE TABLE ksite.roles
 (
-    id   SERIAL UNIQUE  CONSTRAINT PK_3  PRIMARY KEY,
+    id   SERIAL UNIQUE NOT NULL  PRIMARY KEY,
     role VARCHAR(30) NOT NULL UNIQUE
 
 );
@@ -46,7 +46,7 @@ CREATE TABLE ksite.user_role
 
 CREATE TABLE ksite.like_dislike
 (
-  id         SERIAL UNIQUE CONSTRAINT PK_4  PRIMARY KEY ,
+  id         SERIAL UNIQUE NOT NULL  PRIMARY KEY ,
   user_id    INT NOT NULL,
   article INT NOT NULL,
   likes      BOOLEAN,
@@ -57,7 +57,7 @@ CREATE TABLE ksite.like_dislike
 CREATE TABLE ksite.articles
 (
 
-    id         SERIAL UNIQUE CONSTRAINT PK_5  PRIMARY KEY,
+    id         SERIAL UNIQUE NOT NULL  PRIMARY KEY,
     description TEXT         NOT NULL,
     icon TEXT         NOT NULL,
     user_id     INT          NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE ksite.articles
 
 CREATE TABLE ksite.comments
 (
-  id         SERIAL UNIQUE CONSTRAINT PK_6  PRIMARY KEY ,
+  id         SERIAL UNIQUE NOT NULL PRIMARY KEY ,
   article INT  NOT NULL,
   user_id    INT  NOT NULL,
   comment    TEXT NOT NULL,
