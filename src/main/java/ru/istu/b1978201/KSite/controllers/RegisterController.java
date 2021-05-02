@@ -115,6 +115,7 @@ public class RegisterController {
 
             return "reg";
         }
+
         userForm.setUsername(userForm.getUsername().toLowerCase());
         userForm.setEmail(userForm.getEmail().toLowerCase());
         boolean create = userService.createUser(userForm);

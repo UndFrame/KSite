@@ -22,8 +22,8 @@ CREATE TABLE ksite.users
     password      VARCHAR(255)  NOT NULL,
     enabled       BOOLEAN       NOT NULL,
     ban           BOOLEAN       NOT NULL,
-    access_token  varchar(255),
-    refresh_token varchar(255),
+    access_token  text,
+    refresh_token text,
 
     FOREIGN KEY (token) REFERENCES ksite.tokens (id)
 );
