@@ -67,7 +67,7 @@ public class User implements UserDetails {
     private Collection<Article> article;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Collection<LikeDislike> likeDislikes;
+    private Collection<Evaluation> likeDislikes;
 
 
     public Token getToken() {
@@ -146,13 +146,13 @@ public class User implements UserDetails {
         this.ban = ban;
     }
 
-    public Collection<LikeDislike> getLikeDislikes() {
+    public Collection<Evaluation> getLikeDislikes() {
         if(likeDislikes==null)
             setLikeDislikes(new ArrayList<>());
         return likeDislikes;
     }
 
-    public void setLikeDislikes(Collection<LikeDislike> likeDislikes) {
+    public void setLikeDislikes(Collection<Evaluation> likeDislikes) {
         this.likeDislikes = likeDislikes;
     }
 

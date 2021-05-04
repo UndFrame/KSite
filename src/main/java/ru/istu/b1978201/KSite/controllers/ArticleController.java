@@ -19,10 +19,8 @@ import ru.istu.b1978201.KSite.dao.CommentDao;
 import ru.istu.b1978201.KSite.dao.LikeDislikeDao;
 import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Comment;
-import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.services.ArticleService;
-import ru.istu.b1978201.KSite.services.UserServiceImpl;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
 import java.util.Date;

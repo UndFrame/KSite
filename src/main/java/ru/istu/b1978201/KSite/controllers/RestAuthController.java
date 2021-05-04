@@ -75,9 +75,6 @@ public class RestAuthController {
             user = userService.findByEmail(login);
         }
         json.put("auth_status", AuthStatus.ERROR);
-
-
-
         if (user != null) {
             try {
                 String key = "Bar12345Bar12345Bar12345Bar12345";

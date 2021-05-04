@@ -1,6 +1,5 @@
 package ru.istu.b1978201.KSite.mode;
 
-import org.springframework.beans.factory.annotation.Value;
 import ru.istu.b1978201.KSite.configs.ApplicationProperties;
 
 import javax.persistence.*;
@@ -43,7 +42,7 @@ public class Article {
     private User user;
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
-    private Collection<LikeDislike> likeDislikes;
+    private Collection<Evaluation> likeDislikes;
 
     public Article() {
     }
@@ -86,13 +85,13 @@ public class Article {
         return comment;
     }
 
-    public Collection<LikeDislike> getLikeDislikes() {
+    public Collection<Evaluation> getLikeDislikes() {
         if (likeDislikes == null)
             setLikeDislikes(new ArrayList<>());
         return likeDislikes;
     }
 
-    public void setLikeDislikes(Collection<LikeDislike> likeDislikes) {
+    public void setLikeDislikes(Collection<Evaluation> likeDislikes) {
         this.likeDislikes = likeDislikes;
     }
 

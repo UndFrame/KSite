@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.istu.b1978201.KSite.dao.ArticleDao;
 import ru.istu.b1978201.KSite.dao.LikeDislikeDao;
 import ru.istu.b1978201.KSite.mode.Article;
-import ru.istu.b1978201.KSite.mode.LikeDislike;
+import ru.istu.b1978201.KSite.mode.Evaluation;
 import ru.istu.b1978201.KSite.mode.User;
 
 @Service
@@ -32,12 +32,12 @@ public class ArticleService {
         this.articleDao = articleDao;
     }
 
-    public void likeArticle(User user, Article article) {
-        LikeDislike likeDislike = null;
+    public Evaluation likeArticle(User user, Article article) {
+        Evaluation likeDislike = null;
 
         userService.refreshUserLikeDislike(user);
 
-        for (LikeDislike dislike : user.getLikeDislikes()) {
+        for (Evaluation dislike : user.getLikeDislikes()) {
             if (dislike.getArticle().equals(article)) {
                 likeDislike = dislike;
             }
@@ -45,7 +45,7 @@ public class ArticleService {
         boolean newLike = false;
 
         if (likeDislike == null) {
-            likeDislike = new LikeDislike();
+            likeDislike = new Evaluation();
             newLike = true;
         }
 
@@ -69,14 +69,15 @@ public class ArticleService {
         user.getLikeDislikes().add(likeDislike);
         likeDislikeDao.save(likeDislike);
         articleDao.save(article);
+        return likeDislike;
     }
 
-    public void dislikeArticle(User user, Article article) {
-        LikeDislike likeDislike = null;
+    public Evaluation dislikeArticle(User user, Article article) {
+        Evaluation likeDislike = null;
 
         userService.refreshUserLikeDislike(user);
 
-        for (LikeDislike dislike : user.getLikeDislikes()) {
+        for (Evaluation dislike : user.getLikeDislikes()) {
             if (dislike.getArticle().equals(article)) {
                 likeDislike = dislike;
             }
@@ -84,7 +85,7 @@ public class ArticleService {
         boolean newLike = false;
 
         if (likeDislike == null) {
-            likeDislike = new LikeDislike();
+            likeDislike = new Evaluation();
             newLike = true;
         }
 
@@ -111,6 +112,7 @@ public class ArticleService {
         user.getLikeDislikes().add(likeDislike);
         likeDislikeDao.save(likeDislike);
         articleDao.save(article);
+        return likeDislike;
     }
 
 }

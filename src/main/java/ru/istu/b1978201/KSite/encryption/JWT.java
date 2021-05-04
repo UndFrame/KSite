@@ -20,7 +20,7 @@ public class JWT {
             headerJson.put("typ", "JWT");
 
             JSONObject payloadJson = new JSONObject();
-            payloadJson.put("exp", (System.currentTimeMillis() / 1000L) + (refresh ? /*60 * 60 * 24 * 7*/ 60*2 : 40));
+            payloadJson.put("exp", (System.currentTimeMillis() / 1000L) + (refresh ? 60 * 60 * 24 * 7 : 60*15));
             payloadJson.put("userId", user.getId());
             payloadJson.put("userName", user.getUsername());
             payloadJson.put("id", UUID.randomUUID());

@@ -66,9 +66,6 @@ public class AuthProviderImpl implements AuthenticationProvider {
         if(user.isBan()){
             throw new UserIsBanned("user is banned");
         }
-
-        System.out.println(authentication.getCredentials()+" : "+ user.getPassword());
-
         if(!passwordEncoder.matches(authentication.getCredentials().toString(),user.getPassword())){
             throw new BadCredentialsException("password not equals");
         }
