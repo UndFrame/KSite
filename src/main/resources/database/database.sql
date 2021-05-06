@@ -5,6 +5,7 @@ DROP TABLE ksite.articles;
 DROP TABLE ksite.users;
 DROP TABLE ksite.tokens;
 DROP TABLE ksite.roles;
+DROP TABLE ksite.auth_tokens;
 
 CREATE TABLE ksite.tokens
 (
@@ -22,11 +23,21 @@ CREATE TABLE ksite.users
     password      VARCHAR(255)  NOT NULL,
     enabled       BOOLEAN       NOT NULL,
     ban           BOOLEAN       NOT NULL,
-    access_token  text not null default '',
-    refresh_token text not null default '',
 
     FOREIGN KEY (token) REFERENCES ksite.tokens (id)
 );
+
+CREATE TABLE ksite.auth_tokens
+(
+    id            SERIAL UNIQUE NOT NULL PRIMARY KEY,
+    user_id       INT           NOT NULL,
+    service_id    INT           NOT NULL,
+    device_id    INT           NOT NULL,
+    access_token  text          not null default '',
+    refresh_token text          not null default ''
+);
+
+
 CREATE UNIQUE INDEX username_index ON ksite.users (username, email);
 
 CREATE TABLE ksite.roles

@@ -40,13 +40,6 @@ public class User implements UserDetails {
     @Column(name = "ban")
     private boolean ban;
 
-    @Column(name = "access_token")
-    private String accessToken;
-
-    @Column(name = "refresh_token")
-    private String refreshToken;
-
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "token", referencedColumnName = "id")
     private Token token;
@@ -104,22 +97,6 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
     }
 
     public String getEmail() {

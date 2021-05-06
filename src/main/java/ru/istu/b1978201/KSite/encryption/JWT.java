@@ -8,11 +8,13 @@ import ru.istu.b1978201.KSite.mode.User;
 import java.security.SignatureException;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.Random;
 
 public class JWT {
 
-    public static String getToken(User user, boolean refresh) {
+    private static Random random = new Random();
+
+    public static String getToken(User user,boolean refresh) {
         String accessToken = "";
         try {
             JSONObject headerJson = new JSONObject();
@@ -23,7 +25,7 @@ public class JWT {
             payloadJson.put("exp", (System.currentTimeMillis() / 1000L) + (refresh ? 60 * 60 * 24 * 7 : 60*15));
             payloadJson.put("userId", user.getId());
             payloadJson.put("userName", user.getUsername());
-            payloadJson.put("id", UUID.randomUUID());
+            payloadJson.put("id", random.nextLong());
 
             String hS = headerJson.toString();
             String pS = payloadJson.toString();

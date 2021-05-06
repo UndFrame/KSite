@@ -74,13 +74,13 @@ public class RestArticleController {
         return json;
     }
 
+
     @PostMapping(value = {"api/createarticle"})
     public Map<String, Object> createArticle(HttpServletRequest requestS, @RequestParam(value = "access_token", defaultValue = "") String accessToken,
                                              @RequestParam(value = "description", defaultValue = "") String articleDescription,
                                              @RequestParam(value = "text", defaultValue = "") String articleText,
-                                             @RequestParam(value = "icon") MultipartFile file
+                                             @RequestParam(value = "icon", required = false) MultipartFile file
     ) {
-
         Map<String, String> parameters = new HashMap<>();
         for (String parameter : requestS.getQueryString().split("&")) {
             String[] par = parameter.split("=", 2);
@@ -90,33 +90,51 @@ public class RestArticleController {
         accessToken = parameters.get("access_token");
         Map<String, Object> request = new HashMap<>();
 
-        System.out.println("TEXT: "+ accessToken);
+        if (articleDescription != null && !articleDescription.isEmpty()
+                && articleText != null && !articleText.isEmpty()
+                && file != null && !file.isEmpty()) {
 
-        if (!accessToken.isEmpty() && !articleDescription.isEmpty() && !articleText.isEmpty() && file != null) {
-            request.put("status", ArticleStatus.EXPIRED_TOKEN);
-            if (JWT.isAlive(accessToken)) {
-                request.put("status", ArticleStatus.TOKEN_DAMAGED);
-                Optional<Long> userIdOptional = JWT.getUserId(accessToken);
-                if (userIdOptional.isPresent()) {
-                    User user = userService.findById(userIdOptional.get());
-                    if (user != null) {
-                        Article article = new Article();
-                        article.setText(articleText);
-                        article.setDescription(articleDescription);
-                        article.setHash(UUID.randomUUID().toString());
-                        article.setUser(user);
-                        article.setIcon(file.getOriginalFilename());
-                        article.setDateCreate(new Date());
-                        articleDao.save(article);
-                        storageService.store(file);
-                        request.put("status", ArticleStatus.SUCCESSFULLY);
-                    } else {
-                        request.put("status", ArticleStatus.USER_NOT_EXIT);
+            String contentType = file.getContentType();
+            if (contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
+                if (!accessToken.isEmpty()) {
+                    request.put("status", ArticleStatus.EXPIRED_TOKEN);
+                    if (JWT.isAlive(accessToken)) {
+                        request.put("status", ArticleStatus.TOKEN_DAMAGED);
+                        Optional<Long> userIdOptional = JWT.getUserId(accessToken);
+                        if (userIdOptional.isPresent()) {
+                            User user = userService.findById(userIdOptional.get());
+                            if (user != null) {
+                                Article article = new Article();
+                                article.setText(articleText);
+                                article.setDescription(articleDescription);
+                                article.setHash(UUID.randomUUID().toString());
+                                article.setUser(user);
+                                article.setIcon(file.getOriginalFilename());
+                                article.setDateCreate(new Date());
+                                articleDao.save(article);
+                                storageService.store(file);
+                                request.put("status", ArticleStatus.SUCCESSFULLY);
+                            } else {
+                                request.put("status", ArticleStatus.USER_NOT_EXIT);
+                            }
+                        }
                     }
+                } else {
+                    request.put("status", ArticleStatus.INPUT_FILE_NOT_ALLOWED);
                 }
+            } else {
+                request.put("status", ArticleStatus.INPUT_DATA_IS_INVALID);
             }
-        } else {
-            request.put("status", ArticleStatus.INPUT_DATA_IS_INVALID);
+        }
+
+        if (articleDescription == null || articleDescription.isEmpty()) {
+            request.put("status", ArticleStatus.INPUT_DESCRIPTION_IS_EMPTY);
+        }
+        if (articleText == null || articleText.isEmpty()) {
+            request.put("status", ArticleStatus.INPUT_TEXT_IS_EMPTY);
+        }
+        if (file == null || file.isEmpty()) {
+            request.put("status", ArticleStatus.INPUT_FILE_IS_NULL);
         }
 
         return request;
