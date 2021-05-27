@@ -49,8 +49,8 @@ CREATE TABLE ksite.auth_tokens
 (
     id            SERIAL UNIQUE NOT NULL PRIMARY KEY,
     user_id       INT           NOT NULL,
-    service_id    INT           NOT NULL,
-    device_id    INT           NOT NULL,
+    service_id    varchar(255)           NOT NULL,
+    device_id    varchar(255)           NOT NULL,
     access_token  text          not null default '',
     refresh_token text          not null default ''
 );
