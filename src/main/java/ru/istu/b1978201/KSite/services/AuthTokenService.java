@@ -16,15 +16,18 @@ public class AuthTokenService {
     @Autowired
     private AuthTokenDao authTokenDao;
 
-    public AuthToken getNewToken(User user, String serviceId, String deviceData) {
+    @Autowired
+    private JWT jwt;
+
+    public AuthToken getNewToken(User user, String serviceId, String deviceId) {
 
         AuthToken authToken = new AuthToken();
 
-        authToken.setAccessToken(JWT.getToken(user, false));
-        authToken.setRefreshToken(JWT.getToken(user, true));
+        authToken.setAccessToken(jwt.getToken(user,deviceId, false));
+        authToken.setRefreshToken(jwt.getToken(user,deviceId, true));
         authToken.setUserId(user.getId());
         authToken.setServiceId(serviceId);
-        authToken.setDeviceId(deviceData);
+        authToken.setDeviceId(deviceId);
 
         return authToken;
     }
@@ -67,7 +70,7 @@ public class AuthTokenService {
     }
 
     public boolean isAuthorized(String accessToken){
-        return JWT.isAlive(accessToken);
+        return jwt.isAlive(accessToken).isPresent();
     }
 
 }

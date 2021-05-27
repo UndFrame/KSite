@@ -47,6 +47,9 @@ public class RestArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private JWT jwt;
+
 
     @GetMapping(value = {"api/article"})
     public Map<String, Object> article(@RequestParam(value = "id", defaultValue = "") String hash) {
@@ -100,11 +103,11 @@ public class RestArticleController {
             if (contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
                 if (!accessToken.isEmpty()) {
                     request.put("status", ArticleStatus.EXPIRED_TOKEN);
-                    Optional<JSONObject> alivePayload = JWT.isAlive(accessToken);
+                    Optional<JSONObject> alivePayload = jwt.isAlive(accessToken);
                     if (alivePayload.isPresent()) {
                         request.put("status", ArticleStatus.TOKEN_DAMAGED);
                         try {
-                            Long userIdOptional = alivePayload.get().getLong("userId");
+                            Long userIdOptional = alivePayload.get().getLong("uid");
                             User user = userService.findById(userIdOptional);
                             if (user != null) {
                                 Article article = new Article();
@@ -164,11 +167,13 @@ public class RestArticleController {
 
         if (!accessToken.isEmpty() && !comment.isEmpty()) {
             request.put("status", ArticleStatus.EXPIRED_TOKEN);
-            if (JWT.isAlive(accessToken)) {
+            Optional<JSONObject> aliveToken = jwt.isAlive(accessToken);
+            if (aliveToken.isPresent()) {
                 request.put("status", ArticleStatus.TOKEN_DAMAGED);
-                Optional<Long> userIdOptional = JWT.getUserId(accessToken);
-                if (userIdOptional.isPresent()) {
-                    User user = userService.findById(userIdOptional.get());
+
+                try {
+                    Long userId = aliveToken.get().getLong("uid");
+                    User user = userService.findById(userId);
                     if (user != null) {
 
                         Optional<Article> optionalArticle = articleDao.findById(articleId);
@@ -185,6 +190,8 @@ public class RestArticleController {
                     } else {
                         request.put("status", ArticleStatus.USER_NOT_EXIT);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         } else {
@@ -199,7 +206,6 @@ public class RestArticleController {
                                     @RequestParam(value = "article_id", defaultValue = "") long articleId,
                                     @RequestParam(value = "is_like", defaultValue = "") boolean isLike
     ) {
-
         Map<String, String> parameters = new HashMap<>();
         for (String parameter : requestS.getQueryString().split("&")) {
             String[] par = parameter.split("=", 2);
@@ -215,11 +221,12 @@ public class RestArticleController {
 
         if (!accessToken.isEmpty()) {
             request.put("status", ArticleStatus.EXPIRED_TOKEN);
-            if (JWT.isAlive(accessToken)) {
+            Optional<JSONObject> aliveToken = jwt.isAlive(accessToken);
+            if (aliveToken.isPresent()) {
                 request.put("status", ArticleStatus.TOKEN_DAMAGED);
-                Optional<Long> userIdOptional = JWT.getUserId(accessToken);
-                if (userIdOptional.isPresent()) {
-                    User user = userService.findById(userIdOptional.get());
+                try {
+                    Long userId = aliveToken.get().getLong("uid");
+                    User user = userService.findById(userId);
                     if (user != null) {
 
                         Optional<Article> optionalArticle = articleDao.findById(articleId);
@@ -237,6 +244,8 @@ public class RestArticleController {
                     } else {
                         request.put("status", ArticleStatus.USER_NOT_EXIT);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }

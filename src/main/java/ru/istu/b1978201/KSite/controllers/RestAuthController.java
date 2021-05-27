@@ -4,19 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.istu.b1978201.KSite.encryption.JWT;
 import ru.istu.b1978201.KSite.encryption.SimpleCipher;
 import ru.istu.b1978201.KSite.mode.AuthToken;
 import ru.istu.b1978201.KSite.mode.User;
+import ru.istu.b1978201.KSite.services.AllowedServicesService;
 import ru.istu.b1978201.KSite.services.AuthTokenService;
+import ru.istu.b1978201.KSite.services.BanedAccessTokenService;
 import ru.istu.b1978201.KSite.services.UserService;
 import ru.istu.b1978201.KSite.utils.AuthStatus;
-import ru.istu.b1978201.KSite.utils.ServicesId;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -40,15 +37,26 @@ public class RestAuthController {
     @Autowired
     public PasswordEncoder passwordEncoder;
 
-
     @Autowired
     private AuthTokenService authTokenService;
 
-    @PostMapping(value = {"api/refresh/{serviceId}"})
-    public Map<String, Object> authWithRefreshToken(@PathVariable(value = "serviceId") String serviceId, HttpServletRequest requestS, @RequestParam(value = "id", defaultValue = "") long id,
+    @Autowired
+    private JWT jwt;
+
+    @Autowired
+    private BanedAccessTokenService banedAccessTokenService;
+
+    @Autowired
+    private AllowedServicesService allowedServicesService;
+
+    @RequestMapping(value = {"api/refresh"})
+    public Map<String, Object> authWithRefreshToken(HttpServletRequest requestS, @RequestParam(value = "id", defaultValue = "") long id,
                                                     @RequestParam(value = "refresh_token", defaultValue = "") String token,
-                                                    @RequestParam(value = "device_id", defaultValue = "") String deviceData) {
+                                                    @RequestParam(value = "device_id", defaultValue = "") String deviceId) {
+
+        System.out.println("TEST1");
         Map<String, Object> json = new HashMap<>();
+
 
         Map<String, String> parameters = new HashMap<>();
         for (String parameter : requestS.getQueryString().split("&")) {
@@ -57,24 +65,25 @@ public class RestAuthController {
         }
 
         token = parameters.getOrDefault("refresh_token", null);
-
-        if (ServicesId.isSupport(serviceId)) {
+        deviceId = new String(Base64.getDecoder().decode(parameters.getOrDefault("device_id", "").getBytes()));
+        if (allowedServicesService.allowedService(0).isPresent()) {
             try {
-                JSONObject deviceDataJSON = new JSONObject(deviceData);
+                JSONObject deviceDataJSON = new JSONObject(deviceId);
                 if (deviceDataJSON.has("ip") && deviceDataJSON.has("id")) {
-                    String deviceId = deviceDataJSON.getString("id");
+                    String device = deviceDataJSON.getString("id");
 
                     User user = userService.findById(id);
                     json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
                     if (user != null) {
                         json.put("auth_status", AuthStatus.ERROR);
-                        if (deviceData != null && !deviceData.isEmpty()) {
-                            Optional<AuthToken> optionalAuthToken = authTokenService.findAuthToken(user, serviceId, deviceId);
+                        if (device != null && !device.isEmpty()) {
+                            Optional<AuthToken> optionalAuthToken = authTokenService.findAuthToken(user, "0", device);
                             if (optionalAuthToken.isPresent()) {
                                 AuthToken authToken = optionalAuthToken.get();
                                 if (authToken.getRefreshToken().equals(token)) {
-                                    if (JWT.isAlive(authToken.getRefreshToken())) {
-                                        instanceData(json, user, serviceId, deviceId);
+                                    Optional<JSONObject> aliveToken = jwt.isAlive(authToken.getRefreshToken(),device);
+                                    if (aliveToken.isPresent()) {
+                                        instanceData(json, user, "0", device);
                                     } else {
                                         json.put("auth_status", AuthStatus.INVALID_TOKEN);
                                     }
@@ -99,14 +108,17 @@ public class RestAuthController {
         return json;
     }
 
-    @PostMapping(value = {"api/auth/{serviceId}"})
-    public Map<String, Object> authWithLogin(@PathVariable(value = "serviceId") String serviceId, @RequestParam(value = "login", defaultValue = "") String login,
+    @PostMapping(value = {"api/auth"})
+    public Map<String, Object> authWithLogin(@RequestParam(value = "serviceId",defaultValue = "") String serviceId, @RequestParam(value = "login", defaultValue = "") String login,
                                              @RequestParam(value = "password", defaultValue = "") String password,
                                              @RequestParam(value = "device_id", defaultValue = "") String deviceId) {
 
+
+        System.out.println("TEST2");
+
         Map<String, Object> json = new HashMap<>();
 
-        if (ServicesId.isSupport(serviceId)) {
+        if (allowedServicesService.allowedService(serviceId).isPresent()) {
             try {
                 JSONObject deviceDataJSON = new JSONObject(deviceId);
                 if (deviceDataJSON.has("ip") && deviceDataJSON.has("id")) {
@@ -150,8 +162,40 @@ public class RestAuthController {
         return json;
     }
 
-    private void instanceData(Map<String, Object> json, User user, String serviceId, String deviceData) {
-        AuthToken newToken = authTokenService.getNewToken(user, serviceId, deviceData);
+    @PostMapping(value = {"api/logout}"})
+    public Map<String, Object> logout(@RequestParam(value = "serviceId",defaultValue = "") String serviceId,
+                                             HttpServletRequest requestS,
+                                             @RequestParam(value = "id", defaultValue = "") long id,
+                                             @RequestParam(value = "access_token", defaultValue = "") String token) {
+
+        Map<String, Object> json = new HashMap<>();
+
+        Map<String, String> parameters = new HashMap<>();
+        for (String parameter : requestS.getQueryString().split("&")) {
+            String[] par = parameter.split("=", 2);
+            parameters.put(par[0], par[1]);
+        }
+
+        token = parameters.getOrDefault("refresh_token", null);
+
+        if (token != null && allowedServicesService.allowedService(serviceId).isPresent()) {
+            try {
+                Optional<JSONObject> aliveToken = jwt.isAlive(token);
+                if (aliveToken.isPresent()) {
+                    banedAccessTokenService.ban(aliveToken.get().getLong("uid"), token);
+                }
+            } catch (JSONException e) {
+                json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+            }
+        } else {
+            json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+        }
+
+        return json;
+    }
+
+    private void instanceData(Map<String, Object> json, User user, String serviceId, String deviceId) {
+        AuthToken newToken = authTokenService.getNewToken(user, serviceId, deviceId);
 
         json.put("id", user.getId());
         json.put("username", user.getUsername());
@@ -165,7 +209,5 @@ public class RestAuthController {
         json.put("auth_status", AuthStatus.SUCCESSFUL_AUTHORIZATION);
     }
 
-    @PostMapping
-    public Map<String,Object> isAuthorized()
 
 }

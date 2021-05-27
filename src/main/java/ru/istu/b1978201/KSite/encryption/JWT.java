@@ -1,20 +1,27 @@
 package ru.istu.b1978201.KSite.encryption;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.stereotype.Service;
 import ru.istu.b1978201.KSite.mode.User;
+import ru.istu.b1978201.KSite.services.BanedAccessTokenService;
 
 import java.security.SignatureException;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
 
+@Service
 public class JWT {
 
-    private static Random random = new Random();
+    @Autowired
+    private BanedAccessTokenService banedAccessTokenService;
 
-    public static String getToken(User user,String deviceId,boolean refresh) {
+    private Random random = new Random();
+
+    public String getToken(User user,String deviceId,boolean refresh) {
         String accessToken = "";
         try {
             JSONObject headerJson = new JSONObject();
@@ -43,7 +50,11 @@ public class JWT {
         return accessToken;
     }
 
-    public static Optional<JSONObject> isAlive(String token) {
+    public Optional<JSONObject> isAlive(String token) {
+        return this.isAlive(token, null);
+    }
+
+    public Optional<JSONObject> isAlive(String token,String deviceId) {
         String[] split = token.split("\\.");
         if (split.length == 3) {
             try {
@@ -53,8 +64,20 @@ public class JWT {
                 JSONObject payloadJSON = new JSONObject(new String(Base64.getDecoder().decode(payload)));
                 long time = payloadJSON.getLong("exp");
 
-                return (SimpleCipher.verifySignature(
-                        (header + "." + payload).getBytes(), Base64.getDecoder().decode(signatureExpected.getBytes())) && (time >= (System.currentTimeMillis() / 1000L))) ?
+                boolean isAliveToken = SimpleCipher.verifySignature(
+                        (header + "." + payload).getBytes(), Base64.getDecoder().decode(signatureExpected.getBytes())) && (time >= (System.currentTimeMillis() / 1000L));
+
+                if(isAliveToken){
+                    long userId = payloadJSON.getLong("uid");
+                    if(banedAccessTokenService.isBanned(userId, token))
+                        return Optional.empty();
+                }
+
+                if(deviceId!=null && !deviceId.equals(payloadJSON.getString("did"))){
+                    return Optional.empty();
+                }
+
+                return isAliveToken ?
                         Optional.of(payloadJSON) :
                         Optional.empty();
 

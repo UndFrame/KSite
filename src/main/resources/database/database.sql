@@ -6,12 +6,23 @@ DROP TABLE ksite.users;
 DROP TABLE ksite.tokens;
 DROP TABLE ksite.roles;
 DROP TABLE ksite.auth_tokens;
+DROP TABLE ksite.services;
+DROP TABLE ksite.baned_token;
+
+CREATE TABLE ksite.services
+(
+    id    SERIAL UNIQUE NOT NULL PRIMARY KEY,
+    name VARCHAR(255),
+    company  VARCHAR(255),
+    lore TEXT
+);
 
 CREATE TABLE ksite.tokens
 (
     id    SERIAL UNIQUE NOT NULL PRIMARY KEY,
     token VARCHAR(255),
-    date  TIMESTAMP
+    date  TIMESTAMP,
+    time INT
 );
 
 CREATE TABLE ksite.users
@@ -25,6 +36,13 @@ CREATE TABLE ksite.users
     ban           BOOLEAN       NOT NULL,
 
     FOREIGN KEY (token) REFERENCES ksite.tokens (id)
+);
+
+CREATE TABLE ksite.baned_token
+(
+    id    SERIAL UNIQUE NOT NULL PRIMARY KEY,
+    user_id INT,
+    token  VARCHAR(255)
 );
 
 CREATE TABLE ksite.auth_tokens
@@ -103,6 +121,12 @@ INSERT INTO ksite.roles(role)
 VALUES ('ADMIN');
 INSERT INTO ksite.roles(role)
 VALUES ('EDITOR');
+
+
+INSERT INTO ksite.services(name, company, lore)
+VALUES ('OVERDIFF','UndFrame','Mobile Overcoming Difficulties');
+INSERT INTO ksite.services(name, company, lore)
+VALUES ('NEEDLE','UndFrame','Mobile needle');
 
 
 INSERT INTO ksite.users(token, username, email, password, enabled, ban)
