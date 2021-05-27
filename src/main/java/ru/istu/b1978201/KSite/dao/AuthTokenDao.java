@@ -2,19 +2,17 @@ package ru.istu.b1978201.KSite.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.AuthToken;
 
-import java.util.List;
-
-/**
- * Интерфейс обеспечивает основные операции по поиску, сохранения, удалению данных из таблицы articles.
- */
 @Component
 public interface AuthTokenDao extends JpaRepository<AuthToken, Long> {
 
-    AuthToken findFirstByUserIdAndServiceIdAndDeviceId(long userId, long serviceId,long deviceId);
+    AuthToken findFirstByUserIdAndServiceIdAndDeviceId(long userId, String serviceId,String deviceId);
+    void deleteAllByUserId(long userId);
 
+    void deleteAllByUserIdAndServiceId(long userId, String serviceId);
+
+    void deleteAllByUserIdAndServiceIdAndDeviceId(long userId, String serviceId, String deviceId);
 
 
 }

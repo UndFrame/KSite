@@ -1,6 +1,8 @@
 package ru.istu.b1978201.KSite.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -98,11 +100,12 @@ public class RestArticleController {
             if (contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
                 if (!accessToken.isEmpty()) {
                     request.put("status", ArticleStatus.EXPIRED_TOKEN);
-                    if (JWT.isAlive(accessToken)) {
+                    Optional<JSONObject> alivePayload = JWT.isAlive(accessToken);
+                    if (alivePayload.isPresent()) {
                         request.put("status", ArticleStatus.TOKEN_DAMAGED);
-                        Optional<Long> userIdOptional = JWT.getUserId(accessToken);
-                        if (userIdOptional.isPresent()) {
-                            User user = userService.findById(userIdOptional.get());
+                        try {
+                            Long userIdOptional = alivePayload.get().getLong("userId");
+                            User user = userService.findById(userIdOptional);
                             if (user != null) {
                                 Article article = new Article();
                                 article.setText(articleText);
@@ -117,6 +120,7 @@ public class RestArticleController {
                             } else {
                                 request.put("status", ArticleStatus.USER_NOT_EXIT);
                             }
+                        } catch (JSONException ignored) {
                         }
                     }
                 } else {

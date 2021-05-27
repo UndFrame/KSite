@@ -9,6 +9,7 @@ public class AuthStatus {
     public static final int INVALID_TOKEN = 3;
     public static final int EXPIRED_TOKEN = 4;
     public static final int INVALID_INPUT_DATA = 5;
+    public static final int INVALID_INPUT_DATA_JSON = 5;
     public static final int SERVICE_NOT_SUPPORT = 5;
 
 }

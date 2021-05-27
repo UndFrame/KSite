@@ -17,9 +17,9 @@ public class AuthToken {
     @Column(name = "user_id")
     private long userId;
     @Column(name = "service_id")
-    private long serviceId;
+    private String serviceId;
     @Column(name = "device_id")
-    private long deviceId;
+    private String deviceId;
     @Column(name = "access_token")
     private String accessToken;
     @Column(name = "refresh_token")
@@ -46,19 +46,19 @@ public class AuthToken {
         this.userId = userId;
     }
 
-    public long getServiceId() {
+    public String getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(long serviceId) {
+    public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
     }
 
-    public long getDeviceId() {
+    public String getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(long deviceId) {
+    public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
 

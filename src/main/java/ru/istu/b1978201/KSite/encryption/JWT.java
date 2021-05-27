@@ -14,7 +14,7 @@ public class JWT {
 
     private static Random random = new Random();
 
-    public static String getToken(User user,boolean refresh) {
+    public static String getToken(User user,String deviceId,boolean refresh) {
         String accessToken = "";
         try {
             JSONObject headerJson = new JSONObject();
@@ -23,8 +23,10 @@ public class JWT {
 
             JSONObject payloadJson = new JSONObject();
             payloadJson.put("exp", (System.currentTimeMillis() / 1000L) + (refresh ? 60 * 60 * 24 * 7 : 60*15));
-            payloadJson.put("userId", user.getId());
-            payloadJson.put("userName", user.getUsername());
+            payloadJson.put("uid", user.getId());
+            payloadJson.put("un", user.getUsername());
+            payloadJson.put("did", deviceId);
+
             payloadJson.put("id", random.nextLong());
 
             String hS = headerJson.toString();
@@ -41,26 +43,30 @@ public class JWT {
         return accessToken;
     }
 
-    public static boolean isAlive(String token) {
+    public static Optional<JSONObject> isAlive(String token) {
         String[] split = token.split("\\.");
         if (split.length == 3) {
             try {
                 String header = split[0];
                 String payload = split[1];
                 String signatureExpected = split[2];
-                long time = new JSONObject(new String(Base64.getDecoder().decode(payload))).getLong("exp");
+                JSONObject payloadJSON = new JSONObject(new String(Base64.getDecoder().decode(payload)));
+                long time = payloadJSON.getLong("exp");
 
-                return SimpleCipher.verifySignature(
-                        (header + "." + payload).getBytes(), Base64.getDecoder().decode(signatureExpected.getBytes())) && (time >= (System.currentTimeMillis() / 1000L));
+                return (SimpleCipher.verifySignature(
+                        (header + "." + payload).getBytes(), Base64.getDecoder().decode(signatureExpected.getBytes())) && (time >= (System.currentTimeMillis() / 1000L))) ?
+                        Optional.of(payloadJSON) :
+                        Optional.empty();
+
 
             } catch (SignatureException | JSONException e) {
                 e.printStackTrace();
             }
         }
-        return false;
+        return Optional.empty();
     }
 
-    public static Optional<Long> getUserId(String token) {
+   /* public static Optional<Long> getUserId(String token) {
         String[] split = token.split("\\.");
         if (split.length == 3) {
             try {
@@ -71,6 +77,6 @@ public class JWT {
             }
         }
         return Optional.empty();
-    }
+    }*/
 
 }

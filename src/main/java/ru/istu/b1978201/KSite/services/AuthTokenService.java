@@ -16,7 +16,7 @@ public class AuthTokenService {
     @Autowired
     private AuthTokenDao authTokenDao;
 
-    public AuthToken getNewToken(User user, String serviceId, long device_id) {
+    public AuthToken getNewToken(User user, String serviceId, String deviceData) {
 
         AuthToken authToken = new AuthToken();
 
@@ -24,7 +24,7 @@ public class AuthTokenService {
         authToken.setRefreshToken(JWT.getToken(user, true));
         authToken.setUserId(user.getId());
         authToken.setServiceId(serviceId);
-        authToken.setDeviceId(device_id);
+        authToken.setDeviceId(deviceData);
 
         return authToken;
     }
@@ -42,16 +42,32 @@ public class AuthTokenService {
         return findAuthToken(authToken.getUserId(), authToken.getServiceId(), authToken.getDeviceId());
     }
 
-        public Optional<AuthToken> findAuthToken(User user, long serviceId, long device_id) {
+        public Optional<AuthToken> findAuthToken(User user, String serviceId, String deviceData) {
 
         if (user == null) {
             return Optional.empty();
         }
-        return findAuthToken(user.getId(), serviceId, device_id);
+        return findAuthToken(user.getId(), serviceId, deviceData);
     }
 
-    public Optional<AuthToken> findAuthToken(long userId, long serviceId, long device_id) {
-        return Optional.ofNullable(authTokenDao.findFirstByUserIdAndServiceIdAndDeviceId(userId, serviceId, device_id));
+    public Optional<AuthToken> findAuthToken(long userId, String serviceId, String deviceData) {
+        return Optional.ofNullable(authTokenDao.findFirstByUserIdAndServiceIdAndDeviceId(userId, serviceId, deviceData));
+    }
+
+
+    public void logOut(long userId){
+        authTokenDao.deleteAllByUserId(userId);
+    }
+    public void logOut(long userId,String serviceId){
+        authTokenDao.deleteAllByUserIdAndServiceId(userId,serviceId);
+    }
+
+    public void logOut(long userId,String serviceId,String deviceId){
+        authTokenDao.deleteAllByUserIdAndServiceIdAndDeviceId(userId,serviceId,deviceId);
+    }
+
+    public boolean isAuthorized(String accessToken){
+        return JWT.isAlive(accessToken);
     }
 
 }
