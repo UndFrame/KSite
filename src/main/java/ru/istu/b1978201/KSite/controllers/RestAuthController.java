@@ -2,6 +2,7 @@ package ru.istu.b1978201.KSite.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,7 +62,7 @@ public class RestAuthController {
             json.put("auth_status", AuthStatus.ERROR);
             if(deviceId!=null && !deviceId.isEmpty()) {
                 long device = Long.parseLong(deviceId);
-                long serviceId = ServicesId.MOBILE_APK;
+                long serviceId = ServicesId.MA_OVER_DIFF;
                 Optional<AuthToken> optionalAuthToken = authTokenService.findAuthToken(user, serviceId, device);
                 if (optionalAuthToken.isPresent()) {
                     AuthToken authToken = optionalAuthToken.get();
@@ -83,49 +84,53 @@ public class RestAuthController {
         return json;
     }
 
-    @PostMapping(value = {"api/auth"})
-    public Map<String, Object> authWithLogin(@RequestParam(value = "login", defaultValue = "") String login,
+    @PostMapping(value = {"api/auth/{serviceId}"})
+    public Map<String, Object> authWithLogin(@PathVariable String serviceId, @RequestParam(value = "login", defaultValue = "") String login,
                                        @RequestParam(value = "password", defaultValue = "") String password,
                                              @RequestParam(value = "device_id", defaultValue = "") String deviceId) {
 
         Map<String, Object> json = new HashMap<>();
 
-
-        User user = userService.findByUsername(login);
-        if (user == null) {
-            user = userService.findByEmail(login);
-        }
-        json.put("auth_status", AuthStatus.ERROR);
-        if (user != null) {
-            try {
-
-                if(deviceId!=null && !deviceId.isEmpty()) {
-
-                    long device = Long.parseLong(deviceId);
-
-                    SecretKeySpec aesKey = new SecretKeySpec(Base64.getDecoder().decode(SimpleCipher.PASSWORD_CIPHER_KEY.getBytes()), "AES");
-                    Cipher cipher = Cipher.getInstance("AES");
-                    cipher.init(Cipher.DECRYPT_MODE, aesKey);
-                    byte[] encrypted = DatatypeConverter.parseBase64Binary(password);
-                    String s = new String(cipher.doFinal(encrypted));
-
-                    if (passwordEncoder.matches(s, user.getPassword())) {
-                        instanceData(json, user, ServicesId.MOBILE_APK, device);
-                    } else {
-                        json.put("auth_status", AuthStatus.INVALID_PASSWORD);
-                    }
-                }else{
-                    json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
-                }
-            } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-                e.printStackTrace();
+        if(ServicesId.isSupport(serviceId)) {
+            User user = userService.findByUsername(login);
+            if (user == null) {
+                user = userService.findByEmail(login);
             }
+            json.put("auth_status", AuthStatus.ERROR);
+            if (user != null) {
+                try {
+
+                    if (deviceId != null && !deviceId.isEmpty()) {
+
+                        long device = Long.parseLong(deviceId);
+
+                        SecretKeySpec aesKey = new SecretKeySpec(Base64.getDecoder().decode(SimpleCipher.PASSWORD_CIPHER_KEY.getBytes()), "AES");
+                        Cipher cipher = Cipher.getInstance("AES");
+                        cipher.init(Cipher.DECRYPT_MODE, aesKey);
+                        byte[] encrypted = DatatypeConverter.parseBase64Binary(password);
+                        String s = new String(cipher.doFinal(encrypted));
+
+                        if (passwordEncoder.matches(s, user.getPassword())) {
+                            instanceData(json, user, serviceId, device);
+                        } else {
+                            json.put("auth_status", AuthStatus.INVALID_PASSWORD);
+                        }
+                    } else {
+                        json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+                    }
+                } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            json.put("auth_status", AuthStatus.SERVICE_NOT_SUPPORT);
         }
+
 
         return json;
     }
 
-    private void instanceData(Map<String, Object> json, User user,long serviceId,long deviceId) {
+    private void instanceData(Map<String, Object> json, User user,String serviceId,long deviceId) {
 
         userService.save(user);
 

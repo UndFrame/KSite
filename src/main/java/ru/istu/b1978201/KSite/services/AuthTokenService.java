@@ -16,7 +16,7 @@ public class AuthTokenService {
     @Autowired
     private AuthTokenDao authTokenDao;
 
-    public AuthToken getNewToken(User user, long serviceId, long device_id) {
+    public AuthToken getNewToken(User user, String serviceId, long device_id) {
 
         AuthToken authToken = new AuthToken();
 
