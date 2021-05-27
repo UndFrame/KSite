@@ -19,9 +19,8 @@ import ru.istu.b1978201.KSite.dao.CommentDao;
 import ru.istu.b1978201.KSite.dao.LikeDislikeDao;
 import ru.istu.b1978201.KSite.mode.Article;
 import ru.istu.b1978201.KSite.mode.Comment;
-import ru.istu.b1978201.KSite.mode.LikeDislike;
 import ru.istu.b1978201.KSite.mode.User;
-import ru.istu.b1978201.KSite.services.UserServiceImpl;
+import ru.istu.b1978201.KSite.services.ArticleService;
 import ru.istu.b1978201.KSite.uploadingfiles.StorageService;
 
 import java.util.Date;
@@ -46,11 +45,11 @@ public class ArticleController {
     private StorageService storageService;
 
     @Autowired
-    private UserServiceImpl userService;
+    private ArticleService articleService;
 
 
     @GetMapping("article")
-    public String getArticle(@RequestParam(value = "id",defaultValue = "") String id,Model model) {
+    public String getArticle(@RequestParam(value = "id", defaultValue = "") String id, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -59,11 +58,11 @@ public class ArticleController {
         model.addAttribute("user", user);
 
 
-        if(id.isEmpty()) {
+        if (id.isEmpty()) {
             Page<Article> all = articleDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
             model.addAttribute("articles", all);
             return "articlelist";
-        }else{
+        } else {
             Article article = articleDao.findByHash(id);
             if (article != null) {
                 model.addAttribute("url", article.getIconUrl());
@@ -74,6 +73,9 @@ public class ArticleController {
             if (article != null) {
                 model.addAttribute("comments", article.getComment());
             }
+            if (article!=null && user != null ) {
+                model.addAttribute("is_owner", article.getUser().getId().equals(user.getId()));
+            }
 
             return "article";
         }
@@ -82,12 +84,23 @@ public class ArticleController {
 
     @PostMapping(value = "article", params = "delete")
     public String deleteArticle(@ModelAttribute("id") String id, Model model) {
-        Article article = articleDao.findByHash(id);
 
-        if (article != null) {
-            commentDao.deleteAll(article.getComment());
-            likeDislikeDao.deleteAll(article.getLikeDislikes());
-            articleDao.delete(article);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
+        model.addAttribute("auth", user != null);
+        model.addAttribute("user", user);
+
+        if (user != null) {
+            Article article = articleDao.findByHash(id);
+            if (article != null) {
+                if (article.getUser().getId().equals(user.getId())) {
+                    commentDao.deleteAll(article.getComment());
+                    likeDislikeDao.deleteAll(article.getLikeDislikes());
+                    articleDao.delete(article);
+                }
+                model.addAttribute("is_owner", article.getUser().getId().equals(user.getId()));
+            }
         }
 
         return "redirect:/article";
@@ -120,13 +133,16 @@ public class ArticleController {
 
 
         if (article != null && user != null && !comment.isEmpty()) {
-            Comment newComment = new Comment();
-            newComment.setComment(comment);
-            newComment.setArticle(article);
-            newComment.setUser(user);
-            article.getComment().add(newComment);
-            commentDao.save(newComment);
-            model.addAttribute("comments", article.getComment());
+            if (article.getUser().getId().equals(user.getId())) {
+                Comment newComment = new Comment();
+                newComment.setComment(comment);
+                newComment.setArticle(article);
+                newComment.setUser(user);
+                article.getComment().add(newComment);
+                commentDao.save(newComment);
+                model.addAttribute("comments", article.getComment());
+            }
+            model.addAttribute("is_owner", article.getUser().getId().equals(user.getId()));
         }
 
         return "article";
@@ -159,50 +175,13 @@ public class ArticleController {
 
 
         if (article != null && user != null) {
-            LikeDislike likeDislike = null;
-
-            userService.refreshUserLikeDislike(user);
-
-            for (LikeDislike dislike : user.getLikeDislikes()) {
-                if (dislike.getArticle().equals(article)) {
-                    likeDislike = dislike;
-                }
-            }
-            boolean newLike = false;
-
-            if (likeDislike == null) {
-                likeDislike = new LikeDislike();
-                newLike = true;
-            }
-
-            newLike |= likeDislike.isClear();
-
-            likeDislike.setArticle(article);
-            likeDislike.setUser(user);
-
-
-            if(newLike ){
-                article.setDislikes(article.getDislikes() + 1);
-                likeDislike.setDislike(true);
-            }else if(likeDislike.isDislike()){
-                article.setDislikes(article.getDislikes() - 1);
-                likeDislike.clear();
-            }else if(likeDislike.isLike()){
-                article.setDislikes(article.getDislikes() + 1);
-                article.setLikes(article.getLikes() - 1);
-                likeDislike.setLike(false);
-            }
-
-
-            article.getLikeDislikes().add(likeDislike);
-            user.getLikeDislikes().add(likeDislike);
-            likeDislikeDao.save(likeDislike);
-            articleDao.save(article);
+            articleService.dislikeArticle(user, article);
             model.addAttribute("comments", article.getComment());
         }
 
         return "article";
     }
+
 
     @PostMapping(value = "article", params = "like")
     public String like(@ModelAttribute("id") String id, @ModelAttribute("comment") String comment, Model model) {
@@ -231,47 +210,13 @@ public class ArticleController {
 
 
         if (article != null && user != null) {
-            LikeDislike likeDislike = null;
-
-            userService.refreshUserLikeDislike(user);
-
-            for (LikeDislike dislike : user.getLikeDislikes()) {
-                if (dislike.getArticle().equals(article)) {
-                    likeDislike = dislike;
-                }
-            }
-            boolean newLike = false;
-
-            if (likeDislike == null) {
-                likeDislike = new LikeDislike();
-                newLike = true;
-            }
-
-            newLike |= likeDislike.isClear();
-
-            likeDislike.setArticle(article);
-            likeDislike.setUser(user);
-            if(newLike ){
-                article.setLikes(article.getLikes() + 1);
-                likeDislike.setLike(true);
-            }else if(likeDislike.isLike()){
-                article.setLikes(article.getLikes() - 1);
-                likeDislike.clear();
-            }else if(likeDislike.isDislike()){
-                article.setLikes(article.getLikes() + 1);
-                article.setDislikes(article.getDislikes() - 1);
-                likeDislike.setLike(true);
-            }
-
-            article.getLikeDislikes().add(likeDislike);
-            user.getLikeDislikes().add(likeDislike);
-            likeDislikeDao.save(likeDislike);
-            articleDao.save(article);
+            articleService.likeArticle(user, article);
             model.addAttribute("comments", article.getComment());
         }
 
         return "article";
     }
+
 
     @GetMapping("editor")
     public String getEditor(Model model) {
@@ -299,17 +244,36 @@ public class ArticleController {
         redirectAttributes.addAttribute("auth", user != null);
         redirectAttributes.addAttribute("user", user);
 
-        if (user != null) {
-            Article article = new Article();
-            article.setText(text);
-            article.setDescription(description);
-            article.setHash(UUID.randomUUID().toString());
-            article.setUser(user);
-            article.setIcon(file.getOriginalFilename());
-            article.setDateCreate(new Date());
 
-            articleDao.save(article);
-            storageService.store(file);
+        if (description != null && !description.isEmpty()
+                && text != null && !text.isEmpty()
+                && file != null && !file.isEmpty()
+                && user != null) {
+            String contentType = file.getContentType();
+            if (contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
+                Article article = new Article();
+                article.setText(text);
+                article.setDescription(description);
+                article.setHash(UUID.randomUUID().toString());
+                article.setUser(user);
+                article.setIcon(file.getOriginalFilename());
+                article.setDateCreate(new Date());
+
+                articleDao.save(article);
+                storageService.store(file);
+            } else {
+                redirectAttributes.addAttribute("file_not_allowed", true);
+            }
+        }
+
+        if (description == null || description.isEmpty()) {
+            redirectAttributes.addAttribute("null_description", true);
+        }
+        if (text == null || text.isEmpty()) {
+            redirectAttributes.addAttribute("null_text", true);
+        }
+        if (file == null || file.isEmpty()) {
+            redirectAttributes.addAttribute("null_file", true);
         }
 
         Page<Article> all = articleDao.findAll(PageRequest.of(0, 4, Sort.by(Sort.Order.desc("id"))));
@@ -324,7 +288,6 @@ public class ArticleController {
 
 
     /**
-     *
      * @param filename
      * @return
      */

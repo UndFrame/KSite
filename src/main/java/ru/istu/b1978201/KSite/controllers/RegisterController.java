@@ -50,13 +50,13 @@ public class RegisterController {
             @ModelAttribute("userForm") User userForm,
             Model model
     ) {
-        String captchaParam = "?secret=" + captchaServerKey + "&response=" + recaptchaResponse;
-        ReCaptchaResponse captchaResponse = restTemplate.exchange(captchaURL + captchaParam, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
-        model.addAttribute("RECAPTCHA_SITE_KEY", captchaSiteKey);
-        if (captchaResponse == null || !captchaResponse.isSuccess()) {
-            model.addAttribute("captchaError", true);
-            return "reg";
-        }
+//        String captchaParam = "?secret=" + captchaServerKey + "&response=" + recaptchaResponse;
+//        ReCaptchaResponse captchaResponse = restTemplate.exchange(captchaURL + captchaParam, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
+//        model.addAttribute("RECAPTCHA_SITE_KEY", captchaSiteKey);
+//        if (captchaResponse == null || !captchaResponse.isSuccess()) {
+//            model.addAttribute("captchaError", true);
+//            return "reg";
+//        }
         boolean error = false;
         String email = userForm.getEmail();
 
@@ -115,6 +115,7 @@ public class RegisterController {
 
             return "reg";
         }
+
         userForm.setUsername(userForm.getUsername().toLowerCase());
         userForm.setEmail(userForm.getEmail().toLowerCase());
         boolean create = userService.createUser(userForm);

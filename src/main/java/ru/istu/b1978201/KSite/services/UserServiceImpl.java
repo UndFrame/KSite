@@ -78,6 +78,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(Long id) {
+        return userDao.findById(id).orElse(null);
+    }
+
+    @Override
     public boolean createUser(User user) {
         User byEmail = findByEmail(user.getEmail());
         User byUsername = findByUsername(user.getUsername());

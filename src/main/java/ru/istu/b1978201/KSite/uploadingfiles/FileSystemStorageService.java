@@ -20,7 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
 /**
- * Сервис для загрузки файлов, в часности иконки для статей
+ * Сервис для загрузки файлов, в частности иконки для статей
  */
 @Service
 public class FileSystemStorageService implements StorageService {

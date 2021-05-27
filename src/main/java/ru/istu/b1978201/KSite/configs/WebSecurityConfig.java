@@ -38,9 +38,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/","/fload").permitAll()
+                .antMatchers("/", "/fload").permitAll()
+                .antMatchers("/api/*").permitAll()
                 .antMatchers("/login", "/reg", "/activate", "/tokenInfo", "/activate").anonymous()
-                .antMatchers("/account","/editor").authenticated()
+                .antMatchers("/account", "/editor").authenticated()
                 .antMatchers("/form").hasAnyRole("ADMIN")
                 .antMatchers("/*").permitAll()
                 .and()
@@ -64,10 +65,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringAntMatchers("/api/*")
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll()
-                .and();
+                ;
     }
 
     @Override

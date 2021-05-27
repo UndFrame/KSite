@@ -8,7 +8,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "like_dislike")
-public class LikeDislike {
+public class Evaluation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +27,7 @@ public class LikeDislike {
     @Column(name = "dislike")
     private boolean dislike;
 
-    public LikeDislike() {
+    public Evaluation() {
     }
 
     public Long getId() {
@@ -93,7 +93,7 @@ public class LikeDislike {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LikeDislike role = (LikeDislike) o;
+        Evaluation role = (Evaluation) o;
         return Objects.equals(id, role.id);
     }
 
