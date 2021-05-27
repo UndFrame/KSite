@@ -1,7 +1,12 @@
 package ru.istu.b1978201.KSite.mode;
 
+import ru.istu.b1978201.KSite.configs.ApplicationProperties;
+
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * Объект - data(хранилище данных), который хранит в себе информацию о статье
