@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "services")
-public class Services {
+public class AllowedService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -22,7 +22,7 @@ public class Services {
     private String lore;
 
 
-    public Services() {
+    public AllowedService() {
     }
 
     public Long getId() {
@@ -61,7 +61,7 @@ public class Services {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Services services = (Services) o;
+        AllowedService services = (AllowedService) o;
         return Objects.equals(id, services.id);
     }
 

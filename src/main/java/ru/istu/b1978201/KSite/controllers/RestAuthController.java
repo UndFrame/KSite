@@ -4,25 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.istu.b1978201.KSite.encryption.JWT;
-import ru.istu.b1978201.KSite.encryption.SimpleCipher;
 import ru.istu.b1978201.KSite.mode.AuthToken;
 import ru.istu.b1978201.KSite.mode.User;
-import ru.istu.b1978201.KSite.services.AllowedServicesService;
-import ru.istu.b1978201.KSite.services.AuthTokenService;
-import ru.istu.b1978201.KSite.services.BanedAccessTokenService;
-import ru.istu.b1978201.KSite.services.UserService;
+import ru.istu.b1978201.KSite.services.*;
 import ru.istu.b1978201.KSite.utils.AuthStatus;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +26,6 @@ public class RestAuthController {
     public UserService userService;
 
     @Autowired
-    public PasswordEncoder passwordEncoder;
-
-    @Autowired
     private AuthTokenService authTokenService;
 
     @Autowired
@@ -45,16 +33,20 @@ public class RestAuthController {
 
     @Autowired
     private BanedAccessTokenService banedAccessTokenService;
+    @Autowired
+    public PasswordEncoder passwordEncoder;
 
     @Autowired
     private AllowedServicesService allowedServicesService;
 
-    @RequestMapping(value = {"api/refresh"})
+    @Autowired
+    private UtilService utilService;
+
+    @PostMapping(value = {"api/refresh"})
     public Map<String, Object> authWithRefreshToken(HttpServletRequest requestS, @RequestParam(value = "id", defaultValue = "") long id,
                                                     @RequestParam(value = "refresh_token", defaultValue = "") String token,
-                                                    @RequestParam(value = "device_id", defaultValue = "") String deviceId) {
-
-        System.out.println("TEST1");
+                                                    @RequestParam(value = "device_id", defaultValue = "") String deviceId,
+                                                    @RequestParam(value = "service_id", defaultValue = "") String serviceId) {
         Map<String, Object> json = new HashMap<>();
 
 
@@ -65,8 +57,9 @@ public class RestAuthController {
         }
 
         token = parameters.getOrDefault("refresh_token", null);
-        deviceId = new String(Base64.getDecoder().decode(parameters.getOrDefault("device_id", "").getBytes()));
-        if (allowedServicesService.allowedService(0).isPresent()) {
+        String deviceInParameters = parameters.getOrDefault("device_id", "");
+        deviceId = deviceInParameters.isEmpty()?null:new String(Base64.getDecoder().decode(deviceInParameters.getBytes()));
+        if (deviceId!=null && allowedServicesService.allowedService(serviceId).isPresent()) {
             try {
                 JSONObject deviceDataJSON = new JSONObject(deviceId);
                 if (deviceDataJSON.has("ip") && deviceDataJSON.has("id")) {
@@ -77,13 +70,13 @@ public class RestAuthController {
                     if (user != null) {
                         json.put("auth_status", AuthStatus.ERROR);
                         if (device != null && !device.isEmpty()) {
-                            Optional<AuthToken> optionalAuthToken = authTokenService.findAuthToken(user, "0", device);
+                            Optional<AuthToken> optionalAuthToken = authTokenService.findAuthToken(user, serviceId, device);
                             if (optionalAuthToken.isPresent()) {
                                 AuthToken authToken = optionalAuthToken.get();
                                 if (authToken.getRefreshToken().equals(token)) {
-                                    Optional<JSONObject> aliveToken = jwt.isAlive(authToken.getRefreshToken(),device);
+                                    Optional<JSONObject> aliveToken = jwt.isAlive(authToken.getRefreshToken(), device);
                                     if (aliveToken.isPresent()) {
-                                        instanceData(json, user, "0", device);
+                                        utilService.instanceData(json, user, serviceId, device);
                                     } else {
                                         json.put("auth_status", AuthStatus.INVALID_TOKEN);
                                     }
@@ -108,15 +101,19 @@ public class RestAuthController {
         return json;
     }
 
-    @PostMapping(value = {"api/auth"})
-    public Map<String, Object> authWithLogin(@RequestParam(value = "serviceId",defaultValue = "") String serviceId, @RequestParam(value = "login", defaultValue = "") String login,
-                                             @RequestParam(value = "password", defaultValue = "") String password,
-                                             @RequestParam(value = "device_id", defaultValue = "") String deviceId) {
+   /* @RequestMapping(value = {"api/auth"})
+    public Map<String, Object> auth(HttpServletRequest requestS,
+                                    @RequestParam(value = "login", defaultValue = "") String login,
+                                    @RequestParam(value = "password", defaultValue = "") String password,
+                                    @RequestParam(value = "device_id", defaultValue = "") String deviceId
+    ) {
 
 
         System.out.println("TEST2");
 
         Map<String, Object> json = new HashMap<>();
+
+        String serviceId = "1";
 
         if (allowedServicesService.allowedService(serviceId).isPresent()) {
             try {
@@ -160,13 +157,13 @@ public class RestAuthController {
 
 
         return json;
-    }
+    }*/
 
     @PostMapping(value = {"api/logout}"})
-    public Map<String, Object> logout(@RequestParam(value = "serviceId",defaultValue = "") String serviceId,
-                                             HttpServletRequest requestS,
-                                             @RequestParam(value = "id", defaultValue = "") long id,
-                                             @RequestParam(value = "access_token", defaultValue = "") String token) {
+    public Map<String, Object> logout(@RequestParam(value = "service_id", defaultValue = "") String serviceId,
+                                      HttpServletRequest requestS,
+                                      @RequestParam(value = "id", defaultValue = "") long id,
+                                      @RequestParam(value = "access_token", defaultValue = "") String token) {
 
         Map<String, Object> json = new HashMap<>();
 
@@ -194,20 +191,7 @@ public class RestAuthController {
         return json;
     }
 
-    private void instanceData(Map<String, Object> json, User user, String serviceId, String deviceId) {
-        AuthToken newToken = authTokenService.getNewToken(user, serviceId, deviceId);
 
-        json.put("id", user.getId());
-        json.put("username", user.getUsername());
-        json.put("email", user.getEmail());
-        json.put("enabled", user.isEnabled());
-        json.put("ban", user.isBan());
-
-        json.put("access_token", newToken.getAccessToken());
-        json.put("refresh_token", newToken.getRefreshToken());
-        authTokenService.save(newToken, true);
-        json.put("auth_status", AuthStatus.SUCCESSFUL_AUTHORIZATION);
-    }
 
 
 }
