@@ -5,13 +5,14 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.istu.b1978201.KSite.encryption.JWT;
 import ru.istu.b1978201.KSite.mode.AuthToken;
 import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.services.*;
-import ru.istu.b1978201.KSite.utils.AuthStatus;
+import ru.istu.b1978201.KSite.utils.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
@@ -51,7 +52,8 @@ public class RestAuthController {
 
 
         Map<String, String> parameters = new HashMap<>();
-        for (String parameter : requestS.getQueryString().split("&")) {
+        if(requestS.getQueryString()!=null)
+            for (String parameter : requestS.getQueryString().split("&")) {
             String[] par = parameter.split("=", 2);
             parameters.put(par[0], par[1]);
         }
@@ -66,9 +68,9 @@ public class RestAuthController {
                     String device = deviceDataJSON.getString("id");
 
                     User user = userService.findById(id);
-                    json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+                    json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA);
                     if (user != null) {
-                        json.put("auth_status", AuthStatus.ERROR);
+                        json.put("auth_status", ResponseStatus.ERROR);
                         if (device != null && !device.isEmpty()) {
                             Optional<AuthToken> optionalAuthToken = authTokenService.findAuthToken(user, serviceId, device);
                             if (optionalAuthToken.isPresent()) {
@@ -78,86 +80,29 @@ public class RestAuthController {
                                     if (aliveToken.isPresent()) {
                                         utilService.instanceData(json, user, serviceId, device);
                                     } else {
-                                        json.put("auth_status", AuthStatus.INVALID_TOKEN);
+                                        json.put("auth_status", ResponseStatus.INVALID_TOKEN);
                                     }
                                 } else {
-                                    json.put("auth_status", AuthStatus.INVALID_TOKEN);
+                                    json.put("auth_status", ResponseStatus.INVALID_TOKEN);
                                 }
                             } else {
-                                json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+                                json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA);
                             }
                         }
                     }
                 } else {
-                    json.put("auth_status", AuthStatus.INVALID_INPUT_DATA_JSON);
+                    json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA_JSON);
                 }
             } catch (JSONException e) {
-                json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+                json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA);
             }
         } else {
-            json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+            json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA);
         }
 
         return json;
     }
 
-   /* @RequestMapping(value = {"api/auth"})
-    public Map<String, Object> auth(HttpServletRequest requestS,
-                                    @RequestParam(value = "login", defaultValue = "") String login,
-                                    @RequestParam(value = "password", defaultValue = "") String password,
-                                    @RequestParam(value = "device_id", defaultValue = "") String deviceId
-    ) {
-
-
-        System.out.println("TEST2");
-
-        Map<String, Object> json = new HashMap<>();
-
-        String serviceId = "1";
-
-        if (allowedServicesService.allowedService(serviceId).isPresent()) {
-            try {
-                JSONObject deviceDataJSON = new JSONObject(deviceId);
-                if (deviceDataJSON.has("ip") && deviceDataJSON.has("id")) {
-                    User user = userService.findByUsername(login);
-                    if (user == null) {
-                        user = userService.findByEmail(login);
-                    }
-                    json.put("auth_status", AuthStatus.ERROR);
-                    if (user != null) {
-                        try {
-                            if (deviceId != null && !deviceId.isEmpty()) {
-                                SecretKeySpec aesKey = new SecretKeySpec(Base64.getDecoder().decode(SimpleCipher.PASSWORD_CIPHER_KEY.getBytes()), "AES");
-                                Cipher cipher = Cipher.getInstance("AES");
-                                cipher.init(Cipher.DECRYPT_MODE, aesKey);
-                                byte[] encrypted = DatatypeConverter.parseBase64Binary(password);
-                                String s = new String(cipher.doFinal(encrypted));
-
-                                if (passwordEncoder.matches(s, user.getPassword())) {
-                                    instanceData(json, user, serviceId, deviceDataJSON.getString("id"));
-                                } else {
-                                    json.put("auth_status", AuthStatus.INVALID_PASSWORD);
-                                }
-                            } else {
-                                json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
-                            }
-                        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    json.put("auth_status", AuthStatus.INVALID_INPUT_DATA_JSON);
-                }
-            } catch (JSONException e) {
-                json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
-            }
-        } else {
-            json.put("auth_status", AuthStatus.SERVICE_NOT_SUPPORT);
-        }
-
-
-        return json;
-    }*/
 
     @PostMapping(value = {"api/logout}"})
     public Map<String, Object> logout(@RequestParam(value = "service_id", defaultValue = "") String serviceId,
@@ -168,7 +113,8 @@ public class RestAuthController {
         Map<String, Object> json = new HashMap<>();
 
         Map<String, String> parameters = new HashMap<>();
-        for (String parameter : requestS.getQueryString().split("&")) {
+        if(requestS.getQueryString()!=null)
+            for (String parameter : requestS.getQueryString().split("&")) {
             String[] par = parameter.split("=", 2);
             parameters.put(par[0], par[1]);
         }
@@ -180,17 +126,46 @@ public class RestAuthController {
                 Optional<JSONObject> aliveToken = jwt.isAlive(token);
                 if (aliveToken.isPresent()) {
                     banedAccessTokenService.ban(aliveToken.get().getLong("uid"), token);
+                    authTokenService.logOut(aliveToken.get().getLong("uid"),serviceId,aliveToken.get().getString("did"));
+                    json.put("auth_status", ResponseStatus.LOGOUT_SUCCESSFUL);
+
                 }
             } catch (JSONException e) {
-                json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+                json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA);
             }
         } else {
-            json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+            json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA);
         }
 
         return json;
     }
 
+    @RequestMapping(value ="api/is_alive_token")
+    public Map<String, Object> isAliveToke( HttpServletRequest requestS,
+                                            @RequestParam(value = "token",defaultValue = "") String token){
+        Map<String, Object> json = new HashMap<>();
+
+        Map<String, String> parameters = new HashMap<>();
+        if(requestS.getQueryString()!=null)
+        for (String parameter : requestS.getQueryString().split("&")) {
+            String[] par = parameter.split("=", 2);
+            parameters.put(par[0], par[1]);
+        }
+
+        token = parameters.getOrDefault("token", null);
+
+        if(token!=null){
+            Optional<JSONObject> aliveTokenOptional = jwt.isAlive(token);
+            if(aliveTokenOptional.isPresent()){
+                json.put("status", ResponseStatus.TOKEN_IS_ALIVE);
+            }else
+                json.put("status", ResponseStatus.TOKEN_NOT_ALIVE);
+        }else{
+            json.put("status", ResponseStatus.INVALID_INPUT_DATA);
+        }
+
+        return json;
+    }
 
 
 

@@ -87,10 +87,11 @@ public class RestArticleController {
                                              @RequestParam(value = "icon", required = false) MultipartFile file
     ) {
         Map<String, String> parameters = new HashMap<>();
-        for (String parameter : requestS.getQueryString().split("&")) {
-            String[] par = parameter.split("=", 2);
-            parameters.put(par[0], par[1]);
-        }
+        if (requestS.getQueryString() != null)
+            for (String parameter : requestS.getQueryString().split("&")) {
+                String[] par = parameter.split("=", 2);
+                parameters.put(par[0], par[1]);
+            }
 
         accessToken = parameters.get("access_token");
         Map<String, Object> request = new HashMap<>();
@@ -155,11 +156,12 @@ public class RestArticleController {
     ) {
 
         Map<String, String> parameters = new HashMap<>();
-        for (String parameter : requestS.getQueryString().split("&")) {
-            String[] par = parameter.split("=", 2);
-            if (par.length != 2) continue;
-            parameters.put(par[0], par[1]);
-        }
+        if (requestS.getQueryString() != null)
+            for (String parameter : requestS.getQueryString().split("&")) {
+                String[] par = parameter.split("=", 2);
+                if (par.length != 2) continue;
+                parameters.put(par[0], par[1]);
+            }
 
         accessToken = parameters.get("access_token");
         articleId = Long.parseLong(parameters.get("article_id"));
@@ -207,11 +209,12 @@ public class RestArticleController {
                                     @RequestParam(value = "is_like", defaultValue = "") boolean isLike
     ) {
         Map<String, String> parameters = new HashMap<>();
-        for (String parameter : requestS.getQueryString().split("&")) {
-            String[] par = parameter.split("=", 2);
-            if (par.length != 2) continue;
-            parameters.put(par[0], par[1]);
-        }
+        if (requestS.getQueryString() != null)
+            for (String parameter : requestS.getQueryString().split("&")) {
+                String[] par = parameter.split("=", 2);
+                if (par.length != 2) continue;
+                parameters.put(par[0], par[1]);
+            }
 
         accessToken = parameters.get("access_token");
         articleId = Long.parseLong(parameters.get("article_id"));

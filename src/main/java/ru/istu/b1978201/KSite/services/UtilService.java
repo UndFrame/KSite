@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.istu.b1978201.KSite.mode.AuthToken;
 import ru.istu.b1978201.KSite.mode.User;
-import ru.istu.b1978201.KSite.utils.AuthStatus;
+import ru.istu.b1978201.KSite.utils.ResponseStatus;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public class UtilService {
         json.put("access_token", newToken.getAccessToken());
         json.put("refresh_token", newToken.getRefreshToken());
         authTokenService.save(newToken, true);
-        json.put("auth_status", AuthStatus.SUCCESSFUL_AUTHORIZATION);
+        json.put("auth_status", ResponseStatus.SUCCESSFUL_AUTHORIZATION);
     }
 
 }

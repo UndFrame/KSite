@@ -12,7 +12,7 @@ import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.services.AllowedServicesService;
 import ru.istu.b1978201.KSite.services.UserService;
 import ru.istu.b1978201.KSite.services.UtilService;
-import ru.istu.b1978201.KSite.utils.AuthStatus;
+import ru.istu.b1978201.KSite.utils.ResponseStatus;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -51,7 +51,8 @@ public class RestLoginController {
 
 
         Map<String, String> parameters = new HashMap<>();
-        for (String parameter : requestS.getQueryString().split("&")) {
+        if(requestS.getQueryString()!=null)
+            for (String parameter : requestS.getQueryString().split("&")) {
             String[] par = parameter.split("=", 2);
             parameters.put(par[0], par[1]);
         }
@@ -67,7 +68,7 @@ public class RestLoginController {
                     if (user == null) {
                         user = userService.findByEmail(login);
                     }
-                    json.put("auth_status", AuthStatus.ERROR);
+                    json.put("auth_status", ResponseStatus.ERROR);
                     if (user != null) {
                         try {
                             if (deviceId != null && !deviceId.isEmpty()) {
@@ -79,23 +80,23 @@ public class RestLoginController {
                                 if (passwordEncoder.matches(s, user.getPassword())) {
                                     utilService.instanceData(json, user, serviceId, deviceDataJSON.getString("id"));
                                 } else {
-                                    json.put("auth_status", AuthStatus.INVALID_PASSWORD);
+                                    json.put("auth_status", ResponseStatus.INVALID_PASSWORD);
                                 }
                             } else {
-                                json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+                                json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA);
                             }
                         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
                             e.printStackTrace();
                         }
                     }
                 } else {
-                    json.put("auth_status", AuthStatus.INVALID_INPUT_DATA_JSON);
+                    json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA_JSON);
                 }
             } catch (JSONException e) {
-                json.put("auth_status", AuthStatus.INVALID_INPUT_DATA);
+                json.put("auth_status", ResponseStatus.INVALID_INPUT_DATA);
             }
         } else {
-            json.put("auth_status", AuthStatus.SERVICE_NOT_SUPPORT);
+            json.put("auth_status", ResponseStatus.SERVICE_NOT_SUPPORT);
         }
 
 
