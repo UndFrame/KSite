@@ -140,9 +140,12 @@ public class RestAuthController {
         return json;
     }
 
-    @RequestMapping(value ="api/is_alive_token")
+    @PostMapping(value ="api/alivetoken")
     public Map<String, Object> isAliveToke( HttpServletRequest requestS,
-                                            @RequestParam(value = "token",defaultValue = "") String token){
+                                            @RequestParam(value = "access_token",defaultValue = "") String token){
+
+        System.out.println("FFF");
+
         Map<String, Object> json = new HashMap<>();
 
         Map<String, String> parameters = new HashMap<>();
@@ -152,7 +155,7 @@ public class RestAuthController {
             parameters.put(par[0], par[1]);
         }
 
-        token = parameters.getOrDefault("token", null);
+        token = parameters.getOrDefault("access_token", null);
 
         if(token!=null){
             Optional<JSONObject> aliveTokenOptional = jwt.isAlive(token);
