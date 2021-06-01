@@ -51,7 +51,7 @@ public class RestArticleController {
     private JWT jwt;
 
 
-    @GetMapping(value = {"api/article"})
+    @PostMapping(value = {"api/article"})
     public Map<String, Object> article(@RequestParam(value = "id", defaultValue = "") String hash) {
 
 
@@ -64,7 +64,7 @@ public class RestArticleController {
     }
 
 
-    @GetMapping(value = {"api/articles"})
+    @PostMapping(value = {"api/articles"})
     public Map<String, Object> articles(@RequestParam(value = "count", defaultValue = "") String countStr) {
 
 

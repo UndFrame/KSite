@@ -143,9 +143,6 @@ public class RestAuthController {
     @PostMapping(value ="api/alivetoken")
     public Map<String, Object> isAliveToke( HttpServletRequest requestS,
                                             @RequestParam(value = "access_token",defaultValue = "") String token){
-
-        System.out.println("FFF");
-
         Map<String, Object> json = new HashMap<>();
 
         Map<String, String> parameters = new HashMap<>();
