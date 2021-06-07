@@ -38,11 +38,11 @@ public class JWT {
 
             String hS = headerJson.toString();
             String pS = payloadJson.toString();
-            String header = new String(Base64.getEncoder().encode(hS.getBytes()));
-            String payload = new String(Base64.getEncoder().encode(pS.getBytes()));
+            String header = base64EncodeSB(hS.getBytes());
+            String payload = base64EncodeSB(pS.getBytes());
 
 
-            String signature = new String(Base64.getEncoder().encode(SimpleCipher.encodeSignature((header + "." + payload).getBytes())));
+            String signature = base64EncodeSB(SimpleCipher.encodeSignature((header + "." + payload).getBytes()));
             accessToken = header + "." + payload + "." + signature;
         } catch (JSONException | SignatureException e) {
             e.printStackTrace();
@@ -61,11 +61,11 @@ public class JWT {
                 String header = split[0];
                 String payload = split[1];
                 String signatureExpected = split[2];
-                JSONObject payloadJSON = new JSONObject(new String(Base64.getDecoder().decode(payload)));
+                JSONObject payloadJSON = new JSONObject(base64DecodeSS(payload));
                 long time = payloadJSON.getLong("exp");
 
                 boolean isAliveToken = SimpleCipher.verifySignature(
-                        (header + "." + payload).getBytes(), Base64.getDecoder().decode(signatureExpected.getBytes())) && (time >= (System.currentTimeMillis() / 1000L));
+                        (header + "." + payload).getBytes(), base64DecodeBB(signatureExpected.getBytes())) && (time >= (System.currentTimeMillis() / 1000L));
 
                 if(isAliveToken){
                     long userId = payloadJSON.getLong("uid");
@@ -87,6 +87,29 @@ public class JWT {
             }
         }
         return Optional.empty();
+    }
+
+    public String base64EncodeSS(String s){
+        return Base64.getEncoder().encodeToString(s.getBytes());
+    }
+
+    public String base64EncodeSB(byte[] b){
+        return Base64.getEncoder().encodeToString(b);
+    }
+
+    public String base64DecodeSS(String s){
+        return new String(Base64.getDecoder().decode(s.getBytes()));
+    }
+
+    public byte[] base64DecodeBS(String s){
+        return Base64.getDecoder().decode(s.getBytes());
+    }
+    public byte[] base64DecodeBB(byte[] b){
+        return Base64.getDecoder().decode(b);
+    }
+
+    public String base64DecodeSB(byte[] bytes) {
+        return new String(Base64.getDecoder().decode(bytes));
     }
 
    /* public static Optional<Long> getUserId(String token) {

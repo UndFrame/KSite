@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.istu.b1978201.KSite.encryption.JWT;
 import ru.istu.b1978201.KSite.encryption.SimpleCipher;
 import ru.istu.b1978201.KSite.mode.User;
 import ru.istu.b1978201.KSite.services.AllowedServicesService;
@@ -40,6 +41,9 @@ public class RestLoginController {
     @Autowired
     private UtilService utilService;
 
+    @Autowired
+    private JWT jwt;
+
     @PostMapping(value = {"api/auth"})
     public Map<String, Object> auth(HttpServletRequest requestS,
                                     @RequestParam(value = "login", defaultValue = "") String login,
@@ -49,20 +53,26 @@ public class RestLoginController {
     ) {
         Map<String, Object> json = new HashMap<>();
 
+/*
 
         Map<String, String> parameters = new HashMap<>();
-        if(requestS.getQueryString()!=null)
+        if (requestS.getQueryString() != null)
             for (String parameter : requestS.getQueryString().split("&")) {
-            String[] par = parameter.split("=", 2);
-            parameters.put(par[0], par[1]);
-        }
+                String[] par = parameter.split("=", 2);
+                parameters.put(par[0], par[1]);
+            }
         String device = parameters.getOrDefault("device_id", "");
-        deviceId = device.isEmpty()? null:new String(Base64.getDecoder().decode(device.getBytes()));
+
+        System.out.println();
+        System.out.println(device);
+        System.out.println();
+        // deviceId = device.isEmpty()? null:new String(Base64.getUrlDecoder().decode(device.getBytes()));
+*/
 
 
         if (allowedServicesService.allowedService(serviceId).isPresent()) {
             try {
-                JSONObject deviceDataJSON = new JSONObject(deviceId);
+                JSONObject deviceDataJSON = new JSONObject(jwt.base64DecodeSS(deviceId));
                 if (deviceDataJSON.has("ip") && deviceDataJSON.has("id")) {
                     User user = userService.findByUsername(login);
                     if (user == null) {
@@ -72,7 +82,7 @@ public class RestLoginController {
                     if (user != null) {
                         try {
                             if (deviceId != null && !deviceId.isEmpty()) {
-                                SecretKeySpec aesKey = new SecretKeySpec(Base64.getDecoder().decode(SimpleCipher.PASSWORD_CIPHER_KEY.getBytes()), "AES");
+                                SecretKeySpec aesKey = new SecretKeySpec(jwt.base64DecodeBB(SimpleCipher.PASSWORD_CIPHER_KEY.getBytes()), "AES");
                                 Cipher cipher = Cipher.getInstance("AES");
                                 cipher.init(Cipher.DECRYPT_MODE, aesKey);
                                 byte[] encrypted = DatatypeConverter.parseBase64Binary(password);

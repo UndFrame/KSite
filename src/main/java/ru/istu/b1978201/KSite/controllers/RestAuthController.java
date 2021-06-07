@@ -5,7 +5,6 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.istu.b1978201.KSite.encryption.JWT;
@@ -15,7 +14,6 @@ import ru.istu.b1978201.KSite.services.*;
 import ru.istu.b1978201.KSite.utils.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -60,7 +58,8 @@ public class RestAuthController {
 
         token = parameters.getOrDefault("refresh_token", null);
         String deviceInParameters = parameters.getOrDefault("device_id", "");
-        deviceId = deviceInParameters.isEmpty()?null:new String(Base64.getDecoder().decode(deviceInParameters.getBytes()));
+        //deviceId = deviceInParameters.isEmpty()?null: jwt.base64DecodeSB(deviceInParameters.getBytes());
+        deviceId = jwt.base64DecodeSS(deviceId);
         if (deviceId!=null && allowedServicesService.allowedService(serviceId).isPresent()) {
             try {
                 JSONObject deviceDataJSON = new JSONObject(deviceId);
@@ -144,6 +143,7 @@ public class RestAuthController {
     public Map<String, Object> isAliveToke( HttpServletRequest requestS,
                                             @RequestParam(value = "access_token",defaultValue = "") String token){
         Map<String, Object> json = new HashMap<>();
+/*
 
         Map<String, String> parameters = new HashMap<>();
         if(requestS.getQueryString()!=null)
@@ -153,15 +153,24 @@ public class RestAuthController {
         }
 
         token = parameters.getOrDefault("access_token", null);
+*/
 
         if(token!=null){
             Optional<JSONObject> aliveTokenOptional = jwt.isAlive(token);
             if(aliveTokenOptional.isPresent()){
                 json.put("status", ResponseStatus.TOKEN_IS_ALIVE);
+                try {
+                    json.put("user_id", aliveTokenOptional.get().getLong("uid"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }else
                 json.put("status", ResponseStatus.TOKEN_NOT_ALIVE);
+
         }else{
             json.put("status", ResponseStatus.INVALID_INPUT_DATA);
+
         }
 
         return json;
